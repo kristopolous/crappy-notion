@@ -40,7 +40,7 @@ ioncore.set{
 
     -- Movement commands warp the pointer to frames instead of just
     -- changing focus. Enabled by default.
-    --warp=true,
+    warp=false,
     
     -- Switch frames to display newly mapped windows
     --switchto=true,
@@ -67,7 +67,7 @@ ioncore.set{
 dopath("cfg_defaults")
 
 -- Load configuration of the Notion 'core'. Most bindings are here.
---dopath("cfg_notioncore")
+dopath("cfg_notioncore")
 
 -- Load some kludges to make apps behave better.
 --dopath("cfg_kludges")

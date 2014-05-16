@@ -23,7 +23,7 @@ defbindings("WScreen", {
     bdoc("Switch to n:th object (workspace, full screen client window) "..
          "within current screen."),
     kpress(META.."1", "WScreen.switch_nth(_, 0)"),
-    kpress(META.."2", "WScreen.switch_nth(_, 1)"),
+--    kpress(META.."2", "WScreen.switch_nth(_, 1)"),
     kpress(META.."3", "WScreen.switch_nth(_, 2)"),
     kpress(META.."4", "WScreen.switch_nth(_, 3)"),
     kpress(META.."5", "WScreen.switch_nth(_, 4)"),
@@ -143,13 +143,14 @@ defbindings("WMPlex.toplevel", {
     kpress(META.."F1", "ioncore.exec_on(_, ':man notion')"),
 
     bdoc("Run a terminal emulator."),
-    kpress(ALTMETA.."F2", "notioncore.exec_on(_, XTERM or 'x-terminal-emulator')"),
+    kpress(ALTMETA.."F2", "notioncore.exec_on(_, XTERM or 'my_xterm')"),
+    kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'my_xterm')"),
     
     bdoc("Query for command line to execute."),
-    kpress(ALTMETA.."F3", "mod_query.query_exec(_)"),
+    kpress(ALTMETA.."F4", "mod_query.query_exec(_)"),
 
     bdoc("Query for Lua code to execute."),
-    kpress(META.."F3", "mod_query.query_lua(_)"),
+    kpress(ALTMETA.."F3", "mod_query.query_lua(_)"),
 
     bdoc("Query for host to connect to with SSH."),
     kpress(ALTMETA.."F4", "mod_query.query_ssh(_, ':ssh')"),
@@ -189,11 +190,9 @@ defbindings("WMPlex.toplevel", {
 -- frame bindings are found in some modules' configuration files.
 
 defbindings("WFrame", {
-    submap(META.."K", {
-        bdoc("Maximize the frame horizontally/vertically."),
-        kpress("H", "WFrame.maximize_horiz(_)"),
-        kpress("V", "WFrame.maximize_vert(_)"),
-    }),
+    kpress(META.."H", "WFrame.maximize_horiz(_)"),
+    kpress(META.."V", "WFrame.maximize_vert(_)"),
+    kpress(META.."2", "{ WFrame.maximize_horiz(_), WFrame.maximize.vert(_) }"),
     
     bdoc("Display context menu."),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'ctxmenu')"),
@@ -223,6 +222,8 @@ defbindings("WFrame", {
 defbindings("WFrame.toplevel", {
     bdoc("Query for a client window to attach."),
     kpress(META.."A", "mod_query.query_attachclient(_)"),
+    kpress(META.."W", "WFrame.switch_prev(_)"),
+    kpress(META.."E", "WFrame.switch_next(_)"),
     
     submap(META.."K", {
         -- Display tab numbers when modifiers are released
@@ -329,7 +330,7 @@ defbindings("WMoveresMode", {
 -- Main menu
 defmenu("mainmenu", {
     menuentry("Run...",         "mod_query.query_exec(_)"),
-    menuentry("Terminal",       "notioncore.exec_on(_, XTERM or 'x-terminal-emulator')"),
+    menuentry("Terminal",       "notioncore.exec_on(_, XTERM or 'acidx xterm')"),
     menuentry("Lock screen",
               "notioncore.exec_on(_, notioncore.lookup_script('notion-lock'))"),
     menuentry("Help",           "mod_query.query_man(_)"),
