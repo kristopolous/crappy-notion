@@ -106,7 +106,7 @@ defbindings("WInput", {
 
 
 -- Some settings
---[[
+
 mod_query.set{
      -- Auto-show completions?    
      autoshowcompl=true,
@@ -121,4 +121,4 @@ mod_query.set{
      -- Sub-string completion? (Some queries only.)
      substrcompl=true,
 }
---]]
+
