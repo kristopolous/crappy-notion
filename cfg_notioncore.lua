@@ -80,6 +80,8 @@ defbindings("WScreen", {
     -- with tilings.
     kpress(META.."Tab", "ioncore.goto_next(_chld, 'right')", 
            "_chld:non-nil"),
+    kpress(METASHIFT.."Tab", "ioncore.goto_next(_chld, 'left')", 
+           "_chld:non-nil"),
     submap(META.."K", { 
         bdoc("Backward-circulate focus."),
         kpress("AnyModifier+Tab", "ioncore.goto_next(_chld, 'left')", 

@@ -12,6 +12,8 @@ defbindings("WTiling", {
     kpress(META.."P", "ioncore.goto_next(_sub, 'up', {no_ascend=_})"),
     kpress(META.."N", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
     kpress(META.."Tab", "ioncore.goto_next(_sub, 'right')"),
+    kpress(META.."1", "ioncore.goto_next(_sub, 'left')"),
+
     submap(META.."K", {
         kpress("Tab", "ioncore.goto_next(_sub, 'left')"),
         

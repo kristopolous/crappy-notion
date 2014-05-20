@@ -1,4 +1,5 @@
 -- META="Mod1+"
 META="Control+Mod1+"
+METASHIFT="Control+Mod1+Shift+"
 ALT="Mod1+"
 ALTMETA="Mod1+"
