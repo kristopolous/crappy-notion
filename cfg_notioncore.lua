@@ -227,6 +227,7 @@ defbindings("WFrame.toplevel", {
     kpress(META.."W", "WFrame.switch_prev(_)"),
     kpress(META.."E", "WFrame.switch_next(_)"),
     
+    kpress(META.."V", "WFrame.maximize_vert(_)"),
     submap(META.."K", {
         -- Display tab numbers when modifiers are released
         submap_wait("ioncore.tabnum.show(_)"),
