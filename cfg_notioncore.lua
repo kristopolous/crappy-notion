@@ -82,6 +82,9 @@ defbindings("WScreen", {
            "_chld:non-nil"),
     kpress(METASHIFT.."Tab", "ioncore.goto_next(_chld, 'left')", 
            "_chld:non-nil"),
+    kpress(META.."1", "WRegion.rqorder(_chld, 'back')", 
+           "_chld:non-nil"),
+
     submap(META.."K", { 
         bdoc("Backward-circulate focus."),
         kpress("AnyModifier+Tab", "ioncore.goto_next(_chld, 'left')", 
@@ -194,7 +197,7 @@ defbindings("WMPlex.toplevel", {
 defbindings("WFrame", {
     kpress(META.."H", "WFrame.maximize_horiz(_)"),
     kpress(META.."V", "WFrame.maximize_vert(_)"),
-    kpress(META.."2", "{ WFrame.maximize_horiz(_), WFrame.maximize.vert(_) }"),
+    kpress(META.."2", "realmaximize(_)"),
     
     bdoc("Display context menu."),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'ctxmenu')"),
