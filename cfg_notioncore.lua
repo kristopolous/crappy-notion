@@ -107,6 +107,8 @@ defbindings("WClientWin", {
          "programs' resizing problems."),
     kpress_wait(META.."L", "WClientWin.nudge(_)"),
     
+    kpress(METASHIFT.."4", "WClientWin.kill(_)"),
+
     submap(META.."K", {
        bdoc("Kill client owning the client window."),
        kpress("C", "WClientWin.kill(_)"),
