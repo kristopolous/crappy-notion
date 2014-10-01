@@ -152,6 +152,8 @@ defbindings("WMPlex.toplevel", {
     bdoc("Run a terminal emulator."),
     kpress(ALTMETA.."F2", "notioncore.exec_on(_, XTERM or 'my_xterm')"),
     kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'my_xterm')"),
+    kpress(META.."P", "os.execute('sshot')"),
+    kpress(META.."N", "os.execute('vshot')"),
     
     bdoc("Query for command line to execute."),
     kpress(ALTMETA.."F4", "mod_query.query_exec(_)"),
