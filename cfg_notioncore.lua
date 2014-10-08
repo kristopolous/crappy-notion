@@ -24,18 +24,18 @@ defbindings("WScreen", {
          "within current screen."),
     kpress(META.."1", "WScreen.switch_nth(_, 0)"),
 --    kpress(META.."2", "WScreen.switch_nth(_, 1)"),
-    kpress(META.."3", "WScreen.switch_nth(_, 2)"),
-    kpress(META.."4", "WScreen.switch_nth(_, 3)"),
-    kpress(META.."5", "WScreen.switch_nth(_, 4)"),
-    kpress(META.."6", "WScreen.switch_nth(_, 5)"),
-    kpress(META.."7", "WScreen.switch_nth(_, 6)"),
-    kpress(META.."8", "WScreen.switch_nth(_, 7)"),
+--    kpress(META.."3", "WScreen.switch_nth(_, 2)"),
+--    kpress(META.."4", "WScreen.switch_nth(_, 3)"),
+--    kpress(META.."5", "WScreen.switch_nth(_, 4)"),
+--    kpress(META.."6", "WScreen.switch_nth(_, 5)"),
+--    kpress(META.."7", "WScreen.switch_nth(_, 6)"),
+--    kpress(META.."8", "WScreen.switch_nth(_, 7)"),
     kpress(META.."9", "WScreen.switch_nth(_, 8)"),
     kpress(META.."0", "WScreen.switch_nth(_, 9)"),
     
     bdoc("Switch to next/previous object within current screen."),
-    kpress(META.."comma", "WScreen.switch_prev(_)"),
-    kpress(META.."period", "WScreen.switch_next(_)"),
+    kpress(META.."S", "WScreen.switch_prev(_)"),
+    kpress(META.."D", "WScreen.switch_next(_)"),
 
     submap(META.."K", {
         bdoc("Go to first region demanding attention or previously active one."),
@@ -62,7 +62,7 @@ defbindings("WScreen", {
     kpress(META.."Shift+period", "ioncore.goto_next_screen()"),
     
     bdoc("Create a new workspace of chosen default type."),
-    kpress(META.."F9", "ioncore.create_ws(_)"),
+    kpress(META.."equal", "ioncore.create_ws(_)"),
     
     bdoc("Display the main menu."),
     kpress(ALTMETA.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
@@ -156,24 +156,24 @@ defbindings("WMPlex.toplevel", {
     kpress(META.."N", "os.execute('vshot')"),
     
     bdoc("Query for command line to execute."),
-    kpress(ALTMETA.."F4", "mod_query.query_exec(_)"),
+    kpress(ALTMETA.."4", "mod_query.query_exec(_)"),
 
     bdoc("Query for Lua code to execute."),
-    kpress(ALTMETA.."F3", "mod_query.query_lua(_)"),
+    kpress(ALTMETA.."3", "mod_query.query_lua(_)"),
 
     bdoc("Query for host to connect to with SSH."),
-    kpress(ALTMETA.."F4", "mod_query.query_ssh(_, ':ssh')"),
+    kpress(ALTMETA.."4", "mod_query.query_ssh(_, ':ssh')"),
 
     bdoc("Query for file to edit."),
-    kpress(ALTMETA.."F5", 
+    kpress(ALTMETA.."5", 
            "mod_query.query_editfile(_, 'run-mailcap --action=edit')"),
 
     bdoc("Query for file to view."),
-    kpress(ALTMETA.."F6", 
+    kpress(ALTMETA.."6", 
            "mod_query.query_runfile(_, 'run-mailcap --action=view')"),
 
     bdoc("Query for workspace to go to or create a new one."),
-    kpress(ALTMETA.."F9", "mod_query.query_workspace(_)"),
+    kpress(ALTMETA.."9", "mod_query.query_workspace(_)"),
     
     bdoc("Query for a client window to go to."),
     kpress(META.."G", "mod_query.query_gotoclient(_)"),
@@ -340,7 +340,7 @@ defbindings("WMoveresMode", {
 -- Main menu
 defmenu("mainmenu", {
     menuentry("Run...",         "mod_query.query_exec(_)"),
-    menuentry("Terminal",       "notioncore.exec_on(_, XTERM or 'acidx xterm')"),
+    menuentry("Terminal",       "notioncore.exec_on(_, XTERM or 'xterm -bg black -fg white')"),
     menuentry("Lock screen",
               "notioncore.exec_on(_, notioncore.lookup_script('notion-lock'))"),
     menuentry("Help",           "mod_query.query_man(_)"),
