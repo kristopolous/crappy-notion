@@ -35,7 +35,8 @@ defbindings("WScreen", {
     
     bdoc("Switch to next/previous object within current screen."),
     kpress(META.."S", "WScreen.switch_prev(_)"),
-    kpress(META.."D", "WScreen.switch_next(_)"),
+    kpress(META.."D", "WScreen.switch_prev(_)"),
+    kpress(META.."F", "WScreen.switch_next(_)"),
 
     submap(META.."K", {
         bdoc("Go to first region demanding attention or previously active one."),
@@ -231,6 +232,7 @@ defbindings("WFrame", {
 defbindings("WFrame.toplevel", {
     bdoc("Query for a client window to attach."),
     kpress(META.."A", "mod_query.query_attachclient(_)"),
+    kpress(META.."1", "WFrame.switch_prev(_)"),
     kpress(META.."W", "WFrame.switch_prev(_)"),
     kpress(META.."E", "WFrame.switch_next(_)"),
     
