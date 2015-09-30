@@ -10,7 +10,7 @@ defbindings("WTiling", {
     
     bdoc("Go to frame above/below/right/left of current frame."),
     kpress(META.."P", "ioncore.goto_next(_sub, 'up', {no_ascend=_})"),
-    kpress(META.."N", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
+    -- kpress(META.."N", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
     kpress(META.."Tab", "ioncore.goto_next(_sub, 'right')"),
     kpress(META.."1", "ioncore.goto_next(_sub, 'left')"),
 
@@ -18,7 +18,7 @@ defbindings("WTiling", {
         kpress("Tab", "ioncore.goto_next(_sub, 'left')"),
         
         bdoc("Split current frame horizontally."),
-        kpress("S", "WTiling.split_at(_, _sub, 'right', true)"),
+        kpress("M", "WTiling.split_at(_, _sub, 'bottom', true)"),
         
         bdoc("Destroy current frame."),
         kpress("X", "WTiling.unsplit_at(_, _sub)"),
