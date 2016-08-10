@@ -151,8 +151,8 @@ defbindings("WMPlex.toplevel", {
     kpress(META.."F1", "ioncore.exec_on(_, ':man notion')"),
 
     bdoc("Run a terminal emulator."),
-    kpress(ALTMETA.."F2", "notioncore.exec_on(_, XTERM or 'exec my_xterm')"),
-    kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec my_xterm')"),
+    kpress(ALTMETA.."F2", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
+    kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
     kpress(META.."P", "os.execute('sshot')"),
     kpress(META.."N", "os.execute('vshot')"),
     
