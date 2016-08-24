@@ -395,11 +395,3 @@ defctxmenu("WClientWin", "Client window", {
     menuentry("Kill",           "WClientWin.kill(_)"),
 })
 
--- Auto-generated Debian menu definitions
-if os and os.execute("test -x /usr/bin/update-menus") == 0 then
-    if notioncore.is_i18n() then
-        dopath("debian-menu-i18n")
-    else
-        dopath("debian-menu")
-    end
-end
