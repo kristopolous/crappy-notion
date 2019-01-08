@@ -35,9 +35,12 @@ defbindings("WScreen", {
     
     bdoc("Switch to next/previous object within current screen."),
     kpress(META.."S", "WScreen.switch_prev(_)"),
+    kpress(OTHERMETA.."S", "WScreen.switch_prev(_)"),
     --kpress(META.."D", "WScreen.switch_prev(_)"),
     kpress(META.."D", "WScreen.switch_next(_)"),
+    kpress(OTHERMETA.."D", "WScreen.switch_next(_)"),
 
+    kpress(META.."period", "ioncore.goto_activity() or ioncore.goto_previous()"),
     submap(META.."K", {
         bdoc("Go to first region demanding attention or previously active one."),
         kpress("K", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
@@ -83,6 +86,10 @@ defbindings("WScreen", {
            "_chld:non-nil"),
     kpress(METASHIFT.."Tab", "ioncore.goto_next(_chld, 'left')", 
            "_chld:non-nil"),
+    kpress(OTHERMETA.."Tab", "ioncore.goto_next(_chld, 'right')", 
+           "_chld:non-nil"),
+    kpress(OTHERMETASHIFT.."Tab", "ioncore.goto_next(_chld, 'left')", 
+           "_chld:non-nil"),
     kpress(META.."1", "WRegion.rqorder(_chld, 'back')", 
            "_chld:non-nil"),
 
@@ -109,6 +116,7 @@ defbindings("WClientWin", {
     kpress_wait(META.."L", "WClientWin.nudge(_)"),
     
     kpress(METASHIFT.."4", "WClientWin.kill(_)"),
+    kpress(OTHERMETASHIFT.."4", "WClientWin.kill(_)"),
 
     submap(META.."K", {
        bdoc("Kill client owning the client window."),
@@ -153,8 +161,7 @@ defbindings("WMPlex.toplevel", {
     bdoc("Run a terminal emulator."),
     kpress(ALTMETA.."F2", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
     kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
-    kpress(META.."P", "os.execute('sshot')"),
-    kpress(META.."N", "os.execute('vshot')"),
+    kpress(OTHERMETA.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
     
     bdoc("Query for command line to execute."),
     kpress(ALTMETA.."4", "mod_query.query_exec(_)"),
@@ -203,6 +210,7 @@ defbindings("WFrame", {
     kpress(META.."H", "WFrame.maximize_horiz(_)"),
     kpress(META.."V", "WFrame.maximize_vert(_)"),
     kpress(META.."2", "realmaximize(_)"),
+    kpress(OTHERMETA.."2", "realmaximize(_)"),
     
     bdoc("Display context menu."),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'ctxmenu')"),
@@ -217,9 +225,10 @@ defbindings("WFrame", {
     bdoc("Resize the frame."),
     mdrag("Button1@border", "WFrame.p_resize(_)"),
     mdrag(META.."Button3", "WFrame.p_resize(_)"),
+    mdrag(OTHERMETA.."Button3", "WFrame.p_resize(_)"),
     
     bdoc("Move the frame."),
-    mdrag(META.."Button1", "WFrame.p_move(_)"),
+    mdrag(OTHERMETA.."Button1", "WFrame.p_move(_)"),
     
     bdoc("Move objects between frames by dragging and dropping the tab."),
     mdrag("Button1@tab", "WFrame.p_tabdrag(_)"),
@@ -232,9 +241,13 @@ defbindings("WFrame", {
 defbindings("WFrame.toplevel", {
     bdoc("Query for a client window to attach."),
     kpress(META.."A", "mod_query.query_attachclient(_)"),
+    kpress(OTHERMETA.."A", "mod_query.query_attachclient(_)"),
     kpress(META.."1", "WFrame.switch_prev(_)"),
+    kpress(OTHERMETA.."1", "WFrame.switch_prev(_)"),
     kpress(META.."W", "WFrame.switch_prev(_)"),
+    kpress(OTHERMETA.."W", "WFrame.switch_prev(_)"),
     kpress(META.."E", "WFrame.switch_next(_)"),
+    kpress(OTHERMETA.."E", "WFrame.switch_next(_)"),
     
     kpress(META.."V", "WFrame.maximize_vert(_)"),
     submap(META.."K", {
@@ -280,9 +293,11 @@ defbindings("WFrame.floating", {
     mpress("Button1@tab", "WRegion.rqorder(_, 'front')"),
     mpress("Button1@border", "WRegion.rqorder(_, 'front')"),
     mclick(META.."Button1", "WRegion.rqorder(_, 'front')"),
+    mclick(OTHERMETA.."Button1", "WRegion.rqorder(_, 'front')"),
     
     bdoc("Lower the frame."),
     mclick(META.."Button3", "WRegion.rqorder(_, 'back')"),
+    mclick(OTHERMETA.."Button3", "WRegion.rqorder(_, 'back')"),
     
     bdoc("Move the frame."),
     mdrag("Button1@tab", "WFrame.p_move(_)"),
