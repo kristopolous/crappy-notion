@@ -41,6 +41,7 @@ defbindings("WScreen", {
     kpress(OTHERMETA.."D", "WScreen.switch_next(_)"),
 
     kpress(META.."period", "ioncore.goto_activity() or ioncore.goto_previous()"),
+    kpress(OTHERMETA.."J", "ioncore.goto_activity() or ioncore.goto_previous()"),
     submap(META.."K", {
         bdoc("Go to first region demanding attention or previously active one."),
         kpress("K", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
@@ -151,6 +152,7 @@ defbindings("WMPlex", {
 defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object."),
     kpress(META.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
+    kpress(OTHERMETA.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
 
     bdoc("Query for manual page to be displayed."),
     kpress(ALTMETA.."F1", "mod_query.query_man(_, ':man')"),
@@ -185,10 +187,12 @@ defbindings("WMPlex.toplevel", {
     
     bdoc("Query for a client window to go to."),
     kpress(META.."G", "mod_query.query_gotoclient(_)"),
+    kpress(OTHERMETA.."slash", "mod_query.query_gotoclient(_)"),
     
     bdoc("Display context menu."),
     --kpress(META.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
     kpress(META.."M", "mod_query.query_menu(_, _sub, 'ctxmenu', 'Context menu:')"),
+    kpress(OTHERMETA.."Delete",        "ioncore.restart()"),
     
     submap(META.."K", {
         bdoc("Detach (float) or reattach an object to its previous location."),
@@ -250,6 +254,9 @@ defbindings("WFrame.toplevel", {
     kpress(OTHERMETA.."E", "WFrame.switch_next(_)"),
     
     kpress(META.."V", "WFrame.maximize_vert(_)"),
+    submap(OTHERMETA.."K", {
+        kpress("A", "ioncore.tagged_attach(_)"),
+    }),
     submap(META.."K", {
         -- Display tab numbers when modifiers are released
         submap_wait("ioncore.tabnum.show(_)"),
