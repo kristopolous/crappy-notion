@@ -40,9 +40,9 @@ defbindings("WScreen", {
     kpress(META.."D", "WScreen.switch_next(_)"),
     kpress(OTHERMETA.."D", "WScreen.switch_next(_)"),
 
-    kpress(META.."period", "ioncore.goto_activity() or ioncore.goto_previous()"),
+    kpress(META.."L", "ioncore.goto_activity() or ioncore.goto_previous()"),
     kpress(OTHERMETA.."J", "ioncore.goto_activity() or ioncore.goto_previous()"),
-    kpress(OTHERMETA.."period", "ioncore.goto_activity() or ioncore.goto_previous()"),
+    kpress(OTHERMETA.."L", "ioncore.goto_activity() or ioncore.goto_previous()"),
     submap(META.."K", {
         bdoc("Go to first region demanding attention or previously active one."),
         kpress("K", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
