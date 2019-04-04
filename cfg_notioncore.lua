@@ -69,6 +69,7 @@ defbindings("WScreen", {
     
     bdoc("Create a new workspace of chosen default type."),
     kpress(META.."equal", "ioncore.create_ws(_)"),
+    kpress(OTHERMETA.."equal", "ioncore.create_ws(_)"),
     
     bdoc("Display the main menu."),
     kpress(ALTMETA.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
