@@ -148,6 +148,7 @@ defbindings("WGroupCW", {
 defbindings("WMPlex", {
     bdoc("Close current object."),
     kpress_wait(META.."C", "WRegion.rqclose_propagate(_, _sub)"),
+    kpress_wait(OTHERMETA.."C", "WRegion.rqclose_propagate(_, _sub)"),
 })
 
 -- Frames for transient windows ignore this bindmap
