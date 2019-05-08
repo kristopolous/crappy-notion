@@ -12,5 +12,3 @@ dopath("mod_tiling")
 --dopath("mod_statusbar")
 dopath("mod_sp")
 
--- Debian extra configuration files
-dopath("cfg_debian_ext")
