@@ -16,6 +16,11 @@ defwinprop{
     ignore_cfgrq = true,
 }
 
+defwinprop{
+    class = "Gimp",
+    instance = "openDialog_popup",
+    ignore_cfgrq = true,
+}
 
 -- Put all dockapps in the statusbar's systray, also adding the missing
 -- size hints necessary for this to work.
