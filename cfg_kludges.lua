@@ -1,20 +1,3 @@
---
--- Options to get some programs work more nicely (or at all)
---
-
-
-defwinprop{
-    class = "AcroRead",
-    instance = "documentShell",
-    acrobatic = true
-}
-
-
-defwinprop{
-    class = "Xpdf",
-    instance = "openDialog_popup",
-    ignore_cfgrq = true,
-}
 
 defwinprop{
     class = "Gimp",
