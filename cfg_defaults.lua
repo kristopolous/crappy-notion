@@ -1,7 +1,3 @@
---
--- Notion default settings
---
-
 dopath("cfg_notioncore")
 dopath("cfg_kludges")
 dopath("cfg_layouts")
