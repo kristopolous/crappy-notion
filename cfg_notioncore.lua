@@ -160,9 +160,6 @@ defbindings("WMPlex.toplevel", {
     bdoc("Query for manual page to be displayed."),
     kpress(ALTMETA.."F1", "mod_query.query_man(_, ':man')"),
 
-    bdoc("Show the Notion manual page."),
-    kpress(META.."F1", "ioncore.exec_on(_, ':man notion')"),
-
     bdoc("Run a terminal emulator."),
     kpress(ALTMETA.."F2", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
     kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),

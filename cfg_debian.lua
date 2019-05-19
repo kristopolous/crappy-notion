@@ -1,6 +1,6 @@
--- META="Mod1+"
-META="Mod3+"
-METASHIFT="Mod3+Shift+"
+-- xmodmap + xev is the key here
+META="Mod4+"
+METASHIFT="Mod4+Shift+"
 OTHERMETA="Control+Mod1+"
 OTHERMETASHIFT="Control+Mod1+Shift+"
 ALT="Mod1+"
