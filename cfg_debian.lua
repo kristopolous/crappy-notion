@@ -1,4 +1,4 @@
--- xmodmap + xev is the key here
+-- xmodmap + xev + /usr/include/X11/keysymdef.h is the key here
 META="Mod4+"
 METASHIFT="Mod4+Shift+"
 OTHERMETA="Control+Mod1+"
