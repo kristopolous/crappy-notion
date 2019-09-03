@@ -82,6 +82,8 @@ dopath("cfg_notioncore")
 --dopath("mod_tiling")
 --dopath("mod_dock")
 --dopath("mod_sp")
+--
+dopath('bookmarks')
 
 
 --
