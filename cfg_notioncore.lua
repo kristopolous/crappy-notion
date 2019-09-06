@@ -22,7 +22,6 @@
 defbindings("WScreen", {
     bdoc("Switch to n:th object (workspace, full screen client window) "..
          "within current screen."),
-    kpress(META.."0", "WScreen.switch_nth(_, 9)"),
     
     bdoc("Switch to next/previous object within current screen."),
     kpress(META.."S", "WScreen.switch_prev(_)"),
@@ -204,7 +203,6 @@ defbindings("WMPlex.toplevel", {
 defbindings("WFrame", {
     kpress(META.."H", "WFrame.maximize_horiz(_)"),
     kpress(META.."V", "WFrame.maximize_vert(_)"),
-    kpress(META.."2", "realmaximize(_)"),
     kpress(OTHERMETA.."2", "realmaximize(_)"),
     
     bdoc("Display context menu."),
@@ -237,11 +235,8 @@ defbindings("WFrame.toplevel", {
     bdoc("Query for a client window to attach."),
     kpress(META.."A", "mod_query.query_attachclient(_)"),
     kpress(OTHERMETA.."A", "mod_query.query_attachclient(_)"),
-    kpress(META.."1", "WFrame.switch_prev(_)"),
     kpress(OTHERMETA.."1", "WFrame.switch_prev(_)"),
-    kpress(META.."W", "WFrame.switch_prev(_)"),
     kpress(OTHERMETA.."W", "WFrame.switch_prev(_)"),
-    kpress(META.."E", "WFrame.switch_next(_)"),
     kpress(OTHERMETA.."E", "WFrame.switch_next(_)"),
     
     kpress(META.."V", "WFrame.maximize_vert(_)"),
