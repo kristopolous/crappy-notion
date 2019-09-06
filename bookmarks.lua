@@ -25,14 +25,11 @@ end
 for k=0, 9 do
     local bm=tostring(k)
     defbindings("WScreen", {
-        submap(META.."b", {
-            kpress(bm, function() bookmarks.goto_bm(bm) end),
-        })
+        kpress(META..bm, function() bookmarks.goto_bm(bm) end),
     })
     defbindings("WFrame", {
         submap(META.."b", {
-            kpress("Shift+"..bm,
-                   function(frame) bookmarks.set(bm, frame) end),
+            kpress(bm, function(frame) bookmarks.set(bm, frame) end),
         })
     })
 end

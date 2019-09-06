@@ -22,15 +22,6 @@
 defbindings("WScreen", {
     bdoc("Switch to n:th object (workspace, full screen client window) "..
          "within current screen."),
-    kpress(META.."1", "WScreen.switch_nth(_, 0)"),
---    kpress(META.."2", "WScreen.switch_nth(_, 1)"),
---    kpress(META.."3", "WScreen.switch_nth(_, 2)"),
---    kpress(META.."4", "WScreen.switch_nth(_, 3)"),
---    kpress(META.."5", "WScreen.switch_nth(_, 4)"),
---    kpress(META.."6", "WScreen.switch_nth(_, 5)"),
---    kpress(META.."7", "WScreen.switch_nth(_, 6)"),
---    kpress(META.."8", "WScreen.switch_nth(_, 7)"),
-    kpress(META.."9", "WScreen.switch_nth(_, 8)"),
     kpress(META.."0", "WScreen.switch_nth(_, 9)"),
     
     bdoc("Switch to next/previous object within current screen."),
