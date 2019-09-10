@@ -75,15 +75,11 @@ defbindings("WScreen", {
     -- the managing group of that window. The right/left directions are
     -- used instead of next/prev, because they work better in conjunction
     -- with tilings.
-    kpress(META.."Tab", "ioncore.goto_next(_chld, 'right')", 
-           "_chld:non-nil"),
     kpress(METASHIFT.."Tab", "ioncore.goto_next(_chld, 'left')", 
            "_chld:non-nil"),
     kpress(OTHERMETA.."Tab", "ioncore.goto_next(_chld, 'right')", 
            "_chld:non-nil"),
     kpress(OTHERMETASHIFT.."Tab", "ioncore.goto_next(_chld, 'left')", 
-           "_chld:non-nil"),
-    kpress(META.."1", "WRegion.rqorder(_chld, 'back')", 
            "_chld:non-nil"),
 
     submap(META.."K", { 
