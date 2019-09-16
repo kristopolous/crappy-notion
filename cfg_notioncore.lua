@@ -214,10 +214,9 @@ defbindings("WFrame", {
     bdoc("Resize the frame."),
     mdrag("Button1@border", "WFrame.p_resize(_)"),
     mdrag(META.."Button3", "WFrame.p_resize(_)"),
-    mdrag(OTHERMETA.."Button3", "WFrame.p_resize(_)"),
     
     bdoc("Move the frame."),
-    mdrag(OTHERMETA.."Button1", "WFrame.p_move(_)"),
+    mdrag(META.."Button1", "WFrame.p_move(_)"),
     
     bdoc("Move objects between frames by dragging and dropping the tab."),
     mdrag("Button1@tab", "WFrame.p_tabdrag(_)"),
