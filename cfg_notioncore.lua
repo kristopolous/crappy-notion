@@ -231,8 +231,8 @@ defbindings("WFrame.toplevel", {
     kpress(META.."A", "mod_query.query_attachclient(_)"),
     kpress(OTHERMETA.."A", "mod_query.query_attachclient(_)"),
     kpress(OTHERMETA.."1", "WFrame.switch_prev(_)"),
-    kpress(OTHERMETA.."W", "WFrame.switch_prev(_)"),
-    kpress(OTHERMETA.."E", "WFrame.switch_next(_)"),
+    kpress(META.."W", "WFrame.switch_prev(_)"),
+    kpress(META.."E", "WFrame.switch_next(_)"),
     
     kpress(META.."V", "WFrame.maximize_vert(_)"),
     submap(OTHERMETA.."K", {
