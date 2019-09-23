@@ -22,7 +22,7 @@ function bookmarks.goto_bm(bm)
 end
 
 
-for k=0, 9 do
+for k=2, 9 do
     local bm=tostring(k)
     defbindings("WScreen", {
         kpress(META..bm, function() bookmarks.goto_bm(bm) end),

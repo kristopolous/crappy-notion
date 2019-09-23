@@ -26,13 +26,12 @@ defbindings("WScreen", {
     bdoc("Switch to next/previous object within current screen."),
     kpress(META.."S", "WScreen.switch_prev(_)"),
     kpress(OTHERMETA.."S", "WScreen.switch_prev(_)"),
-    --kpress(META.."D", "WScreen.switch_prev(_)"),
+    kpress(META.."F", "WScreen.switch_prev(_)"),
     kpress(META.."D", "WScreen.switch_next(_)"),
     kpress(OTHERMETA.."D", "WScreen.switch_next(_)"),
 
-    kpress(META.."L", "ioncore.goto_activity() or ioncore.goto_previous()"),
+    kpress(META.."J", "ioncore.goto_activity() or ioncore.goto_previous()"),
     kpress(OTHERMETA.."J", "ioncore.goto_activity() or ioncore.goto_previous()"),
-    kpress(OTHERMETA.."L", "ioncore.goto_activity() or ioncore.goto_previous()"),
     submap(META.."K", {
         bdoc("Go to first region demanding attention or previously active one."),
         kpress("K", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
@@ -81,6 +80,7 @@ defbindings("WScreen", {
            "_chld:non-nil"),
     kpress(OTHERMETASHIFT.."Tab", "ioncore.goto_next(_chld, 'left')", 
            "_chld:non-nil"),
+
 
     submap(META.."K", { 
         bdoc("Backward-circulate focus."),
