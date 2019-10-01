@@ -328,7 +328,7 @@ defbindings("WMoveresMode", {
 -- Main menu
 defmenu("mainmenu", {
     menuentry("Run...",         "mod_query.query_exec(_)"),
-    menuentry("Terminal",       "notioncore.exec_on(_, XTERM or 'xterm -bg black -fg white')"),
+    menuentry("Exec Lua", "mod_query.query_lua(_)"),
     menuentry("Lock screen",
               "notioncore.exec_on(_, notioncore.lookup_script('notion-lock'))"),
     menuentry("Help",           "mod_query.query_man(_)"),
