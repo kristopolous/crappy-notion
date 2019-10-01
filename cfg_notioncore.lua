@@ -29,6 +29,12 @@ defbindings("WScreen", {
     kpress(META.."F", "WScreen.switch_prev(_)"),
     kpress(META.."D", "WScreen.switch_next(_)"),
     kpress(OTHERMETA.."D", "WScreen.switch_next(_)"),
+    kpress(META.."Left", "WScreen.switch_prev(_)"),
+    kpress(META.."Right", "WScreen.switch_next(_)"),
+    kpress(META.."Up", "ioncore.goto_next(_chld, 'right')", 
+           "_chld:non-nil"),
+    kpress(META.."Down", "ioncore.goto_next(_chld, 'left')", 
+           "_chld:non-nil"),
 
     kpress(META.."J", "ioncore.goto_activity() or ioncore.goto_previous()"),
     kpress(OTHERMETA.."J", "ioncore.goto_activity() or ioncore.goto_previous()"),
