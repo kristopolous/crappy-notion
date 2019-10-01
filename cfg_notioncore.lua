@@ -74,7 +74,7 @@ defbindings("WScreen", {
     -- the managing group of that window. The right/left directions are
     -- used instead of next/prev, because they work better in conjunction
     -- with tilings.
-    kpress(METASHIFT.."Tab", "ioncore.goto_next(_chld, 'left')", 
+    kpress(META.."BackSpace", "ioncore.goto_next(_chld, 'left')", 
            "_chld:non-nil"),
     kpress(OTHERMETA.."Tab", "ioncore.goto_next(_chld, 'right')", 
            "_chld:non-nil"),
@@ -152,27 +152,14 @@ defbindings("WMPlex.toplevel", {
     kpress(OTHERMETA.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
     
     bdoc("Query for command line to execute."),
-    kpress(ALTMETA.."4", "mod_query.query_exec(_)"),
 
-    bdoc("Query for Lua code to execute."),
-    kpress(ALTMETA.."3", "mod_query.query_lua(_)"),
-
-    bdoc("Query for host to connect to with SSH."),
-    kpress(ALTMETA.."4", "mod_query.query_ssh(_, ':ssh')"),
-
-    bdoc("Query for file to edit."),
-    kpress(ALTMETA.."5", 
-           "mod_query.query_editfile(_, 'run-mailcap --action=edit')"),
-
-    bdoc("Query for file to view."),
-    kpress(ALTMETA.."6", 
-           "mod_query.query_runfile(_, 'run-mailcap --action=view')"),
+    kpress(META.."F4", "mod_query.query_ssh(_, ':ssh')"),
 
     bdoc("Query for workspace to go to or create a new one."),
     kpress(ALTMETA.."9", "mod_query.query_workspace(_)"),
     
     bdoc("Query for a client window to go to."),
-    kpress(META.."G", "mod_query.query_gotoclient(_)"),
+    kpress(META.."F", "mod_query.query_gotoclient(_)"),
     kpress(OTHERMETA.."slash", "mod_query.query_gotoclient(_)"),
     
     bdoc("Display context menu."),
