@@ -226,6 +226,8 @@ defbindings("WFrame.toplevel", {
     kpress(OTHERMETA.."1", "WFrame.switch_prev(_)"),
     kpress(META.."W", "WFrame.switch_prev(_)"),
     kpress(META.."E", "WFrame.switch_next(_)"),
+    kpress(METACONTROL.."Left", "WFrame.switch_prev(_)"),
+    kpress(METACONTROL.."Right", "WFrame.switch_next(_)"),
     
     kpress(META.."V", "WFrame.maximize_vert(_)"),
     submap(OTHERMETA.."K", {
