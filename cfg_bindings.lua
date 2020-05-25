@@ -252,11 +252,11 @@ defbindings("WFrame", {
 
     bdoc("Switch to next object within the frame.", "->tab"),
     -- See docs on how to disable capslock caps behaviour
-    kpress(META.."Caps_Lock", "WFrame.switch_next(_)"),
+    --kpress(META.."Caps_Lock", "WFrame.switch_next(_)"),
     mclick(META.."Button4", "WFrame.switch_next(_)"),
 
     bdoc("Switch to previous object within the frame.", "<-tab"),
-    kpress(ALTMETA.."Caps_Lock", "WFrame.switch_prev(_)"),
+    --kpress(ALTMETA.."Caps_Lock", "WFrame.switch_prev(_)"),
     mclick(META.."Button5", "WFrame.switch_prev(_)"),
 })
 
