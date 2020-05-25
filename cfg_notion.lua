@@ -17,6 +17,7 @@
 --META="Mod4+"
 --ALTMETA="Mod4+Shift+"
 META="Control+Mod1+"
+MPV="Mod4+"
 
 -- Terminal emulator.
 --XTERM="xterm"
