@@ -22,18 +22,18 @@
 defbindings("WScreen", {
     bdoc("Switch to n:th object (workspace, full screen client window) "..
          "within current screen."),
-    kpress(META.."1", "WScreen.switch_nth(_, 0)"),
-    kpress(META.."2", "WScreen.switch_nth(_, 1)"),
-    kpress(META.."3", "WScreen.switch_nth(_, 2)"),
-    kpress(META.."4", "WScreen.switch_nth(_, 3)"),
-    kpress(META.."5", "WScreen.switch_nth(_, 4)"),
-    kpress(META.."6", "WScreen.switch_nth(_, 5)"),
-    kpress(META.."7", "WScreen.switch_nth(_, 6)"),
-    kpress(META.."8", "WScreen.switch_nth(_, 7)"),
-    kpress(META.."9", "WScreen.switch_nth(_, 8)"),
-    kpress(META.."0", "WScreen.switch_nth(_, 9)"),
 
     bdoc("Switch to next/previous object within current screen."),
+    kpress(META.."F", "WScreen.switch_prev(_)"),
+    kpress(META.."D", "WScreen.switch_next(_)"),
+    kpress(META.."S", "WScreen.switch_prev(_)"),
+    kpress(META.."Left", "WScreen.switch_prev(_)"),
+    kpress(META.."Right", "WScreen.switch_next(_)"),
+    kpress(META.."Up", "ioncore.goto_next(_chld, 'right')", 
+           "_chld:non-nil"),
+    kpress(META.."Down", "ioncore.goto_next(_chld, 'left')", 
+           "_chld:non-nil"),
+    kpress(META.."J", "ioncore.goto_activity() or ioncore.goto_previous()"),
     kpress(META.."comma", "WScreen.switch_prev(_)"),
     kpress(META.."period", "WScreen.switch_next(_)"),
 
@@ -72,7 +72,7 @@ defbindings("WScreen", {
     kpress(META.."equal", "ioncore.create_ws(_)"),
 
     bdoc("Display the main menu."),
-    kpress(ALTMETA.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
+    --kpress(ALTMETA.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
     --kpress(ALTMETA.."F12", "mod_menu.menu(_, _sub, 'mainmenu', {big=true})"),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'mainmenu')"),
 
@@ -159,11 +159,8 @@ defbindings("WMPlex.toplevel", {
     bdoc("Query for manual page to be displayed."),
     kpress(ALTMETA.."F1", "mod_query.query_man(_, ':man')"),
 
-    bdoc("Show the Notion manual page."),
-    kpress(META.."F1", "ioncore.exec_on(_, ':man notion')"),
-
     bdoc("Run a terminal emulator."),
-    kpress(ALTMETA.."F2", "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
+    kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
 
     bdoc("Query for command line to execute."),
     kpress(ALTMETA.."F3", "mod_query.query_exec(_)"),

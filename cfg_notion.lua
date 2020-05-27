@@ -42,7 +42,7 @@ ioncore.set{
 
     -- Movement commands warp the pointer to frames instead of just
     -- changing focus. Enabled by default.
-    --warp=true,
+    warp=false,
 
     -- Margin to use when warping the cursor (in pixels),
     -- to inset from the edge of the frame.
@@ -70,7 +70,7 @@ ioncore.set{
 
     -- Mouse focus mode; set to "sloppy" if you want the focus to follow the
     -- mouse, and to "disabled" otherwise.
-    --mousefocus="sloppy",
+    mousefocus="sloppy",
 
     -- Controls Notion's reaction to stacking requests sent by clients. Set to
     -- "ignore" to ignore these requests, and to "activate" to set the activity
@@ -107,6 +107,7 @@ dopath("cfg_defaults")
 -- Define some layouts.
 --dopath("cfg_layouts")
 
+dopath("mod_xinerama")
 -- Load some modules.
 --dopath("mod_query")
 --dopath("mod_menu")
