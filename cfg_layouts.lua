@@ -15,6 +15,12 @@ local a_frame = {
     }
 }
 
+function realmaximize(win)
+  WFrame.maximize_horiz(win)
+  WFrame.maximize_vert(win)
+  WRegion.rqorder(win, 'front')
+end
+
 -- Helper function for generating splits for layouts.
 local function mksplit(dir, tl, br, float)
     return {

@@ -209,6 +209,7 @@ defbindings("WFrame", {
     kpress(META.."H", "WFrame.maximize_horiz(_)"),
     bdoc("Maximize the frame vertically.", "vmax"),
     kpress(META.."V", "WFrame.maximize_vert(_)"),
+    kpress(META.."2", "realmaximize(_)"),
 
     bdoc("Display context menu."),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'ctxmenu')"),
@@ -248,14 +249,13 @@ defbindings("WFrame.toplevel", {
     kpress(META.."N", "ioncore.tagged_attach(_)"),
     bdoc("Query for a client window to attach ('nick').", "qnick"),
     kpress(ALTMETA.."N", "mod_query.query_attachclient(_)"),
+    submap(META.."K", {
+        kpress("A", "ioncore.tagged_attach(_)"),
+    }),
 
     bdoc("Switch to tab 0 in this frame.", "tab 0"),
     kpress(META.."A", "WFrame.switch_nth(_, 0)"),
     bdoc("Switch to tab 1 in this frame.", "tab 1"),
-    kpress(META.."S", "WFrame.switch_nth(_, 1)"),
-    bdoc("Switch to tab 2 in this frame.", "tab 2"),
-    kpress(META.."D", "WFrame.switch_nth(_, 2)"),
-    bdoc("Switch to tab 3 in this frame.", "tab 3"),
     kpress(META.."F", "WFrame.switch_nth(_, 3)"),
 
     bdoc("Move current tab to the right within the frame.", "tab->"),
@@ -266,6 +266,10 @@ defbindings("WFrame.toplevel", {
     bdoc("Maximize the frame horizontally/vertically."),
     kpress(META.."H", "WFrame.maximize_horiz(_)"),
     kpress(META.."V", "WFrame.maximize_vert(_)"),
+
+    kpress(META.."1", "WFrame.switch_prev(_)"),
+    kpress(META.."W", "WFrame.switch_prev(_)"),
+    kpress(META.."E", "WFrame.switch_next(_)"),
 })
 
 -- Bindings for floating frames
