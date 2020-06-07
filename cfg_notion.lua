@@ -108,7 +108,7 @@ dopath("cfg_defaults")
 -- Define some layouts.
 --dopath("cfg_layouts")
 
-dopath("mod_xinerama")
+--dopath("mod_xinerama")
 -- Load some modules.
 --dopath("mod_query")
 --dopath("mod_menu")

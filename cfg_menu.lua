@@ -11,7 +11,6 @@ defbindings("WMenu", {
 
     bdoc("Activate current menu entry."),
     kpress("Return",  "WMenu.finish(_)"),
-    kpress("KP_Enter", "WMenu.finish(_)"),
     kpress("Control+M", "WMenu.finish(_)"),
     kpress("Right", "WMenu.finish(_)"),
 
