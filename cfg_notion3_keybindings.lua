@@ -277,8 +277,8 @@ defbindings("WFrame.floating", {
     mpress("Button1@border", "WRegion.rqorder(_, 'front')"),
     mclick(META.."Button1", "WRegion.rqorder(_, 'front')"),
 
-    bdoc("Lower the frame."),
-    mclick(META.."Button3", "WRegion.rqorder(_, 'back')"),
+    --bdoc("Lower the frame."),
+    --mclick(META.."Button3", "WRegion.rqorder(_, 'back')"),
 
     bdoc("Move the frame."),
     mdrag("Button1@tab", "WFrame.p_move(_)"),
