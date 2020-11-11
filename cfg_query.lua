@@ -82,7 +82,6 @@ defbindings("WEdln", {
     bdoc("Close the query and execute bound action."),
     kpress("Control+M", "WEdln.finish(_)"),
     kpress("Return", "WEdln.finish(_)"),
-    kpress("KP_Enter", "WEdln.finish(_)"),
 })
 
 defbindings("WInput", {

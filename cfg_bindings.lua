@@ -20,37 +20,6 @@
 -- modifier to some of the F-key bindings.
 
 defbindings("WScreen", {
-    bdoc("Switch to object 0 (workspace, full screen client window) "..
-         "within current screen.", "ws 0"),
-    kpress(META.."1", "WScreen.switch_nth(_, 0)"),
-    bdoc("Switch to object 1 (workspace, full screen client window) "..
-         "within current screen.", "ws 1"),
-    kpress(META.."2", "WScreen.switch_nth(_, 1)"),
-    bdoc("Switch to object 2 (workspace, full screen client window) "..
-         "within current screen.", "ws 2"),
-    kpress(META.."3", "WScreen.switch_nth(_, 2)"),
-    bdoc("Switch to object 3 (workspace, full screen client window) "..
-         "within current screen.", "ws 3"),
-    kpress(META.."4", "WScreen.switch_nth(_, 3)"),
-    bdoc("Switch to object 4 (workspace, full screen client window) "..
-         "within current screen.", "ws 4"),
-    kpress(META.."5", "WScreen.switch_nth(_, 4)"),
-    bdoc("Switch to object 5 (workspace, full screen client window) "..
-         "within current screen.", "ws 5"),
-    kpress(META.."6", "WScreen.switch_nth(_, 5)"),
-    bdoc("Switch to object 6 (workspace, full screen client window) "..
-         "within current screen.", "ws 6"),
-    kpress(META.."7", "WScreen.switch_nth(_, 6)"),
-    bdoc("Switch to object 7 (workspace, full screen client window) "..
-         "within current screen.", "ws 7"),
-    kpress(META.."8", "WScreen.switch_nth(_, 7)"),
-    bdoc("Switch to object 8 (workspace, full screen client window) "..
-         "within current screen.", "ws 8"),
-    kpress(META.."9", "WScreen.switch_nth(_, 8)"),
-    bdoc("Switch to object 9 (workspace, full screen client window) "..
-         "within current screen.", "ws 9"),
-    kpress(META.."0", "WScreen.switch_nth(_, 9)"),
-
     bdoc("Switch to next object (workspace, full screen client window) "..
          "within current screen.", "->ws"),
     kpress(META.."grave", "WScreen.switch_next(_)"),
@@ -72,6 +41,16 @@ defbindings("WScreen", {
 
     }),
 
+    kpress(META.."S", "WScreen.switch_prev(_)"),
+    kpress(META.."F", "WScreen.switch_prev(_)"),
+    kpress(META.."D", "WScreen.switch_next(_)"),
+    kpress(META.."Left", "WScreen.switch_prev(_)"),
+    kpress(META.."Right", "WScreen.switch_next(_)"),
+    kpress(META.."Up", "ioncore.goto_next(_chld, 'right')", 
+           "_chld:non-nil"),
+    kpress(META.."Down", "ioncore.goto_next(_chld, 'left')", 
+           "_chld:non-nil"),
+
     bdoc("Go to screen 0 on multihead setup.", "scr 0"),
     kpress(ALTMETA.."1", "ioncore.goto_nth_screen(0)"),
     kpress(META.."F1", "ioncore.goto_nth_screen(0)"),
@@ -91,11 +70,12 @@ defbindings("WScreen", {
     kpress(META.."Escape", "ioncore.goto_next_screen()"),
 
     bdoc("Create a new workspace of chosen default type."),
-    kpress(META.."F9", "ioncore.create_ws(_)"),
+    --kpress(META.."F9", "ioncore.create_ws(_)"),
+    kpress(META.."equal", "ioncore.create_ws(_)"),
 
     bdoc("Display the main menu."),
-    kpress("F12", "mod_menu.menu(_, _sub, 'mainmenu', {big=true})"),
-    kpress(META.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
+    --kpress("F12", "mod_menu.menu(_, _sub, 'mainmenu', {big=true})"),
+    --kpress(META.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'mainmenu')"),
 
     bdoc("Display the window list menu."),
@@ -142,7 +122,7 @@ defbindings("WClientWin", {
 
 defbindings("WGroupCW", {
     bdoc("Toggle client window group full-screen mode", "fullscr"),
-    kpress_wait(META.."Q", "WGroup.set_fullscreen(_, 'toggle')"),
+    kpress_wait(META.."Return", "WGroup.set_fullscreen(_, 'toggle')"),
 })
 
 
@@ -168,6 +148,7 @@ defbindings("WMPlex", {
 defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object.", "tag"),
     kpress(META.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
+    kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
 
     bdoc("Clear all tags.", "-tags"),
     kpress(ALTMETA.."T", "ioncore.clear_tags()"),
@@ -176,8 +157,8 @@ defbindings("WMPlex.toplevel", {
     kpress(META.."L", "notioncore.exec_on(_, notioncore.lookup_script('notion-lock'))"),
 
     bdoc("Run a terminal emulator.", "xterm"),
-    kpress(META.."Return", "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
-    kpress("F2", "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
+    --kpress(META.."Return", "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
+    --kpress("F2", "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
 
     bdoc("Query for command line to execute.", "run"),
     kpress(META.."J", "mod_query.query_exec(_)"),
@@ -228,6 +209,7 @@ defbindings("WFrame", {
     kpress(META.."H", "WFrame.maximize_horiz(_)"),
     bdoc("Maximize the frame vertically.", "vmax"),
     kpress(META.."V", "WFrame.maximize_vert(_)"),
+    kpress(META.."2", "realmaximize(_)"),
 
     bdoc("Display context menu."),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'ctxmenu')"),
@@ -267,14 +249,13 @@ defbindings("WFrame.toplevel", {
     kpress(META.."N", "ioncore.tagged_attach(_)"),
     bdoc("Query for a client window to attach ('nick').", "qnick"),
     kpress(ALTMETA.."N", "mod_query.query_attachclient(_)"),
+    submap(META.."K", {
+        kpress("A", "ioncore.tagged_attach(_)"),
+    }),
 
     bdoc("Switch to tab 0 in this frame.", "tab 0"),
     kpress(META.."A", "WFrame.switch_nth(_, 0)"),
     bdoc("Switch to tab 1 in this frame.", "tab 1"),
-    kpress(META.."S", "WFrame.switch_nth(_, 1)"),
-    bdoc("Switch to tab 2 in this frame.", "tab 2"),
-    kpress(META.."D", "WFrame.switch_nth(_, 2)"),
-    bdoc("Switch to tab 3 in this frame.", "tab 3"),
     kpress(META.."F", "WFrame.switch_nth(_, 3)"),
 
     bdoc("Move current tab to the right within the frame.", "tab->"),
@@ -285,6 +266,10 @@ defbindings("WFrame.toplevel", {
     bdoc("Maximize the frame horizontally/vertically."),
     kpress(META.."H", "WFrame.maximize_horiz(_)"),
     kpress(META.."V", "WFrame.maximize_vert(_)"),
+
+    kpress(META.."1", "WFrame.switch_prev(_)"),
+    kpress(META.."W", "WFrame.switch_prev(_)"),
+    kpress(META.."E", "WFrame.switch_next(_)"),
 })
 
 -- Bindings for floating frames
@@ -298,8 +283,8 @@ defbindings("WFrame.floating", {
     mpress("Button1@border", "WRegion.rqorder(_, 'front')"),
     mclick(META.."Button1", "WRegion.rqorder(_, 'front')"),
 
-    bdoc("Lower the frame."),
-    mclick(META.."Button3", "WRegion.rqorder(_, 'back')"),
+    --bdoc("Lower the frame."),
+    --mclick(META.."Button3", "WRegion.rqorder(_, 'back')"),
 
     bdoc("Move the frame."),
     mdrag("Button1@tab", "WFrame.p_move(_)"),
