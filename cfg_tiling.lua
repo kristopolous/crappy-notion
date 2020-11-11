@@ -26,14 +26,11 @@ defbindings("WTiling", {
 })
 
 
--- Frame bindings
-
-defbindings("WFrame.floating", {
-    submap(META.."K", {
-        bdoc("Tile frame, if no tiling exists on the workspace"),
-        kpress("B", "mod_tiling.mkbottom(_)"),
-    }),
-})
+-- Frame bindings.
+--defbindings("WFrame.floating", {
+--    bdoc("Tile frame, if no tiling exists on the workspace", "tile"),
+--    kpress(ALTMETA.."B", "mod_tiling.mkbottom(_)"),
+--})
 
 
 -- Context menu for tiled workspaces.
