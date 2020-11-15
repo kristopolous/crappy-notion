@@ -82,7 +82,7 @@ ioncore.set{
     -- update the focus list immediately.
     --focuslist_insert_delay=1000,
 
-    switchto=false,
+    switchto=true,
     -- If enabled, activity notifiers are displayed on ALL the screens, not just
     -- the screen that contains the window producing the notification. This is
     -- only relevant on multi-head setups. By default this is disabled.
