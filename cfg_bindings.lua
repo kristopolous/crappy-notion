@@ -156,9 +156,6 @@ defbindings("WMPlex.toplevel", {
     bdoc("Clear all tags.", "-tags"),
     kpress(ALTMETA.."T", "ioncore.clear_tags()"),
 
-    bdoc("Lock screen", "lock"),
-    kpress(META.."L", "notioncore.exec_on(_, notioncore.lookup_script('notion-lock'))"),
-
     bdoc("Run a terminal emulator.", "xterm"),
     --kpress(META.."Return", "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
     --kpress("F2", "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
@@ -169,19 +166,8 @@ defbindings("WMPlex.toplevel", {
     bdoc("Query for Lua code to execute.", "lua"),
     kpress(ALTMETA.."J", "mod_query.query_lua(_)"),
 
-    bdoc("Query for host to connect to with SSH.", "ssh"),
-    kpress(META.."F4", "mod_query.query_ssh(_, ':ssh')"),
-
-    bdoc("Query for file to edit.", "edit"),
-    kpress(META.."F5",
-           "mod_query.query_editfile(_, EDIT_COMMAND or 'run-mailcap --action=edit')"),
-
-    bdoc("Query for file to view.", "view"),
-    kpress(META.."F6",
-           "mod_query.query_runfile(_, VIEW_COMMAND or 'xdg-open')"),
-
     bdoc("Query for keybinding.", "qkb"),
-    kpress(META.."F7",
+    kpress(META.."7",
            "mod_query.query_binding(_, _sub)"),
 
     bdoc("Query for workspace to go to or create a new one.", "+ws"),
