@@ -152,6 +152,7 @@ defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object.", "tag"),
     kpress(META.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
     kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
+    kpress(META.."Space", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
 
     bdoc("Clear all tags.", "-tags"),
     kpress(ALTMETA.."T", "ioncore.clear_tags()"),
@@ -181,11 +182,6 @@ defbindings("WMPlex.toplevel", {
     bdoc("Query for context menu.", "qctx"),
     kpress(ALTMETA.."M", "mod_query.query_menu(_, _sub, 'ctxmenu', 'Context menu:')"),
 
-    bdoc("Show Notion 'live docs'.", "help"),
-    kpress(META.."slash", "notioncore.show_live_docs(_)"),
-
-    bdoc("Query for manual page to be displayed.", "man"),
-    kpress(ALTMETA.."slash", "mod_query.query_man(_, ':man')"),
 }) 
 
 -- WFrame context bindings
