@@ -151,8 +151,7 @@ defbindings("WMPlex", {
 defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object.", "tag"),
     kpress(META.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
-    kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
-    kpress(META.."Space", "notioncore.exec_on(_, XTERM or 'exec xterm -bg black -fg white')"),
+    kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg rgb:2/2/2 -fg white')"),
 
     bdoc("Clear all tags.", "-tags"),
     kpress(ALTMETA.."T", "ioncore.clear_tags()"),
