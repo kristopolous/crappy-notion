@@ -15,12 +15,12 @@ de.defstyle("*", {
     background_colour = "#111111",
     foreground_colour = "#999999",
     
-    shadow_pixels = 1,
-    highlight_pixels = 2,
-    padding_pixels = 1,
+    shadow_pixels = 2,
+    highlight_pixels = 0,
+    padding_pixels = 2,
     spacing = 1,
-    border_style = "inlaid",
-    border_sides = "tb",
+    border_style = "ridge",
+    border_sides = "all",
     
     font = "-*-helvetica-medium-r-normal-*-14-*-*-*-*-*-*-*",
     text_align = "center",

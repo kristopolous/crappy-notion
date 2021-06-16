@@ -11,16 +11,17 @@ de.reset()
 
 de.defstyle("*", {
     highlight_colour = "#e7e7ff",
-    shadow_colour = "#e7e7ff",
+    -- shadow_colour = "#e7e7ff",
+    shadow_colour = "#ffffff",
     background_colour = "#b8b8c8",
     foreground_colour = "#000000",
 
-    shadow_pixels = 1,
+    shadow_pixels = 2,
     highlight_pixels = 2,
-    padding_pixels = 1,
-    spacing = 1,
+    padding_pixels = 2,
+    spacing = 2,
     border_style = "elevated",
-    border_sides = "tb",
+    border_sides = "all",
 
     font = "xft:Source Sans Pro:size=20",
     text_align = "center",
@@ -75,7 +76,7 @@ de.defstyle("frame", {
     transparent_background = false,
     shadow_pixels = 1,
     highlight_pixels = 1,
-    padding_pixels = 0,
+    padding_pixels = 2,
     border_sides = "all",
     de.substyle("quasiactive", {
         -- Something detached from the frame is active
