@@ -42,7 +42,7 @@ defbindings("WScreen", {
     }),
 
     kpress(META.."S", "WScreen.switch_prev(_)"),
-    kpress(META.."F", "WScreen.switch_prev(_)"),
+    kpress(META.."F", "WScreen.switch_next(_)"),
     kpress(META.."D", "WScreen.switch_next(_)"),
     kpress(META.."Left", "WScreen.switch_prev(_)"),
     kpress(META.."Right", "WScreen.switch_next(_)"),
@@ -167,7 +167,7 @@ defbindings("WMPlex.toplevel", {
     kpress(ALTMETA.."J", "mod_query.query_lua(_)"),
 
     bdoc("Query for keybinding.", "qkb"),
-    kpress(META.."7",
+    kpress(META.."slash",
            "mod_query.query_binding(_, _sub)"),
 
     bdoc("Query for workspace to go to or create a new one.", "+ws"),
