@@ -10,38 +10,38 @@ end
 de.reset()
 
 de.defstyle("*", {
-    highlight_colour = "#e7e7ff",
-    shadow_colour = "#e7e7ff",
-    background_colour = "#b8b8c8",
-    foreground_colour = "#000000",
+    highlight_colour = "#111111",
+    shadow_colour = "#333333",
+    background_colour = "#222222",
+    foreground_colour = "#999999",
 
-    shadow_pixels = 1,
+    shadow_pixels = 2,
     highlight_pixels = 2,
-    padding_pixels = 1,
-    spacing = 1,
+    padding_pixels = 2,
+    spacing = 2,
     border_style = "elevated",
-    border_sides = "tb",
+    border_sides = "all",
 
-    font = "xft:Source Sans Pro:size=20",
+    font = "-*-helvetica-medium-r-normal-*-14-*-*-*-*-*-*-*",
     text_align = "center",
 })
 
 
 de.defstyle("tab", {
-    font = "xft:Source Sans Pro:size=20",
+    font = "-*-helvetica-medium-r-normal-*-14-*-*-*-*-*-*-*",
 
     de.substyle("active-selected", {
-        highlight_colour = "#aaaacc",
-        shadow_colour = "#aaaacc",
-        background_colour = "#666699",
-        foreground_colour = "#eeeeee",
+        highlight_colour = "#222244",
+        shadow_colour = "#222244",
+        background_colour = "#444466",
+        foreground_colour = "#eeeeff",
     }),
 
     de.substyle("inactive-selected", {
-        highlight_colour = "#cfcfdf",
-        shadow_colour = "#cfcfdf",
-        background_colour = "#9999bb",
-        foreground_colour = "#000000",
+        highlight_colour = "#111133",
+        shadow_colour = "#333333",
+        background_colour = "#222233",
+        foreground_colour = "#aaaaaa",
     }),
 })
 
@@ -75,7 +75,7 @@ de.defstyle("frame", {
     transparent_background = false,
     shadow_pixels = 1,
     highlight_pixels = 1,
-    padding_pixels = 0,
+    padding_pixels = 2,
     border_sides = "all",
     de.substyle("quasiactive", {
         -- Something detached from the frame is active

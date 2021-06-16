@@ -6,11 +6,11 @@
 -- Helper routines and structures
 --
 
--- Tiled frame template for the layouts below.
+-- Tiled frame template for the layouts below
 local a_frame = {
     type="WSplitRegion",
     regparams = {
-        type = "WFrame",
+        type = "WFrame", 
         frame_style = "frame-tiled"
     }
 }
@@ -21,7 +21,7 @@ function realmaximize(win)
   WRegion.rqorder(win, 'front')
 end
 
--- Helper function for generating splits for layouts.
+-- Helper function for generating splits for layouts
 local function mksplit(dir, tl, br, float)
     return {
         type = (float and "WSplitFloat" or "WSplitSplit"),
@@ -38,7 +38,7 @@ local function mktiling(split_tree)
         managed = {
             {
                 type = "WTiling",
-                bottom = true, -- Make it the bottom of the group.
+                bottom = true, -- Make it the bottom of the group
                 split_tree = split_tree,
             }
         }
@@ -46,36 +46,36 @@ local function mktiling(split_tree)
 end
 
 --
--- Layouts
+-- The layouts
 --
 
--- Tiling with single 1:1 horizontal split.
+-- Tiling with single 1:1 horizontal split
 local tmp=mktiling(mksplit("horizontal", a_frame, a_frame))
 ioncore.deflayout("hsplit", tmp)
 ioncore.deflayout("default", tmp)
 
--- Tiling with single 1:1 vertical split.
+-- Tiling with single 1:1 vertical split
 ioncore.deflayout("vsplit",
     mktiling(mksplit("vertical", a_frame, a_frame))
 )
 
--- Tiling with single 1:1 floating horizontal split.
-ioncore.deflayout("hfloat",
+-- Tiling with single 1:1 floating horizontal split
+ioncore.deflayout("hfloat", 
     mktiling(mksplit("horizontal", a_frame, a_frame, true))
 )
 
--- Tiling with single 1:1 floating vertical split.
-ioncore.deflayout("vfloat",
+-- Tiling with single 1:1 floating vertical split
+ioncore.deflayout("vfloat", 
     mktiling(mksplit("vertical", a_frame, a_frame, true))
 )
 
--- Tiling with horizontal and then vertical splits.
+-- Tiling with horizontal and then vertical splits
 ioncore.deflayout("2x2",
-    mktiling(mksplit("horizontal",
+    mktiling(mksplit("horizontal", 
                      mksplit("vertical", a_frame, a_frame),
                      mksplit("vertical", a_frame, a_frame))
     )
 )
 
--- Tiling with single full screen frame.
+-- Tiling with single full screen frame
 ioncore.deflayout("full", mktiling(a_frame))
