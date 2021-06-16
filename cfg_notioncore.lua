@@ -153,7 +153,6 @@ defbindings("WMPlex.toplevel", {
     bdoc("Run a terminal emulator."),
     kpress(ALTMETA.."F2", "notioncore.exec_on(_, XTERM or 'exec xterm -sl 10000 -bg black -fg white')"),
     kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -sl 10000 -bg black -fg white')"),
-    kpress(META.."R", "notioncore.exec_on(_, 'exec /home/chris/monitor/reboot.js')"),
     kpress(META.."P", "os.execute('sshot')"),
     kpress(META.."N", "os.execute('vshot')"),
     
