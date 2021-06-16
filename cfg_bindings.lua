@@ -42,7 +42,7 @@ defbindings("WScreen", {
     }),
 
     kpress(META.."S", "WScreen.switch_prev(_)"),
-    kpress(META.."F", "WScreen.switch_next(_)"),
+    --kpress(META.."F", "WScreen.switch_next(_)"),
     kpress(META.."D", "WScreen.switch_next(_)"),
     kpress(META.."Left", "WScreen.switch_prev(_)"),
     kpress(META.."Right", "WScreen.switch_next(_)"),
@@ -57,7 +57,6 @@ defbindings("WScreen", {
     kpress(META.."Escape", "ioncore.goto_next_screen()"),
 
     bdoc("Create a new workspace of chosen default type."),
-    --kpress(META.."F9", "ioncore.create_ws(_)"),
     kpress(META.."equal", "ioncore.create_ws(_)"),
 
     bdoc("Display the main menu."),
@@ -130,7 +129,7 @@ defbindings("WMPlex", {
     -- attached to a group. The detach code checks if the parameter
     -- (_chld) is a group 'bottom' and detaches the whole group in that
     -- case.
-    kpress(ALTMETA.."D", "ioncore.detach(_chld, 'toggle')", "_chld:non-nil"),
+    -- kpress(ALTMETA.."D", "ioncore.detach(_chld, 'toggle')", "_chld:non-nil"),
 })
 
 -- Frames for transient windows ignore this bindmap
