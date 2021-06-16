@@ -51,19 +51,6 @@ defbindings("WScreen", {
     kpress(META.."Down", "ioncore.goto_next(_chld, 'left')", 
            "_chld:non-nil"),
 
-    bdoc("Go to screen 0 on multihead setup.", "scr 0"),
-    kpress(ALTMETA.."1", "ioncore.goto_nth_screen(0)"),
-    kpress(META.."F1", "ioncore.goto_nth_screen(0)"),
-    bdoc("Go to screen 1 on multihead setup.", "scr 1"),
-    kpress(ALTMETA.."2", "ioncore.goto_nth_screen(1)"),
-    kpress(META.."F2", "ioncore.goto_nth_screen(1)"),
-    bdoc("Go to screen 2 on multihead setup.", "scr 2"),
-    kpress(ALTMETA.."3", "ioncore.goto_nth_screen(2)"),
-    kpress(META.."F3", "ioncore.goto_nth_screen(2)"),
-    bdoc("Go to screen 3 on multihead setup.", "scr 3"),
-    kpress(ALTMETA.."4", "ioncore.goto_nth_screen(3)"),
-    -- kpress(META.."F4", "ioncore.goto_nth_screen(3)"),
-
     bdoc("Go to previous screen on multihead setup.", "<-scr"),
     kpress(ALTMETA.."Escape", "ioncore.goto_prev_screen()"),
     bdoc("Go to next screen on multihead setup.", "->scr"),
@@ -167,11 +154,10 @@ defbindings("WMPlex.toplevel", {
     kpress(ALTMETA.."J", "mod_query.query_lua(_)"),
 
     bdoc("Query for keybinding.", "qkb"),
-    kpress(META.."slash",
-           "mod_query.query_binding(_, _sub)"),
+    kpress(META.."slash", "mod_query.query_binding(_, _sub)"),
 
     bdoc("Query for workspace to go to or create a new one.", "+ws"),
-    kpress(ALTMETA.."F9", "mod_query.query_workspace(_)"),
+    kpress(ALTMETA.."9", "mod_query.query_workspace(_)"),
 
     bdoc("Query for a client window to go to.", "go"),
     kpress(META.."G", "mod_query.query_gotoclient(_)"),
