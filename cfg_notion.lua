@@ -69,6 +69,7 @@ dopath("cfg_defaults")
 -- Load configuration of the Notion 'core'. Most bindings are here.
 dopath("cfg_notioncore")
 
+dopath("look")
 -- Load some kludges to make apps behave better.
 --dopath("cfg_kludges")
 

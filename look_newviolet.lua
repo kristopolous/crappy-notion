@@ -12,7 +12,7 @@ de.reset()
 de.defstyle("*", {
     highlight_colour = "#111111",
     shadow_colour = "#333333",
-    background_colour = "#222222",
+    background_colour = "#2A2A2A",
     foreground_colour = "#999999",
 
     shadow_pixels = 2,
@@ -33,15 +33,15 @@ de.defstyle("tab", {
     de.substyle("active-selected", {
         highlight_colour = "#222244",
         shadow_colour = "#222244",
-        background_colour = "#444466",
+        background_colour = "#6C135D",
         foreground_colour = "#eeeeff",
     }),
 
     de.substyle("inactive-selected", {
         highlight_colour = "#111133",
         shadow_colour = "#333333",
-        background_colour = "#222233",
-        foreground_colour = "#aaaaaa",
+        background_colour = "#463944",
+        foreground_colour = "#ffffff"
     }),
 })
 
