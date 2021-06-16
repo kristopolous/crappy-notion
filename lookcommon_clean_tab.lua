@@ -22,7 +22,7 @@ de.defstyle("tab-frame", {
     de.substyle("*-*-*-selected-activity", {
         shadow_colour = "#c04040",
         highlight_colour = "#c04040",
-        background_colour = "#b03030",
+        background_colour = "#b030ff",
         foreground_colour = "#ffffff",
     }),
 
