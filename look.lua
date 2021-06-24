@@ -23,22 +23,19 @@ de.defstyle("*", {
     text_align = "center",
 })
 
+de.defstyle("stdisp", {
+    shadow_pixels = 0,
+    highlight_pixels = 0,
+    text_align = "left",
+    background_colour = "#000000",
+    foreground_colour = "grey",
 
-de.defstyle("tab", {
-    font = "xft:Cantarell:style=Bold:size=8",
-
-    de.substyle("active-selected", {
-        highlight_colour = "#555555",
-        shadow_colour = "#555555",
-        background_colour = active_bg,
-        foreground_colour = "#eeeeee",
+    de.substyle("important", {
+        foreground_colour = "green",
     }),
 
-    de.substyle("inactive-selected", {
-        highlight_colour = "#111111",
-        shadow_colour = "#333333",
-        background_colour = "#333333",
-        foreground_colour = "#aaaaaa",
+    de.substyle("critical", {
+        foreground_colour = "red",
     }),
 })
 
@@ -71,9 +68,9 @@ de.defstyle("input-menu", {
 de.defstyle("frame", {
     background_colour = "#000000",
     transparent_background = false,
-    shadow_pixels = 1,
-    highlight_pixels = 1,
-    padding_pixels = 2,
+    shadow_pixels = 0,
+    highlight_pixels = 0,
+    padding_pixels = 10,
     border_sides = "all",
     de.substyle("quasiactive", {
         -- Something detached from the frame is active
@@ -91,6 +88,7 @@ de.defstyle("frame-tiled-alt", {
     bar = "none",
 })
 
+-- Frame-floating, the border around a floating window.
 de.defstyle("frame-floating", {
     bar = "shaped",
     padding_pixels = 0,
@@ -101,29 +99,30 @@ de.defstyle("frame-transient", {
     padding_pixels = 1,
 })
 
-de.defstyle("stdisp", {
-    shadow_pixels = 0,
-    highlight_pixels = 0,
-    text_align = "left",
-    background_colour = "#000000",
-    foreground_colour = "grey",
-
-    de.substyle("important", {
-        foreground_colour = "green",
-    }),
-
-    de.substyle("critical", {
-        foreground_colour = "red",
-    }),
-})
-
--- Common tab configuration (mostly activity stuff) for the "clean styles"
-
 de.defstyle("actnotify", {
     shadow_colour = "#c04040",
     highlight_colour = "#c04040",
     background_colour = "#901010",
     foreground_colour = "#eeeeee",
+})
+
+
+de.defstyle("tab", {
+    font = "xft:Cantarell:style=Bold:size=8",
+
+    de.substyle("active-selected", {
+        highlight_colour = "#555555",
+        shadow_colour = "#555555",
+        background_colour = active_bg,
+        foreground_colour = "#eeeeee",
+    }),
+
+    de.substyle("inactive-selected", {
+        highlight_colour = "#111111",
+        shadow_colour = "#333333",
+        background_colour = "#333333",
+        foreground_colour = "#aaaaaa",
+    }),
 })
 
 de.defstyle("tab-frame", {
@@ -152,6 +151,7 @@ de.defstyle("tab-frame", {
 })
 
 de.defstyle("tab-frame-tiled", {
+    font = "xft:Cantarell:size=7",
     spacing = 1,
 })
 
