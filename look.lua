@@ -4,9 +4,11 @@ end
 
 de.reset()
 
+active_bg = "#444455"
+
 de.defstyle("*", {
     highlight_colour = "#111111",
-    shadow_colour = "#333333",
+    shadow_colour = "#000000",
     background_colour = "#111111",
     foreground_colour = "#aaaaaa",
 
@@ -28,7 +30,7 @@ de.defstyle("tab", {
     de.substyle("active-selected", {
         highlight_colour = "#555555",
         shadow_colour = "#555555",
-        background_colour = "#444455",
+        background_colour = active_bg,
         foreground_colour = "#eeeeee",
     }),
 
@@ -45,15 +47,15 @@ de.defstyle("input", {
     text_align = "left",
     foreground_color = "#ff00ff",
     highlight_colour = "#222228",
-    shadow_colour = "#222228",
+    shadow_colour = "#000000",
 
     de.substyle("*-selection", {
-        background_colour = "#666699",
+        background_colour = active_bg,
         foreground_colour = "#000000",
     }),
 
     de.substyle("*-cursor", {
-        background_colour = "#000000",
+        background_colour = active_bg,
         foreground_colour = "#b8b8c8",
     }),
 })
@@ -115,8 +117,67 @@ de.defstyle("stdisp", {
     }),
 })
 
+-- Common tab configuration (mostly activity stuff) for the "clean styles"
 
-dopath("lookcommon_clean_tab")
+de.defstyle("actnotify", {
+    shadow_colour = "#c04040",
+    highlight_colour = "#c04040",
+    background_colour = "#901010",
+    foreground_colour = "#eeeeee",
+})
+
+de.defstyle("tab-frame", {
+    -- TODO: some kind of amend option. It should not be necessary to
+    -- duplicate this definition for both tab-frame and tab-menuentry,
+    -- or for each style, nor use more complex hacks to communicate
+    -- this stuff otherwise.
+    de.substyle("*-*-*-unselected-activity", {
+        shadow_colour = "#c04040",
+        highlight_colour = "#c04040",
+        background_colour = "#901010",
+        foreground_colour = "#eeeeee",
+    }),
+
+    de.substyle("*-*-*-selected-activity", {
+        shadow_colour = "#c04040",
+        highlight_colour = "#c04040",
+        background_colour = "#b03030",
+        foreground_colour = "#ffffff",
+    }),
+
+    de.substyle("*-*-*-tabnumber", {
+        background_colour = "black",
+        foreground_colour = "green",
+    }),
+})
+
+de.defstyle("tab-frame-tiled", {
+    spacing = 1,
+})
+
+de.defstyle("tab-menuentry", {
+    text_align = "left",
+
+    de.substyle("*-*-*-unselected-activity", {
+        shadow_colour = "#c04040",
+        highlight_colour = "#c04040",
+        background_colour = "#901010",
+        foreground_colour = "#eeeeee",
+    }),
+
+    de.substyle("*-*-*-selected-activity", {
+        shadow_colour = "#c04040",
+        highlight_colour = "#c04040",
+        background_colour = "#b03030",
+        --background_colour = "#ff00ff",
+        foreground_colour = "#ffffff",
+    }),
+})
+
+de.defstyle("tab-menuentry-big", {
+    padding_pixels = 7,
+})
+
 
 -- Refresh objects' brushes.
 gr.refresh()
