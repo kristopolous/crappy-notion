@@ -5,6 +5,8 @@ end
 de.reset()
 
 active_bg = "#444455"
+neutral = "#444444"
+white = "#ffffff"
 
 de.defstyle("*", {
     highlight_colour = "#111111",
@@ -45,20 +47,22 @@ de.defstyle("input", {
     foreground_color = "#ff00ff",
     highlight_colour = "#222228",
     shadow_colour = "#000000",
+    padding = 2,
 
     de.substyle("*-selection", {
         background_colour = active_bg,
-        foreground_colour = "#000000",
+        foreground_colour = white
     }),
 
     de.substyle("*-cursor", {
         background_colour = active_bg,
-        foreground_colour = "#b8b8c8",
+        foreground_colour = white,
     }),
 })
 
 
 de.defstyle("input-menu", {
+    foreground_color = "#ff00ff",
     highlight_pixels = 0,
     shadow_pixels = 0,
     padding_pixels = 0,
@@ -91,7 +95,8 @@ de.defstyle("frame-tiled-alt", {
 -- Frame-floating, the border around a floating window.
 de.defstyle("frame-floating", {
     bar = "shaped",
-    padding_pixels = 0,
+    background_colour = neutral,
+    padding_pixels = 1,
 })
 
 de.defstyle("frame-transient", {
@@ -125,6 +130,7 @@ de.defstyle("tab", {
     }),
 })
 
+-- "frame" is a window.
 de.defstyle("tab-frame", {
     -- TODO: some kind of amend option. It should not be necessary to
     -- duplicate this definition for both tab-frame and tab-menuentry,
@@ -136,6 +142,7 @@ de.defstyle("tab-frame", {
         background_colour = "#901010",
         foreground_colour = "#eeeeee",
     }),
+
 
     de.substyle("*-*-*-selected-activity", {
         shadow_colour = "#c04040",
@@ -153,6 +160,10 @@ de.defstyle("tab-frame", {
 de.defstyle("tab-frame-tiled", {
     font = "xft:Cantarell:size=7",
     spacing = 1,
+    de.substyle("active-selected", {
+        foreground_colour = white,
+        background_colour = active_bg,
+      }),
 })
 
 de.defstyle("tab-menuentry", {

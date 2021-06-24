@@ -317,7 +317,6 @@ defmenu("mainmenu", {
 defmenu("sessionmenu", {
     menuentry("Save",           "ioncore.snapshot()"),
     menuentry("Restart",        "ioncore.restart()"),
-    menuentry("Restart TWM",    "ioncore.restart_other('twm')"),
     menuentry("Exit",           "ioncore.shutdown()"),
 })
 
