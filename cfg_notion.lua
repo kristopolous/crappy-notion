@@ -110,11 +110,4 @@ dopath("bookmarks")
 
 
 dopath("look")
---defbindings("WScreen", {
---    kpress(ALTMETA.."F12", "mod_menu.menu(_, _sub, 'mainmenu', {big=true})"),
---})
---
---defbindings("WMPlex.toplevel", {
---    kpress(META.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
---})
 dopath("mod_mpv")
