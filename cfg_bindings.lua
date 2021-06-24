@@ -51,17 +51,11 @@ defbindings("WScreen", {
     kpress(META.."Down", "ioncore.goto_next(_chld, 'left')", 
            "_chld:non-nil"),
 
-    bdoc("Go to previous screen on multihead setup.", "<-scr"),
-    kpress(ALTMETA.."Escape", "ioncore.goto_prev_screen()"),
-    bdoc("Go to next screen on multihead setup.", "->scr"),
-    kpress(META.."Escape", "ioncore.goto_next_screen()"),
-
     bdoc("Create a new workspace of chosen default type."),
     kpress(META.."equal", "ioncore.create_ws(_)"),
 
     bdoc("Display the main menu."),
-    --kpress("F12", "mod_menu.menu(_, _sub, 'mainmenu', {big=true})"),
-    --kpress(META.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
+    kpress(META.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'mainmenu')"),
 
     bdoc("Display the window list menu."),
@@ -141,10 +135,6 @@ defbindings("WMPlex.toplevel", {
 
     bdoc("Clear all tags.", "-tags"),
     kpress(ALTMETA.."T", "ioncore.clear_tags()"),
-
-    bdoc("Run a terminal emulator.", "xterm"),
-    --kpress(META.."Return", "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
-    --kpress("F2", "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
 
     bdoc("Query for command line to execute.", "run"),
     kpress(META.."J", "mod_query.query_exec(_)"),

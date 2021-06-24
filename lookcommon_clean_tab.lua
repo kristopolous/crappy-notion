@@ -50,6 +50,7 @@ de.defstyle("tab-menuentry", {
         shadow_colour = "#c04040",
         highlight_colour = "#c04040",
         background_colour = "#b03030",
+        --background_colour = "#ff00ff",
         foreground_colour = "#ffffff",
     }),
 })
