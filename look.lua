@@ -5,13 +5,11 @@ end
 de.reset()
 
 active_bg = "#444455"
-neutral = "#333333"
+neutral = "#222233"
 white = "#ffffff"
 black = "#000000"
 
 de.defstyle("*", {
-    highlight_colour = "#111111",
-    shadow_colour = "#000000",
     background_colour = "#111111",
     foreground_colour = "#aaaaaa",
 
@@ -22,13 +20,11 @@ de.defstyle("*", {
     border_style = "elevated",
     border_sides = "all",
 
-    font = "xft:Cantarell:size=10",
+    font = "xft:Cantarell:size=9",
     text_align = "center",
 })
 
 de.defstyle("stdisp", {
-    shadow_pixels = 0,
-    highlight_pixels = 0,
     text_align = "left",
     background_colour = black,
     foreground_colour = "grey",
@@ -46,8 +42,6 @@ de.defstyle("stdisp", {
 de.defstyle("input", {
     text_align = "left",
     foreground_color = "#ff00ff",
-    highlight_colour = "#222228",
-    shadow_colour = "#000000",
     padding = 2,
 
     de.substyle("*-selection", {
@@ -64,8 +58,6 @@ de.defstyle("input", {
 
 de.defstyle("input-menu", {
     foreground_color = "#ff00ff",
-    highlight_pixels = 0,
-    shadow_pixels = 0,
     padding_pixels = 0,
 })
 
@@ -73,8 +65,6 @@ de.defstyle("input-menu", {
 de.defstyle("frame", {
     background_colour = black,
     transparent_background = false,
-    shadow_pixels = 0,
-    highlight_pixels = 0,
     padding_pixels = 10,
     border_sides = "all",
     de.substyle("quasiactive", {
@@ -83,8 +73,6 @@ de.defstyle("frame", {
 })
 
 de.defstyle("frame-tiled", {
-    shadow_pixels = 0,
-    highlight_pixels = 0,
     padding_pixels = 1,
 })
 
@@ -105,8 +93,6 @@ de.defstyle("frame-transient", {
 })
 
 de.defstyle("actnotify", {
-    shadow_colour = "#c04040",
-    highlight_colour = "#c04040",
     background_colour = "#901010",
     foreground_colour = "#eeeeee",
 })
@@ -117,14 +103,12 @@ de.defstyle("tab", {
 
     de.substyle("active-selected", {
         highlight_colour = "#555555",
-        shadow_colour = "#555555",
         background_colour = active_bg,
         foreground_colour = "#eeeeee",
     }),
 
     de.substyle("inactive-selected", {
         highlight_colour = "#111111",
-        shadow_colour = neutral,
         background_colour = neutral,
         foreground_colour = "#aaaaaa",
     }),
@@ -137,7 +121,6 @@ de.defstyle("tab-frame", {
     -- or for each style, nor use more complex hacks to communicate
     -- this stuff otherwise.
     de.substyle("*-*-*-unselected-activity", {
-        shadow_colour = "#c04040",
         highlight_colour = "#c04040",
         background_colour = "#901010",
         foreground_colour = "#eeeeee",
@@ -145,7 +128,6 @@ de.defstyle("tab-frame", {
 
 
     de.substyle("*-*-*-selected-activity", {
-        shadow_colour = "#c04040",
         highlight_colour = "#c04040",
         background_colour = "#b03030",
         foreground_colour = "#ffffff",
@@ -163,21 +145,19 @@ de.defstyle("tab-frame-tiled", {
     de.substyle("active-selected", {
         foreground_colour = white,
         background_colour = active_bg,
-      }),
+    }),
 })
 
 de.defstyle("tab-menuentry", {
     text_align = "left",
 
     de.substyle("*-*-*-unselected-activity", {
-        shadow_colour = "#c04040",
         highlight_colour = "#c04040",
         background_colour = "#901010",
         foreground_colour = "#eeeeee",
     }),
 
     de.substyle("*-*-*-selected-activity", {
-        shadow_colour = "#c04040",
         highlight_colour = "#c04040",
         background_colour = "#b03030",
         foreground_colour = "#ffffff",
