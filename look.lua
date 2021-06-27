@@ -54,6 +54,10 @@ de.defstyle("frame", {
     padding_pixels = 3,
     border_sides = "all",
 
+    de.substyle("active", {
+        background_colour = active_bg
+    }),
+
     de.substyle("quasiactive", {
         padding_colour = "#901010",
     }),
