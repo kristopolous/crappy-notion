@@ -5,8 +5,9 @@ end
 de.reset()
 
 active_bg = "#444455"
-neutral = "#444444"
+neutral = "#333333"
 white = "#ffffff"
+black = "#000000"
 
 de.defstyle("*", {
     highlight_colour = "#111111",
@@ -29,7 +30,7 @@ de.defstyle("stdisp", {
     shadow_pixels = 0,
     highlight_pixels = 0,
     text_align = "left",
-    background_colour = "#000000",
+    background_colour = black,
     foreground_colour = "grey",
 
     de.substyle("important", {
@@ -70,14 +71,13 @@ de.defstyle("input-menu", {
 
 
 de.defstyle("frame", {
-    background_colour = "#000000",
+    background_colour = black,
     transparent_background = false,
     shadow_pixels = 0,
     highlight_pixels = 0,
     padding_pixels = 10,
     border_sides = "all",
     de.substyle("quasiactive", {
-        -- Something detached from the frame is active
         padding_colour = "#901010",
     }),
 })
@@ -124,8 +124,8 @@ de.defstyle("tab", {
 
     de.substyle("inactive-selected", {
         highlight_colour = "#111111",
-        shadow_colour = "#333333",
-        background_colour = "#333333",
+        shadow_colour = neutral,
+        background_colour = neutral,
         foreground_colour = "#aaaaaa",
     }),
 })
@@ -180,7 +180,6 @@ de.defstyle("tab-menuentry", {
         shadow_colour = "#c04040",
         highlight_colour = "#c04040",
         background_colour = "#b03030",
-        --background_colour = "#ff00ff",
         foreground_colour = "#ffffff",
     }),
 })
@@ -188,7 +187,6 @@ de.defstyle("tab-menuentry", {
 de.defstyle("tab-menuentry-big", {
     padding_pixels = 7,
 })
-
 
 -- Refresh objects' brushes.
 gr.refresh()
