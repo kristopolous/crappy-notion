@@ -95,7 +95,7 @@ ioncore.set{
     --workspace_indicator_timeout=0,
 }
 
-dopath("cfg_notioncore")
+dopath("cfg_bindings")
 dopath("cfg_kludges")
 dopath("cfg_layouts")
 
