@@ -4,14 +4,15 @@ end
 
 de.reset()
 
-active_bg = "#444455"
-neutral = "#222233"
+active_bg = "#52527A"
+neutral = "#29293D"
 white = "#ffffff"
+bright = "#A3A3C2"
 black = "#000000"
 
 de.defstyle("*", {
     background_colour = "#111111",
-    foreground_colour = "#aaaaaa",
+    foreground_colour = bright;
 
     shadow_pixels = 0,
     spacing = 2,
@@ -24,24 +25,9 @@ de.defstyle("*", {
     text_align = "center",
 })
 
-de.defstyle("stdisp", {
-    text_align = "left",
-    background_colour = black,
-    foreground_colour = "grey",
-
-    de.substyle("important", {
-        foreground_colour = "green",
-    }),
-
-    de.substyle("critical", {
-        foreground_colour = "red",
-    }),
-})
-
 
 de.defstyle("input", {
     text_align = "left",
-    foreground_color = "#ff00ff",
     padding = 2,
 
     de.substyle("*-selection", {
@@ -57,7 +43,6 @@ de.defstyle("input", {
 
 
 de.defstyle("input-menu", {
-    foreground_color = "#ff00ff",
     padding_pixels = 0,
 })
 
@@ -65,8 +50,12 @@ de.defstyle("input-menu", {
 de.defstyle("frame", {
     background_colour = black,
     transparent_background = false,
-    padding_pixels = 10,
+    padding_pixels = 3,
     border_sides = "all",
+
+    de.substyle("active", {
+        background_color = white
+    }),
     de.substyle("quasiactive", {
         padding_colour = "#901010",
     }),
@@ -83,8 +72,10 @@ de.defstyle("frame-tiled-alt", {
 -- Frame-floating, the border around a floating window.
 de.defstyle("frame-floating", {
     bar = "shaped",
-    background_colour = neutral,
-    padding_pixels = 1,
+    de.substyle("active", {
+        padding_colour = active_bg
+    }),
+    padding_pixels = 2
 })
 
 de.defstyle("frame-transient", {
@@ -104,13 +95,13 @@ de.defstyle("tab", {
     de.substyle("active-selected", {
         highlight_colour = "#555555",
         background_colour = active_bg,
-        foreground_colour = "#eeeeee",
+        foreground_colour = white,
     }),
 
     de.substyle("inactive-selected", {
         highlight_colour = "#111111",
         background_colour = neutral,
-        foreground_colour = "#aaaaaa",
+        foreground_colour = bright,
     }),
 })
 
@@ -126,11 +117,10 @@ de.defstyle("tab-frame", {
         foreground_colour = "#eeeeee",
     }),
 
-
     de.substyle("*-*-*-selected-activity", {
         highlight_colour = "#c04040",
         background_colour = "#b03030",
-        foreground_colour = "#ffffff",
+        foreground_colour = white,
     }),
 
     de.substyle("*-*-*-tabnumber", {
@@ -151,22 +141,25 @@ de.defstyle("tab-frame-tiled", {
 de.defstyle("tab-menuentry", {
     text_align = "left",
 
+    -- drop down menu background color.
+    de.substyle("inactive-selected", {
+        foreground_colour = white,
+        background_colour = "purple",
+    }),
+
     de.substyle("*-*-*-unselected-activity", {
         highlight_colour = "#c04040",
-        background_colour = "#901010",
+        background_colour = "#F01010",
         foreground_colour = "#eeeeee",
     }),
 
     de.substyle("*-*-*-selected-activity", {
         highlight_colour = "#c04040",
-        background_colour = "#b03030",
-        foreground_colour = "#ffffff",
+        background_colour = active_bg,
+        foreground_colour = white,
     }),
 })
 
-de.defstyle("tab-menuentry-big", {
-    padding_pixels = 7,
-})
 
 -- Refresh objects' brushes.
 gr.refresh()

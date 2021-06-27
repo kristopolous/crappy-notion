@@ -46,6 +46,7 @@ defbindings("WScreen", {
     kpress(META.."D", "WScreen.switch_next(_)"),
     kpress(META.."Left", "WScreen.switch_prev(_)"),
     kpress(META.."Right", "WScreen.switch_next(_)"),
+    kpress(META.."BackSpace", "ioncore.restart()"),
     kpress(META.."Up", "ioncore.goto_next(_chld, 'right')", 
            "_chld:non-nil"),
     kpress(META.."Down", "ioncore.goto_next(_chld, 'left')", 
@@ -137,10 +138,10 @@ defbindings("WMPlex.toplevel", {
     kpress(ALTMETA.."T", "ioncore.clear_tags()"),
 
     bdoc("Query for command line to execute.", "run"),
-    kpress(META.."J", "mod_query.query_exec(_)"),
+    kpress(META.."G", "mod_query.query_exec(_)"),
 
     bdoc("Query for Lua code to execute.", "lua"),
-    kpress(ALTMETA.."J", "mod_query.query_lua(_)"),
+    kpress(META.."J", "mod_query.query_lua(_)"),
 
     bdoc("Query for keybinding.", "qkb"),
     kpress(META.."slash", "mod_query.query_binding(_, _sub)"),
@@ -149,7 +150,7 @@ defbindings("WMPlex.toplevel", {
     kpress(ALTMETA.."9", "mod_query.query_workspace(_)"),
 
     bdoc("Query for a client window to go to.", "go"),
-    kpress(META.."G", "mod_query.query_gotoclient(_)"),
+    kpress(META.."space", "mod_query.query_gotoclient(_)"),
 
     bdoc("Display context menu.", "ctx"),
     kpress(META.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
@@ -308,8 +309,8 @@ defmenu("mainmenu", {
         "notioncore.exec_on(_, notioncore.lookup_script('notion-lock'))"),
     menuentry("Help",           "mod_query.query_man(_)"),
     menuentry("About Notion",      "mod_query.show_about_ion(_)"),
-    submenu("Session",          "sessionmenu"),
     submenu("Windows",          "windowlist"),
+    submenu("Session",          "sessionmenu"),
 })
 
 
