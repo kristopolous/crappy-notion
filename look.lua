@@ -28,7 +28,8 @@ de.defstyle("*", {
 
 de.defstyle("input", {
     text_align = "left",
-    padding = 2,
+    foreground_colour = white,
+    font = "xft:Cantarell:size=12",
 
     de.substyle("*-selection", {
         background_colour = active_bg,
