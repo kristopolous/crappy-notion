@@ -1,13 +1,3 @@
---
--- Notion main configuration file
---
--- This file only includes some settings that are rather frequently altered.
--- The rest of the settings are in cfg_notioncore.lua and individual modules'
--- configuration files (cfg_modulename.lua).
---
--- When any binding and other customisations that you want are minor, it is
--- recommended that you include them in a copy of this file in ~/.notion/.
---
 
 -- Set default modifiers. The default is the 'windows' key; it is usually mapped
 -- to Mod4 on Xorg-based systems. Any other modifier, such as Alt, can be used
@@ -102,8 +92,7 @@ dopath("cfg_layouts")
 dopath("mod_query")
 dopath("mod_menu")
 dopath("mod_tiling")
---dopath("mod_dock")
-dopath("mod_sp")
+dopath("mod_dock")
 dopath("mod_notionflux")
 dopath("net_client_list")
 dopath("bookmarks")
