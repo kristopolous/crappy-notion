@@ -308,8 +308,8 @@ defmenu("mainmenu", {
         "notioncore.exec_on(_, notioncore.lookup_script('notion-lock'))"),
     menuentry("Help",           "mod_query.query_man(_)"),
     menuentry("About Notion",      "mod_query.show_about_ion(_)"),
-    submenu("Styles",           "stylemenu"),
     submenu("Session",          "sessionmenu"),
+    submenu("Windows",          "windowlist"),
 })
 
 

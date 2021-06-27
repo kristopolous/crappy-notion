@@ -85,7 +85,6 @@ ioncore.set{
     --workspace_indicator_timeout=0,
 }
 
-dopath("cfg_bindings")
 dopath("cfg_kludges")
 dopath("cfg_layouts")
 
@@ -97,6 +96,8 @@ dopath("mod_notionflux")
 dopath("net_client_list")
 dopath("bookmarks")
 
-
 dopath("look")
 dopath("mod_mpv")
+
+-- include this last to give it precedence.
+dopath("cfg_bindings")
