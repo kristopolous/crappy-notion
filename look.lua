@@ -6,13 +6,14 @@ de.reset()
 
 active_bg = "#52527A"
 neutral = "#29293D"
+darker = "#15151E"
 white = "#ffffff"
 bright = "#A3A3C2"
 black = "#000000"
 
 de.defstyle("*", {
-    background_colour = "#111111",
-    foreground_colour = bright;
+    background_colour = darker,
+    foreground_colour = bright,
 
     shadow_pixels = 0,
     spacing = 2,
@@ -21,7 +22,7 @@ de.defstyle("*", {
     border_style = "elevated",
     border_sides = "all",
 
-    font = "xft:Cantarell:size=9",
+    font = "xft:Cantarell:size=10",
     text_align = "center",
 })
 
@@ -95,13 +96,11 @@ de.defstyle("tab", {
     font = "xft:Cantarell:style=Bold:size=8",
 
     de.substyle("active-selected", {
-        highlight_colour = "#555555",
         background_colour = active_bg,
         foreground_colour = white,
     }),
 
     de.substyle("inactive-selected", {
-        highlight_colour = "#111111",
         background_colour = neutral,
         foreground_colour = bright,
     }),
@@ -114,13 +113,11 @@ de.defstyle("tab-frame", {
     -- or for each style, nor use more complex hacks to communicate
     -- this stuff otherwise.
     de.substyle("*-*-*-unselected-activity", {
-        highlight_colour = "#c04040",
-        background_colour = "#901010",
-        foreground_colour = "#eeeeee",
+        background_colour = neutral,
+        foreground_colour = bright,
     }),
 
     de.substyle("*-*-*-selected-activity", {
-        highlight_colour = "#c04040",
         background_colour = "#b03030",
         foreground_colour = white,
     }),
@@ -132,7 +129,7 @@ de.defstyle("tab-frame", {
 })
 
 de.defstyle("tab-frame-tiled", {
-    font = "xft:Cantarell:size=7",
+    font = "xft:Cantarell:size=8",
     spacing = 1,
     de.substyle("active-selected", {
         foreground_colour = white,
