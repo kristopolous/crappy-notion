@@ -1,15 +1,3 @@
---
--- Notion core configuration file
---
-
-
---
--- Bindings. This includes global bindings and bindings common to
--- screens and all types of frames only. See modules' configuration
--- files for other bindings.
---
-
-
 -- WScreen context bindings
 --
 -- The bindings in this context are available all the time.
@@ -18,6 +6,12 @@
 -- where Mod4 maybe replaced with the modifier you want to use for most
 -- of the bindings. Similarly ALTMETA may be redefined to add a
 -- modifier to some of the F-key bindings.
+
+function rename_frame(mplex)
+  mod_query.query(mplex, notioncore.current():name() .. " > ", nil, function (mplex, v) 
+    notioncore.current():set_name(v)
+  end)
+end
 
 defbindings("WScreen", {
     bdoc("Switch to next object (workspace, full screen client window) "..
@@ -44,13 +38,13 @@ defbindings("WScreen", {
     kpress(META.."S", "WScreen.switch_prev(_)"),
     --kpress(META.."F", "WScreen.switch_next(_)"),
     kpress(META.."D", "WScreen.switch_next(_)"),
-    kpress(META.."Left", "WScreen.switch_prev(_)"),
-    kpress(META.."Right", "WScreen.switch_next(_)"),
     kpress(META.."BackSpace", "ioncore.restart()"),
-    kpress(META.."Up", "ioncore.goto_next(_chld, 'right')", 
-           "_chld:non-nil"),
-    kpress(META.."Down", "ioncore.goto_next(_chld, 'left')", 
-           "_chld:non-nil"),
+
+    kpress(META.."Left", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
+    kpress(META.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    kpress(META.."Up", "ioncore.goto_next(_chld, 'up')", "_chld:non-nil"),
+    kpress(META.."Down", "ioncore.goto_next(_chld, 'down')", "_chld:non-nil"),
+
 
     bdoc("Create a new workspace of chosen default type."),
     kpress(META.."equal", "ioncore.create_ws(_)"),
@@ -91,7 +85,6 @@ defbindings("WClientWin", {
     kpress_wait(ALTMETA.."L", "WClientWin.nudge(_)"),
 
     kpress(ALTMETA.."4", "WClientWin.kill(_)"),
-
 
     bdoc("Kill client owning the client window.", "kill"),
     kpress(ALTMETA.."C", "WClientWin.kill(_)"),
@@ -191,15 +184,6 @@ defbindings("WFrame", {
     bdoc("Move objects between frames by dragging and dropping the tab."),
     mdrag("Button1@tab", "WFrame.p_tabdrag(_)"),
     mdrag("Button2@tab", "WFrame.p_tabdrag(_)"),
-
-    bdoc("Switch to next object within the frame.", "->tab"),
-    -- See docs on how to disable capslock caps behaviour
-    --kpress(META.."Caps_Lock", "WFrame.switch_next(_)"),
-    mclick(META.."Button4", "WFrame.switch_next(_)"),
-
-    bdoc("Switch to previous object within the frame.", "<-tab"),
-    --kpress(ALTMETA.."Caps_Lock", "WFrame.switch_prev(_)"),
-    mclick(META.."Button5", "WFrame.switch_prev(_)"),
 })
 
 -- Frames for transient windows ignore this bindmap
@@ -222,10 +206,6 @@ defbindings("WFrame.toplevel", {
     kpress(META.."comma", "WFrame.dec_index(_, _sub)", "_sub:non-nil"),
     bdoc("Move current tab to the left within the frame.", "tab<-"),
     kpress(META.."period", "WFrame.inc_index(_, _sub)", "_sub:non-nil"),
-
-    bdoc("Maximize the frame horizontally/vertically."),
-    kpress(META.."H", "WFrame.maximize_horiz(_)"),
-    kpress(META.."V", "WFrame.maximize_vert(_)"),
 
     kpress(META.."1", "WFrame.switch_prev(_)"),
     kpress(META.."W", "WFrame.switch_prev(_)"),
@@ -296,10 +276,6 @@ defbindings("WMoveresMode", {
 })
 
 
---
--- Menu definitions
---
-
 
 -- Main menu
 defmenu("mainmenu", {
@@ -339,12 +315,6 @@ defctxmenu("WGroup", "Group", {
     menuentry("De/reattach",    "ioncore.detach(_, 'toggle')"),
 })
 
-
-function rename_frame(mplex)
-  mod_query.query(mplex, notioncore.current():name() .. " > ", nil, function (mplex, v) 
-    notioncore.current():set_name(v)
-  end)
-end
 
 -- Context menu for workspaces
 defctxmenu("WGroupWS", "Workspace", {
