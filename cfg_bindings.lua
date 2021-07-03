@@ -281,7 +281,6 @@ defbindings("WMoveresMode", {
 defmenu("mainmenu", {
     menuentry("Run...",         "mod_query.query_exec(_)"),
     menuentry("Terminal",       "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
-    menuentry("Help",           "mod_query.query_man(_)"),
     submenu("Windows",          "windowlist"),
     submenu("Session",          "sessionmenu"),
 })
