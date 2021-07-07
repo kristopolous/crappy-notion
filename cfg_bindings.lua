@@ -283,6 +283,7 @@ defmenu("mainmenu", {
     menuentry("Terminal",       "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
     submenu("Windows",          "windowlist"),
     submenu("Session",          "sessionmenu"),
+    menuentry("Next",          "WScreen.switch_next(_)"),
 })
 
 
