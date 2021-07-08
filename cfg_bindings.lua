@@ -1,12 +1,3 @@
--- WScreen context bindings
---
--- The bindings in this context are available all the time.
---
--- The variable META should contain a string of the form 'Mod4+'
--- where Mod4 maybe replaced with the modifier you want to use for most
--- of the bindings. Similarly ALTMETA may be redefined to add a
--- modifier to some of the F-key bindings.
-
 function rename_frame(mplex)
   mod_query.query(mplex, notioncore.current():name() .. " > ", nil, function (mplex, v) 
     notioncore.current():set_name(v)
@@ -313,6 +304,7 @@ defctxmenu("WFrame", "Frame", {
 defctxmenu("WGroup", "Group", {
     menuentry("Toggle tag",     "WRegion.set_tagged(_, 'toggle')"),
     menuentry("De/reattach",    "ioncore.detach(_, 'toggle')"),
+    menuentry("Next",           "WScreen.switch_next(_:manager())"),
 })
 
 
