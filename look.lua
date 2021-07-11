@@ -5,14 +5,15 @@ end
 de.reset()
 
 active_bg = "#52527A"
-neutral = "#29293D"
+neutral_lt = "#29293D"
+neutral = "#2F2F36"
 darker = "#15151E"
 white = "#ffffff"
 bright = "#A3A3C2"
 black = "#000000"
 
 de.defstyle("*", {
-    background_colour = darker,
+    background_colour = neutral,
     foreground_colour = bright,
 
     shadow_pixels = 0,
@@ -25,7 +26,6 @@ de.defstyle("*", {
     font = "xft:Cantarell:size=10",
     text_align = "center",
 })
-
 
 de.defstyle("input", {
     text_align = "left",
@@ -50,7 +50,7 @@ de.defstyle("input-menu", {
 
 
 de.defstyle("frame", {
-    background_colour = black,
+    background_colour = neutral,
     transparent_background = false,
     padding_pixels = 3,
     border_sides = "all",
@@ -101,7 +101,7 @@ de.defstyle("tab", {
     }),
 
     de.substyle("inactive-selected", {
-        background_colour = neutral,
+        background_colour = neutral_lt,
         foreground_colour = bright,
     }),
 })
@@ -113,7 +113,7 @@ de.defstyle("tab-frame", {
     -- or for each style, nor use more complex hacks to communicate
     -- this stuff otherwise.
     de.substyle("*-*-*-unselected-activity", {
-        background_colour = neutral,
+        background_colour = black, 
         foreground_colour = bright,
     }),
 
