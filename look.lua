@@ -11,13 +11,15 @@ darker = "#15151E"
 white = "#ffffff"
 bright = "#A3A3C2"
 black = "#000000"
+notblack = "#222222"
 
 de.defstyle("*", {
     background_colour = neutral,
     foreground_colour = bright,
 
-    shadow_pixels = 0,
     spacing = 2,
+    --
+    shadow_pixels = 0,
     highlight_pixels = 0,
     padding_pixels = 5,
     border_style = "elevated",
@@ -50,6 +52,7 @@ de.defstyle("input-menu", {
 
 
 de.defstyle("frame", {
+    -- this is the background to everything.
     background_colour = neutral,
     transparent_background = false,
     padding_pixels = 3,
@@ -95,6 +98,8 @@ de.defstyle("actnotify", {
 de.defstyle("tab", {
     font = "xft:Cantarell:style=Bold:size=8",
 
+    highlight_pixels =1,
+    highlight_colour = black,
     de.substyle("active-selected", {
         background_colour = active_bg,
         foreground_colour = white,
