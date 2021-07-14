@@ -18,7 +18,6 @@ de.defstyle("*", {
     foreground_colour = bright,
 
     spacing = 2,
-    --
     shadow_pixels = 0,
     highlight_pixels = 0,
     padding_pixels = 5,
@@ -98,8 +97,6 @@ de.defstyle("actnotify", {
 de.defstyle("tab", {
     font = "xft:Cantarell:style=Bold:size=8",
 
-    highlight_pixels =1,
-    highlight_colour = black,
     de.substyle("active-selected", {
         background_colour = active_bg,
         foreground_colour = white,
@@ -136,6 +133,8 @@ de.defstyle("tab-frame", {
 de.defstyle("tab-frame-tiled", {
     font = "xft:Cantarell:size=8",
     spacing = 1,
+    padding_pixels =1,
+    padding_colour = black,
     de.substyle("active-selected", {
         foreground_colour = white,
         background_colour = active_bg,

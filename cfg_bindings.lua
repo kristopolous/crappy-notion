@@ -266,8 +266,6 @@ defbindings("WMoveresMode", {
     kpress(META.."N",     "WMoveresMode.move(_, 0, 1)"),
 })
 
-
-
 -- Main menu
 defmenu("mainmenu", {
     menuentry("Run...",         "mod_query.query_exec(_)"),
