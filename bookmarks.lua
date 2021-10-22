@@ -1,9 +1,3 @@
--- Authors: Unknown
--- License: Unknown
--- Last Changed: Unknown
---
--- Bookmarks support for Ion3
---
 -- META+b n        Go to bookmark n (n=0..9)
 -- META+b Shift+n  Set bookmark n
 --
@@ -20,7 +14,6 @@ function bookmarks.goto_bm(bm)
         bms[bm]:goto_focus()
     end
 end
-
 
 for k=2, 9 do
     local bm=tostring(k)

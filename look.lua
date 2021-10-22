@@ -5,18 +5,20 @@ end
 de.reset()
 
 active_bg = "#52527A"
-neutral = "#29293D"
+neutral_lt = "#29293D"
+neutral = "#2F2F36"
 darker = "#15151E"
 white = "#ffffff"
 bright = "#A3A3C2"
 black = "#000000"
+notblack = "#222222"
 
 de.defstyle("*", {
-    background_colour = darker,
+    background_colour = neutral,
     foreground_colour = bright,
 
-    shadow_pixels = 0,
     spacing = 2,
+    shadow_pixels = 0,
     highlight_pixels = 0,
     padding_pixels = 5,
     border_style = "elevated",
@@ -25,7 +27,6 @@ de.defstyle("*", {
     font = "xft:Cantarell:size=10",
     text_align = "center",
 })
-
 
 de.defstyle("input", {
     text_align = "left",
@@ -50,7 +51,8 @@ de.defstyle("input-menu", {
 
 
 de.defstyle("frame", {
-    background_colour = black,
+    -- this is the background to everything.
+    background_colour = neutral,
     transparent_background = false,
     padding_pixels = 3,
     border_sides = "all",
@@ -101,7 +103,7 @@ de.defstyle("tab", {
     }),
 
     de.substyle("inactive-selected", {
-        background_colour = neutral,
+        background_colour = neutral_lt,
         foreground_colour = bright,
     }),
 })
@@ -113,7 +115,7 @@ de.defstyle("tab-frame", {
     -- or for each style, nor use more complex hacks to communicate
     -- this stuff otherwise.
     de.substyle("*-*-*-unselected-activity", {
-        background_colour = neutral,
+        background_colour = black, 
         foreground_colour = bright,
     }),
 
@@ -131,6 +133,8 @@ de.defstyle("tab-frame", {
 de.defstyle("tab-frame-tiled", {
     font = "xft:Cantarell:size=8",
     spacing = 1,
+    padding_pixels =1,
+    padding_colour = black,
     de.substyle("active-selected", {
         foreground_colour = white,
         background_colour = active_bg,
