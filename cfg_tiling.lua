@@ -13,6 +13,9 @@ defbindings("WTiling", {
     kpress(META.."N", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
     kpress(META.."1", "ioncore.goto_next(_sub, 'left')"),
 
+    kpress(META..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
+    kpress(META..'slash', "WTiling.split_at(_, _sub, 'right', true)"),
+
     bdoc("Forward-circulate focus.", "->frame"),
     kpress(META.."Tab", "WFrame.switch_next(_)"),
 
