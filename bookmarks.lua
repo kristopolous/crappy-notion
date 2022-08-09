@@ -1,5 +1,5 @@
--- META+b n        Go to bookmark n (n=0..9)
--- META+b Shift+n  Set bookmark n
+-- CALT+b n        Go to bookmark n (n=0..9)
+-- CALT+b Shift+n  Set bookmark n
 --
 
 local bms={}
@@ -18,10 +18,10 @@ end
 for k=2, 9 do
     local bm=tostring(k)
     defbindings("WScreen", {
-        kpress(META..bm, function() bookmarks.goto_bm(bm) end),
+        kpress(CALT..bm, function() bookmarks.goto_bm(bm) end),
     })
     defbindings("WFrame", {
-        submap(META.."b", {
+        submap(CALT.."b", {
             kpress(bm, function(frame) bookmarks.set(bm, frame) end),
         })
     })
