@@ -5,13 +5,6 @@ function rename_frame(mplex)
 end
 
 defbindings("WScreen", {
-    bdoc("Switch to next object (workspace, full screen client window) "..
-         "within current screen.", "->ws"),
-    kpress(CALT.."grave", "WScreen.switch_next(_)"),
-    bdoc("Switch to previous object (workspace, full screen client window) "..
-         "within current screen.", "<-ws"),
-    kpress(CWIN.."asciitilde", "WScreen.switch_prev(_)"),
-
     submap(CALT.."O", {
         bdoc("Open first region demanding attention or previously active one."),
         kpress("O", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
