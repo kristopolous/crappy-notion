@@ -7,6 +7,10 @@
 --META="Mod4+"
 ALTMETA="Control+Mod4+"
 META="Control+Mod1+"
+--CALT="Mod4+"
+CWIN="Control+Mod4+"
+CALT="Control+Mod1+"
+WIN="Mod4+"
 MPV="Mod4+"
 
 -- Terminal emulator.
@@ -70,7 +74,7 @@ ioncore.set{
     -- Time (in ms) that a window has to be focussed in order to be added to the
     -- focus list. Set this to <=0 (or comment it out) to disable the logic, and
     -- update the focus list immediately.
-    --focuslist_insert_delay=1000,
+    focuslist_insert_delay=-1.0,
 
     switchto=true,
     -- If enabled, activity notifiers are displayed on ALL the screens, not just

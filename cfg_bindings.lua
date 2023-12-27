@@ -15,11 +15,11 @@ defbindings("WScreen", {
     submap(META.."O", {
         bdoc("Open first region demanding attention or previously active one."),
         kpress("O", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
+        kpress("I", "ioncore.goto_previous()"),
         -- Alternative without (cyclable) menu
         --kpress("O", "ioncore.goto_activity() or ioncore.goto_previous()"),
 
         --bdoc("Go to previous active object."),
-        --kpress("O", "ioncore.goto_previous()"),
 
         --bdoc("Go to first object on activity/urgency list."),
         --kpress("I", "ioncore.goto_activity()"),
@@ -35,7 +35,6 @@ defbindings("WScreen", {
     kpress(META.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
     kpress(META.."Up", "ioncore.goto_next(_chld, 'up')", "_chld:non-nil"),
     kpress(META.."Down", "ioncore.goto_next(_chld, 'down')", "_chld:non-nil"),
-
 
     bdoc("Create a new workspace of chosen default type."),
     kpress(META.."equal", "ioncore.create_ws(_)"),
@@ -59,17 +58,21 @@ defbindings("WScreen", {
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(ALTMETA.."Tab", "ioncore.goto_next(_chld, 'left')",
            "_chld:non-nil"),
+    kpress(WIN.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    kpress(CALT.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+
+    bdoc("Backward-circulate focus.", "<-frame"),
+    kpress(WIN.."W", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
+    kpress(CWIN.."Tab", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
 
     bdoc("Raise focused object, if possible.", "raise"),
     kpress(ALTMETA.."R", "WRegion.rqorder(_chld, 'front')",
            "_chld:non-nil"),
 })
 
-
 -- Client window bindings
 --
 -- These bindings affect client windows directly.
-
 defbindings("WClientWin", {
     bdoc("Nudge the client window. This might help with some "..
       "programs' resizing problems.", "nudge"),
@@ -79,26 +82,23 @@ defbindings("WClientWin", {
 
     bdoc("Kill client owning the client window.", "kill"),
     kpress(ALTMETA.."C", "WClientWin.kill(_)"),
+    kpress(CWIN.."C", "WClientWin.kill(_)"),
 
     bdoc("Send next key press to the client window. "..
          "Some programs may not allow this by default.", "quote"),
     kpress(ALTMETA.."Q", "WClientWin.quote_next(_)"),
 })
 
-
 -- Client window group bindings
-
 defbindings("WGroupCW", {
     bdoc("Toggle client window group full-screen mode", "fullscr"),
     kpress_wait(META.."Return", "WGroup.set_fullscreen(_, 'toggle')"),
 })
 
-
 -- WMPlex context bindings
 --
 -- These bindings work in frames and on screens. The innermost of such
 -- contexts/objects always gets to handle the key press.
-
 defbindings("WMPlex", {
     bdoc("Close current object.", "close"),
     kpress_wait(META.."C", "WRegion.rqclose_propagate(_, _sub)"),
@@ -112,7 +112,6 @@ defbindings("WMPlex", {
 })
 
 -- Frames for transient windows ignore this bindmap
-
 defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object.", "tag"),
     kpress(META.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
@@ -178,7 +177,6 @@ defbindings("WFrame", {
 })
 
 -- Frames for transient windows ignore this bindmap
-
 defbindings("WFrame.toplevel", {
     bdoc("Attach tagged objects to this frame.", "nick"),
     kpress(META.."N", "ioncore.tagged_attach(_)"),
@@ -204,7 +202,6 @@ defbindings("WFrame.toplevel", {
 })
 
 -- Bindings for floating frames
-
 defbindings("WFrame.floating", {
     bdoc("Toggle shade mode"),
     mdblclick("Button1@tab", "WFrame.set_shaded(_, 'toggle')"),
@@ -305,13 +302,11 @@ defctxmenu("WGroup", "Group", {
     menuentry("Next",           "WScreen.switch_next(_:manager())"),
 })
 
-
 -- Context menu for workspaces
 defctxmenu("WGroupWS", "Workspace", {
     menuentry("Close",          "WRegion.rqclose(_)"),
     menuentry("Attach tagged",  "ioncore.tagged_attach(_)"),
 })
-
 
 -- Context menu for client windows
 defctxmenu("WClientWin", "Client window", {
