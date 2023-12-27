@@ -163,7 +163,7 @@ defbindings("WFrame", {
 
     bdoc("Switch the frame to display the object indicated by the tab."),
     mclick("Button1@tab", "WFrame.p_switch_tab(_)"),
-    mclick("Button2@tab", "WFrame.p_switch_tab(_)"),
+    mpress("Button2", "mod_menu.pmenu(_, _sub, 'windowlist')"),
 
     bdoc("Resize the frame."),
     mdrag("Button1@border", "WFrame.p_resize(_)"),
