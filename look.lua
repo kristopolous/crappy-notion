@@ -4,7 +4,7 @@ end
 
 de.reset()
 
-active_bg = "#52527A"
+active_bg = "#C70465"
 neutral_lt = "#29293D"
 neutral = "#2F2F36"
 darker = "#15151E"
@@ -58,7 +58,8 @@ de.defstyle("frame", {
     border_sides = "all",
 
     de.substyle("active", {
-        background_colour = active_bg
+        background_colour = active_bg,
+        foreground_colour = white
     }),
 
     de.substyle("quasiactive", {

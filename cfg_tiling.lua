@@ -6,27 +6,27 @@
 
 defbindings("WTiling", {
     bdoc("Split current frame vertically."),
-    kpress(CALT.."C", "WTiling.split_at(_, _sub, 'bottom', true)"),
+    kpress(META.."C", "WTiling.split_at(_, _sub, 'bottom', true)"),
     
     bdoc("Go to frame above/below/right/left of current frame."),
-    kpress(CALT.."P", "ioncore.goto_next(_sub, 'up', {no_ascend=_})"),
-    kpress(CALT.."N", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
-    kpress(CALT.."1", "ioncore.goto_next(_sub, 'left')"),
+    kpress(META.."P", "ioncore.goto_next(_sub, 'up', {no_ascend=_})"),
+    kpress(META.."N", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
+    kpress(META.."1", "ioncore.goto_next(_sub, 'left')"),
 
     kpress(MPV..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
     kpress(MPV..'backslash', "WTiling.split_at(_, _sub, 'right', true)"),
 
 
-    kpress(CALT..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
-    kpress(CALT..'backslash', "WTiling.split_at(_, _sub, 'right', true)"),
+    kpress(META..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
+    kpress(META..'backslash', "WTiling.split_at(_, _sub, 'right', true)"),
 
     bdoc("Forward-circulate focus.", "->frame"),
-    kpress(CALT.."Tab", "WFrame.switch_next(_)"),
+    kpress(META.."Tab", "WFrame.switch_next(_)"),
 
     bdoc("Backward-circulate focus.", "<-frame"),
-    kpress(CWIN.."Tab", "WFrame.switch_prev(_)"),
+    kpress(ALTMETA.."Tab", "WFrame.switch_prev(_)"),
 
-    submap(CALT.."K", {
+    submap(META.."K", {
         kpress("Tab", "ioncore.goto_next(_sub, 'left')"),
         
         bdoc("Split current frame horizontally."),
@@ -41,7 +41,7 @@ defbindings("WTiling", {
 -- Frame bindings.
 --defbindings("WFrame.floating", {
 --    bdoc("Tile frame, if no tiling exists on the workspace", "tile"),
---    kpress(CWIN.."B", "mod_tiling.mkbottom(_)"),
+--    kpress(ALTMETA.."B", "mod_tiling.mkbottom(_)"),
 --})
 
 
