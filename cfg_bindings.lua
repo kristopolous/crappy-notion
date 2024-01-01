@@ -127,7 +127,7 @@ defbindings("WMPlex.toplevel", {
     kpress(META.."J", "mod_query.query_lua(_)"),
 
     bdoc("Query for keybinding.", "qkb"),
-    kpress(META.."slash", "mod_query.query_binding(_, _sub)"),
+    kpress(META.."h", "mod_query.query_binding(_, _sub)"),
 
     bdoc("Query for workspace to go to or create a new one.", "+ws"),
     kpress(ALTMETA.."9", "mod_query.query_workspace(_)"),
