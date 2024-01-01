@@ -58,7 +58,7 @@ defbindings("WScreen", {
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(ALTMETA.."Tab", "ioncore.goto_next(_chld, 'left')",
            "_chld:non-nil"),
-    kpress(WIN.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    kpress(WIN.."Tab", "ioncore.goto_previous()"), --ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
     kpress(CALT.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
 
     bdoc("Backward-circulate focus.", "<-frame"),
