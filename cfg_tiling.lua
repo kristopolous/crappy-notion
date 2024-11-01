@@ -49,9 +49,6 @@ defbindings("WTiling", {
 -- Context menu for tiled workspaces.
 
 defctxmenu("WTiling", "Tiling", {
-    menuentry("Destroy frame", 
-              "WTiling.unsplit_at(_, _sub)"),
-
     menuentry("Into rows", 
               "WTiling.split_at(_, _sub, 'bottom', true)"),
     menuentry("Into columns", 
@@ -62,6 +59,9 @@ defctxmenu("WTiling", "Tiling", {
     
     menuentry("Untile", "mod_tiling.untile(_)"),
     
+    menuentry("Destroy frame", 
+              "WTiling.unsplit_at(_, _sub)"),
+
     submenu("Float split", {
         menuentry("At left", 
                   "WTiling.set_floating_at(_, _sub, 'toggle', 'left')"),

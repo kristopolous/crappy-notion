@@ -1,16 +1,21 @@
+-- check /usr/include/X11/keysymdef.h
 function rename_frame(mplex)
   mod_query.query(mplex, notioncore.current():name() .. " > ", nil, function (mplex, v) 
     notioncore.current():set_name(v)
   end)
 end
 
+function clipcycle(dir)
+  ioncore.exec("copyq "..dir)
+  ioncore.exec('copyq popup clipboard "$(copyq clipboard)" 1000')
+end
+
 defbindings("WScreen", {
     bdoc("Switch to next object (workspace, full screen client window) "..
          "within current screen.", "->ws"),
-    kpress(META.."grave", "WScreen.switch_next(_)"),
     bdoc("Switch to previous object (workspace, full screen client window) "..
          "within current screen.", "<-ws"),
-    kpress(ALTMETA.."asciitilde", "WScreen.switch_prev(_)"),
+    kpress(WIN.."asciitilde", "WScreen.switch_prev(_)"),
 
     submap(META.."O", {
         bdoc("Open first region demanding attention or previously active one."),
@@ -26,26 +31,29 @@ defbindings("WScreen", {
 
     }),
 
-    kpress(META.."S", "WScreen.switch_prev(_)"),
+    kpress(WIN.."S", "WScreen.switch_prev(_)"),
     --kpress(META.."F", "WScreen.switch_next(_)"),
-    kpress(META.."D", "WScreen.switch_next(_)"),
+    kpress(WIN.."D", "WScreen.switch_next(_)"),
     kpress(META.."BackSpace", "ioncore.restart()"),
 
-    kpress(META.."Left", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
-    kpress(META.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
-    kpress(META.."Up", "ioncore.goto_next(_chld, 'up')", "_chld:non-nil"),
-    kpress(META.."Down", "ioncore.goto_next(_chld, 'down')", "_chld:non-nil"),
+    kpress(WIN.."Left", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
+    kpress(WIN.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    kpress(WIN.."Up", "ioncore.goto_next(_chld, 'up')", "_chld:non-nil"),
+    kpress(WIN.."Down", "ioncore.goto_next(_chld, 'down')", "_chld:non-nil"),
 
     bdoc("Create a new workspace of chosen default type."),
-    kpress(META.."equal", "ioncore.create_ws(_)"),
+    kpress(WIN.."equal", "ioncore.create_ws(_)"),
 
     bdoc("Display the main menu."),
-    kpress(META.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
+    kpress(WIN.."F12", "mod_query.query_menu(_, _sub, 'mainmenu', 'Main menu:')"),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'mainmenu')"),
 
     bdoc("Display the window list menu."),
     mpress("Button2", "mod_menu.pmenu(_, _sub, 'windowlist')"),
 
+    bdoc("Cycle through clipboard"),
+    kpress(WIN.."bracketleft", "clipcycle('previous')"),
+    kpress(WIN.."bracketright", "clipcycle('next')"),
     bdoc("Forward-circulate focus.", "->frame"),
     -- '_chld' used here stands to for an actual child window that may not
     -- be managed by the screen itself, unlike '_sub', that is likely to be
@@ -59,7 +67,7 @@ defbindings("WScreen", {
     kpress(ALTMETA.."Tab", "ioncore.goto_next(_chld, 'left')",
            "_chld:non-nil"),
     kpress(WIN.."Tab", "ioncore.goto_previous()"), --ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
-    kpress(CALT.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    kpress(META.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
 
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(WIN.."W", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
@@ -78,21 +86,21 @@ defbindings("WClientWin", {
       "programs' resizing problems.", "nudge"),
     kpress_wait(ALTMETA.."L", "WClientWin.nudge(_)"),
 
-    kpress(ALTMETA.."4", "WClientWin.kill(_)"),
+    --kpress(ALTMETA.."4", "WClientWin.kill(_)"),
 
     bdoc("Kill client owning the client window.", "kill"),
-    kpress(ALTMETA.."C", "WClientWin.kill(_)"),
+    kpress(WIN.."C", "WClientWin.kill(_)"),
     kpress(CWIN.."C", "WClientWin.kill(_)"),
 
     bdoc("Send next key press to the client window. "..
          "Some programs may not allow this by default.", "quote"),
-    kpress(ALTMETA.."Q", "WClientWin.quote_next(_)"),
+    --kpress(ALTMETA.."Q", "WClientWin.quote_next(_)"),
 })
 
 -- Client window group bindings
 defbindings("WGroupCW", {
     bdoc("Toggle client window group full-screen mode", "fullscr"),
-    kpress_wait(META.."Return", "WGroup.set_fullscreen(_, 'toggle')"),
+    kpress_wait(WIN.."Return", "WGroup.set_fullscreen(_, 'toggle')"),
 })
 
 -- WMPlex context bindings
@@ -114,26 +122,29 @@ defbindings("WMPlex", {
 -- Frames for transient windows ignore this bindmap
 defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object.", "tag"),
-    kpress(META.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
-    kpress(META.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg rgb:0/0/0 -fg white')"),
+    kpress("XF86MonBrightnessDown", "notioncore.exec_on(_, 'exec brightnessctl set 10-')"),
+    kpress("XF86MonBrightnessUp", "notioncore.exec_on(_, 'exec brightnessctl set 10+')"),
+
+    kpress(WIN.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
+    kpress(WIN.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg rgb:0/0/0 -fg white')"),
 
     bdoc("Clear all tags.", "-tags"),
-    kpress(ALTMETA.."T", "ioncore.clear_tags()"),
+    kpress(CWIN.."T", "ioncore.clear_tags()"),
 
     bdoc("Query for command line to execute.", "run"),
-    kpress(META.."G", "mod_query.query_exec(_)"),
+    kpress(WIN.."G", "mod_query.query_exec(_)"),
 
     bdoc("Query for Lua code to execute.", "lua"),
-    kpress(META.."J", "mod_query.query_lua(_)"),
+    kpress(WIN.."J", "mod_query.query_lua(_)"),
 
     bdoc("Query for keybinding.", "qkb"),
-    kpress(META.."h", "mod_query.query_binding(_, _sub)"),
+    kpress(WIN.."h", "mod_query.query_binding(_, _sub)"),
 
     bdoc("Query for workspace to go to or create a new one.", "+ws"),
-    kpress(ALTMETA.."9", "mod_query.query_workspace(_)"),
+    kpress(WIN.."9", "mod_query.query_workspace(_)"),
 
     bdoc("Query for a client window to go to.", "go"),
-    kpress(META.."space", "mod_query.query_gotoclient(_)"),
+    kpress(WIN.."space", "mod_query.query_gotoclient(_)"),
 
     bdoc("Display context menu.", "ctx"),
     kpress(META.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
@@ -152,13 +163,16 @@ defbindings("WFrame", {
     kpress(META.."H", "WFrame.maximize_horiz(_)"),
     bdoc("Maximize the frame vertically.", "vmax"),
     kpress(META.."V", "WFrame.maximize_vert(_)"),
-    kpress(META.."2", "realmaximize(_)"),
+    kpress(WIN.."2", "realmaximize(_)"),
 
     bdoc("Display context menu."),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'ctxmenu')"),
 
+    bdoc("Rename", "rename"),
+    kpress(WIN.."N",   "rename_frame(_)"),
+
     bdoc("Begin move/resize mode.", "resize"),
-    kpress(META.."R", "WFrame.begin_kbresize(_)"),
+    kpress(WIN.."R", "WFrame.begin_kbresize(_)"),
 
     bdoc("Switch the frame to display the object indicated by the tab."),
     mclick("Button1@tab", "WFrame.p_switch_tab(_)"),
@@ -166,10 +180,10 @@ defbindings("WFrame", {
 
     bdoc("Resize the frame."),
     mdrag("Button1@border", "WFrame.p_resize(_)"),
-    mdrag(META.."Button3", "WFrame.p_resize(_)"),
+    mdrag(WIN.."Button3", "WFrame.p_resize(_)"),
 
     bdoc("Move the frame."),
-    mdrag(META.."Button1", "WFrame.p_move(_)"),
+    mdrag(WIN.."Button1", "WFrame.p_move(_)"),
 
     bdoc("Move objects between frames by dragging and dropping the tab."),
     mdrag("Button1@tab", "WFrame.p_tabdrag(_)"),
@@ -182,7 +196,8 @@ defbindings("WFrame.toplevel", {
     kpress(META.."N", "ioncore.tagged_attach(_)"),
     bdoc("Query for a client window to attach ('nick').", "qnick"),
     kpress(ALTMETA.."N", "mod_query.query_attachclient(_)"),
-    submap(META.."K", {
+    kpress(WIN.."Y", "ioncore.tagged_attach(_)"),
+    submap(WIN.."K", {
         kpress("A", "ioncore.tagged_attach(_)"),
     }),
 
@@ -196,9 +211,9 @@ defbindings("WFrame.toplevel", {
     bdoc("Move current tab to the left within the frame.", "tab<-"),
     kpress(META.."period", "WFrame.inc_index(_, _sub)", "_sub:non-nil"),
 
-    kpress(META.."1", "WFrame.switch_prev(_)"),
-    kpress(META.."W", "WFrame.switch_prev(_)"),
-    kpress(META.."E", "WFrame.switch_next(_)"),
+    kpress(WIN.."1", "WFrame.switch_prev(_)"),
+    kpress(WIN.."W", "WFrame.switch_prev(_)"),
+    kpress(WIN.."E", "WFrame.switch_next(_)"),
 })
 
 -- Bindings for floating frames
@@ -209,13 +224,14 @@ defbindings("WFrame.floating", {
     bdoc("Raise the frame."),
     mpress("Button1@tab", "WRegion.rqorder(_, 'front')"),
     mpress("Button1@border", "WRegion.rqorder(_, 'front')"),
-    mclick(META.."Button1", "WRegion.rqorder(_, 'front')"),
+    mclick(WIN.."Button1", "WRegion.rqorder(_, 'front')"),
 
     --bdoc("Lower the frame."),
     --mclick(META.."Button3", "WRegion.rqorder(_, 'back')"),
 
-    bdoc("Move the frame."),
     mdrag("Button1@tab", "WFrame.p_move(_)"),
+    --kpress(META.."Left", "ioncore.goto_previous()"), 
+    --kpress(META.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
 })
 
 
@@ -312,3 +328,7 @@ defctxmenu("WGroupWS", "Workspace", {
 defctxmenu("WClientWin", "Client window", {
     menuentry("Kill",           "WClientWin.kill(_)"),
 })
+
+ioncore.get_hook("clientwin_unmapped_hook"):add(
+  function() print("unmapped!") end
+  )
