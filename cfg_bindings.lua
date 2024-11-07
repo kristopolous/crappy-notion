@@ -13,7 +13,6 @@ end
 defbindings("WScreen", {
     bdoc("Switch to next object (workspace, full screen client window) "..
          "within current screen.", "->ws"),
-    kpress(META.."grave", "WScreen.switch_next(_)"),
     bdoc("Switch to previous object (workspace, full screen client window) "..
          "within current screen.", "<-ws"),
     kpress(WIN.."asciitilde", "WScreen.switch_prev(_)"),
@@ -169,8 +168,11 @@ defbindings("WFrame", {
     bdoc("Display context menu."),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'ctxmenu')"),
 
+    bdoc("Rename", "rename"),
+    kpress(WIN.."N",   "rename_frame(_)"),
+
     bdoc("Begin move/resize mode.", "resize"),
-    kpress(META.."R", "WFrame.begin_kbresize(_)"),
+    kpress(WIN.."R", "WFrame.begin_kbresize(_)"),
 
     bdoc("Switch the frame to display the object indicated by the tab."),
     mclick("Button1@tab", "WFrame.p_switch_tab(_)"),

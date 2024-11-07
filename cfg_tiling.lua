@@ -15,8 +15,8 @@ defbindings("WTiling", {
 
     kpress(WIN.."C",      "WRegion.rqclose(_)"),
     kpress(MPV..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
+    kpress(WIN..'5', "WTiling.split_at(_, _sub, 'left', true)"),
     kpress(MPV..'backslash', "WTiling.split_at(_, _sub, 'right', true)"),
-
 
     kpress(META..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
     kpress(META..'backslash', "WTiling.split_at(_, _sub, 'right', true)"),
@@ -26,6 +26,8 @@ defbindings("WTiling", {
 
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(ALTMETA.."Tab", "WFrame.switch_prev(_)"),
+    bdoc("flip frame", "<-frame"),
+    kpress(WIN.."K", "WTiling.flip_at(_, _sub)"),
 
     submap(META.."K", {
         kpress("Tab", "ioncore.goto_next(_sub, 'left')"),
@@ -49,9 +51,6 @@ defbindings("WTiling", {
 -- Context menu for tiled workspaces.
 
 defctxmenu("WTiling", "Tiling", {
-    menuentry("Destroy frame", 
-              "WTiling.unsplit_at(_, _sub)"),
-
     menuentry("Into rows", 
               "WTiling.split_at(_, _sub, 'bottom', true)"),
     menuentry("Into columns", 
@@ -62,6 +61,9 @@ defctxmenu("WTiling", "Tiling", {
     
     menuentry("Untile", "mod_tiling.untile(_)"),
     
+    menuentry("Destroy frame", 
+              "WTiling.unsplit_at(_, _sub)"),
+
     submenu("Float split", {
         menuentry("At left", 
                   "WTiling.set_floating_at(_, _sub, 'toggle', 'left')"),
