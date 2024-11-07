@@ -5,8 +5,8 @@ end
 de.reset()
 
 active_bg = "#C70465"
-neutral_lt = "#29293D"
-neutral = "#2F2F36"
+neutral_lt = "#50293D"
+neutral = "#1F1F26"
 darker = "#15151E"
 white = "#ffffff"
 bright = "#A3A3C2"
