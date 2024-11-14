@@ -17,7 +17,7 @@ defbindings("WScreen", {
          "within current screen.", "<-ws"),
     kpress(WIN.."asciitilde", "WScreen.switch_prev(_)"),
 
-    submap(META.."O", {
+    submap(CALT.."O", {
         bdoc("Open first region demanding attention or previously active one."),
         kpress("O", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
         kpress("I", "ioncore.goto_previous()"),
@@ -32,9 +32,9 @@ defbindings("WScreen", {
     }),
 
     kpress(WIN.."S", "WScreen.switch_prev(_)"),
-    --kpress(META.."F", "WScreen.switch_next(_)"),
+    --kpress(CALT.."F", "WScreen.switch_next(_)"),
     kpress(WIN.."D", "WScreen.switch_next(_)"),
-    kpress(META.."BackSpace", "ioncore.restart()"),
+    kpress(CALT.."BackSpace", "ioncore.restart()"),
 
     kpress(WIN.."Left", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
     kpress(WIN.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
@@ -60,14 +60,14 @@ defbindings("WScreen", {
     -- the managing group of that window. The right/left directions are
     -- used instead of next/prev, because they work better in conjunction
     -- with tilings.
-    -- kpress(META.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
-    kpress(META.."Tab", "ioncore.goto_activity() or ioncore.goto_previous()"),
+    -- kpress(CALT.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    kpress(CALT.."Tab", "ioncore.goto_activity() or ioncore.goto_previous()"),
 
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(ALTMETA.."Tab", "ioncore.goto_next(_chld, 'left')",
            "_chld:non-nil"),
     kpress(WIN.."Tab", "ioncore.goto_previous()"), --ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
-    kpress(META.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    kpress(CALT.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
 
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(WIN.."W", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
@@ -109,7 +109,7 @@ defbindings("WGroupCW", {
 -- contexts/objects always gets to handle the key press.
 defbindings("WMPlex", {
     bdoc("Close current object.", "close"),
-    kpress_wait(META.."C", "WRegion.rqclose_propagate(_, _sub)"),
+    kpress_wait(CALT.."C", "WRegion.rqclose_propagate(_, _sub)"),
 
     bdoc("Detach (float) or reattach an object to its previous location.", "detach"),
     -- By using _chld instead of _sub, we can detach/reattach queries
@@ -147,7 +147,7 @@ defbindings("WMPlex.toplevel", {
     kpress(WIN.."space", "mod_query.query_gotoclient(_)"),
 
     bdoc("Display context menu.", "ctx"),
-    kpress(META.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
+    kpress(CALT.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
     bdoc("Query for context menu.", "qctx"),
     kpress(ALTMETA.."M", "mod_query.query_menu(_, _sub, 'ctxmenu', 'Context menu:')"),
 
@@ -160,9 +160,9 @@ defbindings("WMPlex.toplevel", {
 
 defbindings("WFrame", {
     bdoc("Maximize the frame horizontally.", "hmax"),
-    kpress(META.."H", "WFrame.maximize_horiz(_)"),
+    kpress(CALT.."H", "WFrame.maximize_horiz(_)"),
     bdoc("Maximize the frame vertically.", "vmax"),
-    kpress(META.."V", "WFrame.maximize_vert(_)"),
+    kpress(CALT.."V", "WFrame.maximize_vert(_)"),
     kpress(WIN.."2", "realmaximize(_)"),
 
     bdoc("Display context menu."),
@@ -193,7 +193,7 @@ defbindings("WFrame", {
 -- Frames for transient windows ignore this bindmap
 defbindings("WFrame.toplevel", {
     bdoc("Attach tagged objects to this frame.", "nick"),
-    kpress(META.."N", "ioncore.tagged_attach(_)"),
+    kpress(CALT.."N", "ioncore.tagged_attach(_)"),
     bdoc("Query for a client window to attach ('nick').", "qnick"),
     kpress(ALTMETA.."N", "mod_query.query_attachclient(_)"),
     kpress(WIN.."Y", "ioncore.tagged_attach(_)"),
@@ -202,14 +202,14 @@ defbindings("WFrame.toplevel", {
     }),
 
     bdoc("Switch to tab 0 in this frame.", "tab 0"),
-    kpress(META.."A", "WFrame.switch_nth(_, 0)"),
+    kpress(CALT.."A", "WFrame.switch_nth(_, 0)"),
     bdoc("Switch to tab 1 in this frame.", "tab 1"),
-    kpress(META.."F", "WFrame.switch_nth(_, 3)"),
+    kpress(CALT.."F", "WFrame.switch_nth(_, 3)"),
 
     bdoc("Move current tab to the right within the frame.", "tab->"),
-    kpress(META.."comma", "WFrame.dec_index(_, _sub)", "_sub:non-nil"),
+    kpress(CALT.."comma", "WFrame.dec_index(_, _sub)", "_sub:non-nil"),
     bdoc("Move current tab to the left within the frame.", "tab<-"),
-    kpress(META.."period", "WFrame.inc_index(_, _sub)", "_sub:non-nil"),
+    kpress(CALT.."period", "WFrame.inc_index(_, _sub)", "_sub:non-nil"),
 
     kpress(WIN.."1", "WFrame.switch_prev(_)"),
     kpress(WIN.."W", "WFrame.switch_prev(_)"),
@@ -227,11 +227,11 @@ defbindings("WFrame.floating", {
     mclick(WIN.."Button1", "WRegion.rqorder(_, 'front')"),
 
     --bdoc("Lower the frame."),
-    --mclick(META.."Button3", "WRegion.rqorder(_, 'back')"),
+    --mclick(CALT.."Button3", "WRegion.rqorder(_, 'back')"),
 
     mdrag("Button1@tab", "WFrame.p_move(_)"),
-    --kpress(META.."Left", "ioncore.goto_previous()"), 
-    --kpress(META.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    --kpress(CALT.."Left", "ioncore.goto_previous()"), 
+    --kpress(CALT.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
 })
 
 
@@ -269,14 +269,14 @@ defbindings("WMoveresMode", {
     kpress("Shift+N",     "WMoveresMode.resize(_, 0, 0, 0,-1)"),
 
     bdoc("Move in specified direction."),
-    kpress(META.."Left",  "WMoveresMode.move(_,-1, 0)"),
-    kpress(META.."Right", "WMoveresMode.move(_, 1, 0)"),
-    kpress(META.."Up",    "WMoveresMode.move(_, 0,-1)"),
-    kpress(META.."Down",  "WMoveresMode.move(_, 0, 1)"),
-    kpress(META.."F",     "WMoveresMode.move(_,-1, 0)"),
-    kpress(META.."B",     "WMoveresMode.move(_, 1, 0)"),
-    kpress(META.."P",     "WMoveresMode.move(_, 0,-1)"),
-    kpress(META.."N",     "WMoveresMode.move(_, 0, 1)"),
+    kpress(CALT.."Left",  "WMoveresMode.move(_,-1, 0)"),
+    kpress(CALT.."Right", "WMoveresMode.move(_, 1, 0)"),
+    kpress(CALT.."Up",    "WMoveresMode.move(_, 0,-1)"),
+    kpress(CALT.."Down",  "WMoveresMode.move(_, 0, 1)"),
+    kpress(CALT.."F",     "WMoveresMode.move(_,-1, 0)"),
+    kpress(CALT.."B",     "WMoveresMode.move(_, 1, 0)"),
+    kpress(CALT.."P",     "WMoveresMode.move(_, 0,-1)"),
+    kpress(CALT.."N",     "WMoveresMode.move(_, 0, 1)"),
 })
 
 -- Main menu
