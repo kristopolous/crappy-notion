@@ -7,12 +7,16 @@
 defbindings("WTiling", {
     bdoc("Split current frame vertically."),
     kpress(CALT.."C", "WTiling.split_at(_, _sub, 'bottom', true)"),
+    kpress(WIN.."minus", "WTiling.split_at(_, _sub, 'bottom', true)"),
+    kpress(MPV..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
+    kpress(CALT..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
     
     bdoc("Go to frame above/below/right/left of current frame."),
     kpress(CALT.."P", "ioncore.goto_next(_sub, 'up', {no_ascend=_})"),
     kpress(CALT.."N", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
     kpress(CALT.."1", "ioncore.goto_next(_sub, 'left')"),
 
+    kpress(WIN.."C",      "WRegion.rqclose(_)"),
     kpress(WIN..'5', "WTiling.split_at(_, _sub, 'left', true)"),
     kpress(MPV..'backslash', "WTiling.split_at(_, _sub, 'right', true)"),
 
