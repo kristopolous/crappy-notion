@@ -6,28 +6,28 @@
 
 defbindings("WTiling", {
     bdoc("Split current frame vertically."),
-    kpress(META.."C", "WTiling.split_at(_, _sub, 'bottom', true)"),
+    kpress(CALT.."C", "WTiling.split_at(_, _sub, 'bottom', true)"),
     
     bdoc("Go to frame above/below/right/left of current frame."),
-    kpress(META.."P", "ioncore.goto_next(_sub, 'up', {no_ascend=_})"),
-    kpress(META.."N", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
-    kpress(META.."1", "ioncore.goto_next(_sub, 'left')"),
+    kpress(CALT.."P", "ioncore.goto_next(_sub, 'up', {no_ascend=_})"),
+    kpress(CALT.."N", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
+    kpress(CALT.."1", "ioncore.goto_next(_sub, 'left')"),
 
     kpress(WIN..'5', "WTiling.split_at(_, _sub, 'left', true)"),
     kpress(MPV..'backslash', "WTiling.split_at(_, _sub, 'right', true)"),
 
-    kpress(META..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
-    kpress(META..'backslash', "WTiling.split_at(_, _sub, 'right', true)"),
+    kpress(WIN..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
+    kpress(WIN..'backslash', "WTiling.split_at(_, _sub, 'right', true)"),
 
     bdoc("Forward-circulate focus.", "->frame"),
-    kpress(META.."Tab", "WFrame.switch_next(_)"),
+    kpress(CALT.."Tab", "WFrame.switch_next(_)"),
 
     bdoc("Backward-circulate focus.", "<-frame"),
-    kpress(ALTMETA.."Tab", "WFrame.switch_prev(_)"),
+    kpress(CWIN.."Tab", "WFrame.switch_prev(_)"),
     bdoc("flip frame", "<-frame"),
     kpress(WIN.."K", "WTiling.flip_at(_, _sub)"),
 
-    submap(META.."K", {
+    submap(CALT.."K", {
         kpress("Tab", "ioncore.goto_next(_sub, 'left')"),
         
         bdoc("Split current frame horizontally."),
