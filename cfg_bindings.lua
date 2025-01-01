@@ -11,6 +11,7 @@ function clipcycle(dir)
 end
 
 defbindings("WScreen", {
+    kpress(WIN.."B", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
     bdoc("Switch to next object (workspace, full screen client window) "..
          "within current screen.", "->ws"),
     bdoc("Switch to previous object (workspace, full screen client window) "..
