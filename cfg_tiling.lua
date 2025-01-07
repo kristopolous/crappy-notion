@@ -46,7 +46,6 @@ defbindings("WTiling", {
 -- Frame bindings.
 --defbindings("WFrame.floating", {
 --    bdoc("Tile frame, if no tiling exists on the workspace", "tile"),
---    kpress(ALTMETA.."B", "mod_tiling.mkbottom(_)"),
 --})
 
 

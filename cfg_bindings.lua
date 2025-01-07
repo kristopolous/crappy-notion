@@ -12,27 +12,10 @@ end
 
 defbindings("WScreen", {
     kpress(WIN.."B", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
-    bdoc("Switch to next object (workspace, full screen client window) "..
-         "within current screen.", "->ws"),
     bdoc("Switch to previous object (workspace, full screen client window) "..
          "within current screen.", "<-ws"),
 
-    submap(CALT.."O", {
-        bdoc("Open first region demanding attention or previously active one."),
-        kpress("O", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
-        kpress("I", "ioncore.goto_previous()"),
-        -- Alternative without (cyclable) menu
-        --kpress("O", "ioncore.goto_activity() or ioncore.goto_previous()"),
-
-        --bdoc("Go to previous active object."),
-
-        --bdoc("Go to first object on activity/urgency list."),
-        --kpress("I", "ioncore.goto_activity()"),
-
-    }),
-
     kpress(WIN.."S", "WScreen.switch_prev(_)"),
-    --kpress(CALT.."F", "WScreen.switch_next(_)"),
     kpress(WIN.."D", "WScreen.switch_next(_)"),
     kpress(CALT.."BackSpace", "ioncore.restart()"),
 
