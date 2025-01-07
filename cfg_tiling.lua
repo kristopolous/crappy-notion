@@ -29,7 +29,7 @@ defbindings("WTiling", {
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(CWIN.."Tab", "WFrame.switch_prev(_)"),
     bdoc("flip frame", "<-frame"),
-    kpress(WIN.."K", "WTiling.flip_at(_, _sub)"),
+    kpress(WIN.."L", "WTiling.flip_at(_, _sub)"),
 
     submap(CALT.."K", {
         kpress("Tab", "ioncore.goto_next(_sub, 'left')"),
