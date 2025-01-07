@@ -11,11 +11,11 @@ function clipcycle(dir)
 end
 
 defbindings("WScreen", {
+    kpress(WIN.."B", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
     bdoc("Switch to next object (workspace, full screen client window) "..
          "within current screen.", "->ws"),
     bdoc("Switch to previous object (workspace, full screen client window) "..
          "within current screen.", "<-ws"),
-    kpress(WIN.."asciitilde", "WScreen.switch_prev(_)"),
 
     submap(CALT.."O", {
         bdoc("Open first region demanding attention or previously active one."),
@@ -122,8 +122,8 @@ defbindings("WMPlex", {
 -- Frames for transient windows ignore this bindmap
 defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object.", "tag"),
-    kpress("XF86MonBrightnessDown", "notioncore.exec_on(_, 'exec brightnessctl set 10-')"),
-    kpress("XF86MonBrightnessUp", "notioncore.exec_on(_, 'exec brightnessctl set 10+')"),
+    kpress("XF86MonBrightnessDown", "notioncore.exec_on(_, 'exec brightnessctl set 5-')"),
+    kpress("XF86MonBrightnessUp", "notioncore.exec_on(_, 'exec brightnessctl set 5+')"),
 
     kpress(WIN.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
     kpress(WIN.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg rgb:0/0/0 -fg white')"),
@@ -201,17 +201,23 @@ defbindings("WFrame.toplevel", {
         kpress("A", "ioncore.tagged_attach(_)"),
     }),
 
-    bdoc("Switch to tab 0 in this frame.", "tab 0"),
-    kpress(CALT.."A", "WFrame.switch_nth(_, 0)"),
-    bdoc("Switch to tab 1 in this frame.", "tab 1"),
-    kpress(CALT.."F", "WFrame.switch_nth(_, 3)"),
 
     bdoc("Move current tab to the right within the frame.", "tab->"),
-    kpress(CALT.."comma", "WFrame.dec_index(_, _sub)", "_sub:non-nil"),
+    kpress(WIN.."comma", "WFrame.dec_index(_, _sub)", "_sub:non-nil"),
     bdoc("Move current tab to the left within the frame.", "tab<-"),
-    kpress(CALT.."period", "WFrame.inc_index(_, _sub)", "_sub:non-nil"),
+    kpress(WIN.."period", "WFrame.inc_index(_, _sub)", "_sub:non-nil"),
 
-    kpress(WIN.."1", "WFrame.switch_prev(_)"),
+    bdoc("Switch to tab 0 in this frame.", "tab 0"),
+    kpress(WIN.."F1", "WFrame.switch_nth(_, 0)"),
+    bdoc("Switch to tab 1 in this frame.", "tab 1"),
+    kpress(WIN.."F2", "WFrame.switch_nth(_, 1)"),
+    bdoc("Switch to tab 2 in this frame.", "tab 2"),
+    kpress(WIN.."F3", "WFrame.switch_nth(_, 2)"),
+    bdoc("Switch to tab 3 in this frame.", "tab 3"),
+    kpress(WIN.."F4", "WFrame.switch_nth(_, 3)"),
+    bdoc("Switch to tab 4 in this frame.", "tab 4"),
+    kpress(WIN.."F5", "WFrame.switch_nth(_, 4)"),
+
     kpress(WIN.."W", "WFrame.switch_prev(_)"),
     kpress(WIN.."E", "WFrame.switch_next(_)"),
 })
@@ -277,7 +283,7 @@ defbindings("WMoveresMode", {
 -- Main menu
 defmenu("mainmenu", {
     menuentry("Run...",         "mod_query.query_exec(_)"),
-    menuentry("Terminal",       "mod_query.exec_on_merr(_, XTERM or 'alacritty')"),
+    menuentry("Terminal",       "mod_query.exec_on_merr(_, XTERM or 'xterm')"),
     submenu("Windows",          "windowlist"),
     submenu("Session",          "sessionmenu"),
     menuentry("Next",          "WScreen.switch_next(_)"),
