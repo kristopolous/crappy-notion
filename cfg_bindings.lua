@@ -11,9 +11,21 @@ function clipcycle(dir)
 end
 
 defbindings("WScreen", {
-    kpress(WIN.."B", "mod_menu.grabmenu(_, _sub, 'focuslist')"),
+    kpress(WIN.."B", "mod_menu.menu(_, _sub, 'focuslist')"),
     bdoc("Switch to previous object (workspace, full screen client window) "..
          "within current screen.", "<-ws"),
+
+    bdoc("Query for command line to execute.", "run"),
+    kpress(WIN.."G", "mod_query.query_exec(_)"),
+
+    bdoc("Query for Lua code to execute.", "lua"),
+    kpress(WIN.."J", "mod_query.query_lua(_)"),
+
+    bdoc("Query for workspace to go to or create a new one.", "+ws"),
+    kpress(WIN.."9", "mod_query.query_workspace(_)"),
+
+    bdoc("Query for a client window to go to.", "go"),
+    kpress(WIN.."space", "mod_query.query_gotoclient(_)"),
 
     kpress(WIN.."S", "WScreen.switch_prev(_)"),
     kpress(WIN.."D", "WScreen.switch_next(_)"),
@@ -114,23 +126,11 @@ defbindings("WMPlex.toplevel", {
     bdoc("Clear all tags.", "-tags"),
     kpress(CWIN.."T", "ioncore.clear_tags()"),
 
-    bdoc("Query for command line to execute.", "run"),
-    kpress(WIN.."G", "mod_query.query_exec(_)"),
-
-    bdoc("Query for Lua code to execute.", "lua"),
-    kpress(WIN.."J", "mod_query.query_lua(_)"),
-
     bdoc("Query for keybinding.", "qkb"),
     kpress(WIN.."h", "mod_query.query_binding(_, _sub)"),
 
-    bdoc("Query for workspace to go to or create a new one.", "+ws"),
-    kpress(WIN.."9", "mod_query.query_workspace(_)"),
-
-    bdoc("Query for a client window to go to.", "go"),
-    kpress(WIN.."space", "mod_query.query_gotoclient(_)"),
-
     bdoc("Display context menu.", "ctx"),
-    kpress(CALT.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
+    kpress(WIN.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
     bdoc("Query for context menu.", "qctx"),
     kpress(CWIN.."M", "mod_query.query_menu(_, _sub, 'ctxmenu', 'Context menu:')"),
 
