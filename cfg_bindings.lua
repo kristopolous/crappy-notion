@@ -57,7 +57,7 @@ defbindings("WScreen", {
     kpress(CWIN.."Tab", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
 
     bdoc("Raise focused object, if possible.", "raise"),
-    kpress(CWIN.."R", "WRegion.rqorder(_chld, 'front')",
+    kpress(CALT.."R", "WRegion.rqorder(_chld, 'front')",
            "_chld:non-nil"),
 })
 
