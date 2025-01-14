@@ -15,8 +15,8 @@ defbindings("WMenu", {
     kpress("Right", "WMenu.finish(_)"),
 
     bdoc("Select next/previous menu entry."),
-    kpress("Control+N", "WMenu.select_next(_)"),
-    kpress("Control+P", "WMenu.select_prev(_)"),
+    kpress(WIN.."N", "WMenu.select_next(_)"),
+    kpress(WIN.."P", "WMenu.select_prev(_)"),
     kpress("Up", "WMenu.select_prev(_)"),
     kpress("Down", "WMenu.select_next(_)"),
 
