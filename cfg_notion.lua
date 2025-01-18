@@ -1,4 +1,19 @@
+local function file_exists(filename)
+    local file = io.open(filename, "r")
+    if file then
+        file:close()
+        return true
+    end
+    return false
+end
 
+local function include_file_if_exists(filename)
+    if file_exists(filename) then
+        dofile(filename)
+    else
+        print("File does not exist: " .. filename)
+    end
+end
 -- Set default modifiers. The default is the 'windows' key; it is usually mapped
 -- to Mod4 on Xorg-based systems. Any other modifier, such as Alt, can be used
 -- instead. The 'xmodmap' tool can be used to get/set which key codes correspond
@@ -9,6 +24,7 @@ CALT="Control+Mod1+"
 META="Control+Mod1+"
 WIN="Mod4+"
 MPV="Control+Mod4+"
+include_file_if_exists("cfg_overrides")
 
 -- Terminal emulator.
 XTERM="uxterm"

@@ -119,6 +119,7 @@ defbindings("WMPlex.toplevel", {
     kpress("XF86MonBrightnessUp", "notioncore.exec_on(_, 'exec brightnessctl set 5+')"),
     
     kpress(WIN.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
+    kpress(WIN.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg rgb:0/0/0 -fg white')"),
 
     bdoc("Clear all tags.", "-tags"),
     kpress(CWIN.."T", "ioncore.clear_tags()"),
