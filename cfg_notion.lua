@@ -1,19 +1,24 @@
-local function file_exists(filename)
-    local file = io.open(filename, "r")
-    if file then
-        file:close()
-        return true
-    end
-    return false
+local function get_script_dir()
+    -- Get the full path of the current script
+    local info = debug.getinfo(1, "S")
+    local script_path = info.source:sub(2)
+    -- Extract the directory part
+    return script_path:match("(.*/)")
 end
 
 local function include_file_if_exists(filename)
-    if file_exists(filename) then
-        dofile(filename)
+    local script_dir = get_script_dir()
+    local full_path = script_dir .. filename .. ".lua"
+
+    local file = io.open(full_path, "r")
+    if file then
+        file:close()
+        dofile(full_path) -- Load the file directly
     else
-        print("File does not exist: " .. filename)
+        print("File does not exist: " .. full_path)
     end
 end
+
 -- Set default modifiers. The default is the 'windows' key; it is usually mapped
 -- to Mod4 on Xorg-based systems. Any other modifier, such as Alt, can be used
 -- instead. The 'xmodmap' tool can be used to get/set which key codes correspond
