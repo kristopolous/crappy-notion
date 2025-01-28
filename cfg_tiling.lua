@@ -17,7 +17,6 @@ defbindings("WTiling", {
     kpress(CALT.."1", "ioncore.goto_next(_sub, 'left')"),
 
     kpress(WIN.."C",      "WRegion.rqclose(_)"),
-    kpress(WIN..'5', "WTiling.split_at(_, _sub, 'left', true)"),
     kpress(MPV..'backslash', "WTiling.split_at(_, _sub, 'right', true)"),
 
     kpress(WIN..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
