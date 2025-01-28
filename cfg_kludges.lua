@@ -8,6 +8,10 @@ defwinprop {
     min_size = { w = 64, h = 64},
 }
 
+defwinprop {
+    focus = "mouse";
+}
+
 -- Make an exception for Docker, which sets correct size hints.
 defwinprop {
     is_dockapp = true,

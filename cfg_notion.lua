@@ -70,7 +70,7 @@ ioncore.set{
     -- Time (in ms) that a window has to be focussed in order to be added to the
     -- focus list. Set this to <=0 (or comment it out) to disable the logic, and
     -- update the focus list immediately.
-    focuslist_insert_delay=-1.0,
+    focuslist_insert_delay=1,
 
     switchto=true,
     -- If enabled, activity notifiers are displayed on ALL the screens, not just
@@ -91,7 +91,7 @@ dopath("cfg_layouts")
 dopath("mod_query")
 dopath("mod_menu")
 dopath("mod_tiling")
---dopath("mod_dock")
+dopath("mod_dock")
 dopath("mod_notionflux")
 dopath("net_client_list")
 dopath("bookmarks")

@@ -56,12 +56,12 @@ defbindings("WScreen", {
     -- used instead of next/prev, because they work better in conjunction
     -- with tilings.
     -- kpress(CALT.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
-    kpress(CALT.."Tab", "ioncore.goto_activity() or ioncore.goto_previous()"),
+    kpress(CALT.."Tab", "ioncore.goto_activity() or ioncore.goto_previous(1)"),
 
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(CWIN.."Tab", "ioncore.goto_next(_chld, 'left')",
            "_chld:non-nil"),
-    kpress(WIN.."Tab", "ioncore.goto_previous()"), --ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    kpress(WIN.."Tab", "ioncore.goto_hop(1, 1)"), --ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
     kpress(CALT.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
 
     bdoc("Backward-circulate focus.", "<-frame"),
@@ -146,7 +146,7 @@ defbindings("WFrame", {
     kpress(CALT.."H", "WFrame.maximize_horiz(_)"),
     bdoc("Maximize the frame vertically.", "vmax"),
     kpress(CALT.."V", "WFrame.maximize_vert(_)"),
-    kpress(WIN.."2", "realmaximize(_)"),
+    -- kpress(WIN.."2", "realmaximize(_)"),
 
     bdoc("Display context menu."),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'ctxmenu')"),
