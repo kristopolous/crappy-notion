@@ -20,7 +20,7 @@ for k=2, 9 do
     defbindings("WScreen", {
         kpress(WIN..bm, function() bookmarks.goto_bm(bm) end),
     })
-    defbindings("WFrame", {
+    defbindings("WClientWin", {
         submap(WIN.."f", {
             kpress(bm, function(frame) bookmarks.set(bm, frame) end),
         })
