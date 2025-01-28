@@ -17,6 +17,7 @@ defbindings("WScreen", {
 
     bdoc("Query for command line to execute.", "run"),
     kpress(WIN.."G", "mod_query.query_exec(_)"),
+    kpress(WIN.."asciitilde", "WScreen.switch_prev(_)"),
 
     bdoc("Query for Lua code to execute.", "lua"),
     kpress(WIN.."J", "mod_query.query_lua(_)"),
@@ -81,15 +82,12 @@ defbindings("WClientWin", {
       "programs' resizing problems.", "nudge"),
     kpress_wait(CWIN.."L", "WClientWin.nudge(_)"),
 
-    --kpress(CWIN.."4", "WClientWin.kill(_)"),
-
     bdoc("Kill client owning the client window.", "kill"),
     kpress(WIN.."C", "WClientWin.kill(_)"),
     kpress(CWIN.."C", "WClientWin.kill(_)"),
 
     bdoc("Send next key press to the client window. "..
          "Some programs may not allow this by default.", "quote"),
-    --kpress(CWIN.."Q", "WClientWin.quote_next(_)"),
 })
 
 -- Client window group bindings
@@ -119,15 +117,26 @@ defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object.", "tag"),
     kpress("XF86MonBrightnessDown", "notioncore.exec_on(_, 'exec brightnessctl set 5-')"),
     kpress("XF86MonBrightnessUp", "notioncore.exec_on(_, 'exec brightnessctl set 5+')"),
-
+    
     kpress(WIN.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
     kpress(WIN.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg rgb:0/0/0 -fg white')"),
 
     bdoc("Clear all tags.", "-tags"),
     kpress(CWIN.."T", "ioncore.clear_tags()"),
-
     bdoc("Query for keybinding.", "qkb"),
     kpress(WIN.."h", "mod_query.query_binding(_, _sub)"),
+
+    bdoc("Query for command line to execute.", "run"),
+    kpress(WIN.."G", "mod_query.query_exec(_)"),
+
+    bdoc("Query for Lua code to execute.", "lua"),
+    kpress(WIN.."J", "mod_query.query_lua(_)"),
+
+    bdoc("Query for workspace to go to or create a new one.", "+ws"),
+    kpress(WIN.."9", "mod_query.query_workspace(_)"),
+
+    bdoc("Query for a client window to go to.", "go"),
+    kpress(WIN.."space", "mod_query.query_gotoclient(_)"),
 
     bdoc("Display context menu.", "ctx"),
     kpress(WIN.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
@@ -219,8 +228,6 @@ defbindings("WFrame.floating", {
     --mclick(CALT.."Button3", "WRegion.rqorder(_, 'back')"),
 
     mdrag("Button1@tab", "WFrame.p_move(_)"),
-    --kpress(CALT.."Left", "ioncore.goto_previous()"), 
-    --kpress(CALT.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
 })
 
 
