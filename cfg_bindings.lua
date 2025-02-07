@@ -155,7 +155,7 @@ defbindings("WFrame", {
     kpress(CALT.."H", "WFrame.maximize_horiz(_)"),
     bdoc("Maximize the frame vertically.", "vmax"),
     kpress(CALT.."V", "WFrame.maximize_vert(_)"),
-    -- kpress(WIN.."2", "realmaximize(_)"),
+    kpress(WIN.."1", "realmaximize(_)"),
 
     bdoc("Display context menu."),
     mpress("Button3", "mod_menu.pmenu(_, _sub, 'ctxmenu')"),
