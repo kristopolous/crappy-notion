@@ -21,7 +21,7 @@ for k=2, 9 do
         kpress(WIN..bm, function() bookmarks.goto_bm(bm) end),
     })
     defbindings("WClientWin", {
-        submap(WIN.."f", {
+        submap(WIN.."T", {
             kpress(bm, function(frame) bookmarks.set(bm, frame) end),
         })
     })

@@ -11,6 +11,7 @@ function clipcycle(dir)
 end
 
 defbindings("WScreen", {
+    kpress("Print",  "notioncore.exec_on(_, 'exec flameshot gui')"),
     kpress(WIN.."B", "mod_menu.menu(_, _sub, 'focuslist')"),
     bdoc("Switch to previous object (workspace, full screen client window) "..
          "within current screen.", "<-ws"),
@@ -18,6 +19,11 @@ defbindings("WScreen", {
     bdoc("Query for command line to execute.", "run"),
     kpress(WIN.."G", "mod_query.query_exec(_)"),
     kpress(WIN.."asciitilde", "WScreen.switch_prev(_)"),
+    bdoc("ACPI suspend.", "run"),
+    kpress(WIN.."F11", "notioncore.exec_on(_, 'sudo systemctl suspend')"),
+
+    bdoc("Go to a specific client"),
+    kpress(WIN.."space", "mod_query.query_gotoclient(_)"),
 
     bdoc("Query for Lua code to execute.", "lua"),
     kpress(WIN.."J", "mod_query.query_lua(_)"),
@@ -26,7 +32,6 @@ defbindings("WScreen", {
     kpress(WIN.."9", "mod_query.query_workspace(_)"),
 
     bdoc("Query for a client window to go to.", "go"),
-    kpress(WIN.."space", "mod_query.query_gotoclient(_)"),
 
     kpress(WIN.."S", "WScreen.switch_prev(_)"),
     kpress(WIN.."D", "WScreen.switch_next(_)"),
@@ -46,6 +51,11 @@ defbindings("WScreen", {
 
     bdoc("Display the window list menu."),
     mpress("Button2", "mod_menu.pmenu(_, _sub, 'windowlist')"),
+
+    bdoc("Clip peek."),
+    kpress(WIN.."F", "notioncore.exec_on(_, '/home/chris/bin/clip-peek')"),
+    kpress(CWIN.."F", "notioncore.exec_on(_, '/home/chris/bin/clip-swap')"),
+    kpress(SWIN.."F", "notioncore.exec_on(_, '/home/chris/bin/clip-paste')"),
 
     bdoc("Cycle through clipboard"),
     kpress(WIN.."bracketleft", "clipcycle('previous')"),
@@ -67,7 +77,6 @@ defbindings("WScreen", {
 
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(WIN.."W", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
-    kpress(CWIN.."Tab", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
 
     bdoc("Raise focused object, if possible.", "raise"),
     kpress(CALT.."R", "WRegion.rqorder(_chld, 'front')",
@@ -80,7 +89,7 @@ defbindings("WScreen", {
 defbindings("WClientWin", {
     bdoc("Nudge the client window. This might help with some "..
       "programs' resizing problems.", "nudge"),
-    kpress_wait(CWIN.."L", "WClientWin.nudge(_)"),
+    kpress_wait(WIN.."L", "WClientWin.nudge(_)"),
 
     bdoc("Kill client owning the client window.", "kill"),
     kpress(WIN.."C", "WClientWin.kill(_)"),
@@ -119,24 +128,16 @@ defbindings("WMPlex.toplevel", {
     kpress("XF86MonBrightnessUp", "notioncore.exec_on(_, 'exec brightnessctl set 5+')"),
     
     kpress(WIN.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
-    kpress(WIN.."Q", "notioncore.exec_on(_, XTERM or 'exec xterm -bg rgb:0/0/0 -fg white')"),
+    kpress(WIN.."Q", "notioncore.exec_on(_, 'exec alacritty')"),
+    kpress(WIN.."V", "notioncore.exec_on(_, 'exec /home/chris/code/llm-magic/llm-magic')"),
 
     bdoc("Clear all tags.", "-tags"),
     kpress(CWIN.."T", "ioncore.clear_tags()"),
-    bdoc("Query for keybinding.", "qkb"),
-    kpress(WIN.."h", "mod_query.query_binding(_, _sub)"),
-
-    bdoc("Query for command line to execute.", "run"),
-    kpress(WIN.."G", "mod_query.query_exec(_)"),
-
-    bdoc("Query for Lua code to execute.", "lua"),
-    kpress(WIN.."J", "mod_query.query_lua(_)"),
 
     bdoc("Query for workspace to go to or create a new one.", "+ws"),
     kpress(WIN.."9", "mod_query.query_workspace(_)"),
 
     bdoc("Query for a client window to go to.", "go"),
-    kpress(WIN.."space", "mod_query.query_gotoclient(_)"),
 
     bdoc("Display context menu.", "ctx"),
     kpress(WIN.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),

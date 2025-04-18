@@ -28,6 +28,7 @@ CWIN="Control+Mod4+"
 CALT="Control+Mod1+"
 META="Control+Mod1+"
 WIN="Mod4+"
+SWIN="Shift+Mod4+"
 MPV="Control+Mod4+"
 include_file_if_exists("cfg_overrides")
 
