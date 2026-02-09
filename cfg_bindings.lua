@@ -84,6 +84,16 @@ defbindings("WScreen", {
     bdoc("Raise focused object, if possible.", "raise"),
     kpress(CALT.."R", "WRegion.rqorder(_chld, 'front')",
            "_chld:non-nil"),
+
+     -- MRU cycling for floating frames (alt+tab equivalent)
+     bdoc("MRU cycle to next window"),
+     kpress(SWIN.."Right", "mru_cycle_next(_)"),
+     bdoc("MRU cycle to previous window"),
+     kpress(SWIN.."Left", "mru_cycle_prev(_)"),
+     bdoc("MRU cycle to next window (alternative)"),
+     kpress(SWIN.."Down", "mru_cycle_next(_)"),
+     bdoc("MRU cycle to previous window (alternative)"),
+     kpress(SWIN.."Up", "mru_cycle_prev(_)"),
 })
 
 -- Client window bindings
@@ -237,15 +247,6 @@ defbindings("WFrame.floating", {
 
     mdrag("Button1@tab", "WFrame.p_move(_)"),
     
-     -- MRU cycling for floating frames (alt+tab equivalent)
-     bdoc("MRU cycle to next window"),
-     kpress(WIN.."Right", "mru_cycle_next(_)"),
-     bdoc("MRU cycle to previous window"),
-     kpress(WIN.."Left", "mru_cycle_prev(_)"),
-     bdoc("MRU cycle to next window (alternative)"),
-     kpress(WIN.."Down", "mru_cycle_next(_)"),
-     bdoc("MRU cycle to previous window (alternative)"),
-     kpress(WIN.."Up", "mru_cycle_prev(_)"),
  })
 
 
