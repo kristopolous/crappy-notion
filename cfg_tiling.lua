@@ -11,6 +11,8 @@ defbindings("WTiling", {
     kpress(MPV..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
     kpress(CALT..'minus', "WTiling.split_at(_, _sub, 'bottom', true)"),
     
+    kpress(WIN.."P", "WTiling.transpose_at(_, _sub)"),
+    kpress(WIN.."L", "WTiling.flip_at(_, _sub)"),
     bdoc("Go to frame above/below/right/left of current frame."),
     kpress(CALT.."P", "ioncore.goto_next(_sub, 'up', {no_ascend=_})"),
     kpress(CALT.."N", "ioncore.goto_next(_sub, 'down', {no_ascend=_})"),
@@ -28,7 +30,6 @@ defbindings("WTiling", {
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(CWIN.."Tab", "WFrame.switch_prev(_)"),
     bdoc("flip frame", "<-frame"),
-    kpress(WIN.."L", "WTiling.flip_at(_, _sub)"),
 
     submap(CALT.."K", {
         kpress("Tab", "ioncore.goto_next(_sub, 'left')"),

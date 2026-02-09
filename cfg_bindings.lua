@@ -37,6 +37,9 @@ defbindings("WScreen", {
     kpress(WIN.."D", "WScreen.switch_next(_)"),
     kpress(CALT.."BackSpace", "ioncore.restart()"),
 
+    bdoc("Query for a binding", "go"),
+    kpress(WIN.."h", "mod_query.query_binding(_, _sub)"),
+
     kpress(WIN.."Left", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
     kpress(WIN.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
     kpress(WIN.."Up", "ioncore.goto_next(_chld, 'up')", "_chld:non-nil"),
@@ -89,7 +92,7 @@ defbindings("WScreen", {
 defbindings("WClientWin", {
     bdoc("Nudge the client window. This might help with some "..
       "programs' resizing problems.", "nudge"),
-    kpress_wait(WIN.."L", "WClientWin.nudge(_)"),
+    -- kpress_wait(WIN.."L", "WClientWin.nudge(_)"),
 
     bdoc("Kill client owning the client window.", "kill"),
     kpress(WIN.."C", "WClientWin.kill(_)"),
@@ -97,6 +100,9 @@ defbindings("WClientWin", {
 
     bdoc("Send next key press to the client window. "..
          "Some programs may not allow this by default.", "quote"),
+
+    --kpress(WIN.."Button1", ""),  -- Dummy binding but forces event processing
+    --menter("ioncore.goto_current(_sub)"),  -- The fix: handle enter
 })
 
 -- Client window group bindings
@@ -124,12 +130,12 @@ defbindings("WMPlex", {
 -- Frames for transient windows ignore this bindmap
 defbindings("WMPlex.toplevel", {
     bdoc("Toggle tag of current object.", "tag"),
-    kpress("XF86MonBrightnessDown", "notioncore.exec_on(_, 'exec brightnessctl set 5-')"),
-    kpress("XF86MonBrightnessUp", "notioncore.exec_on(_, 'exec brightnessctl set 5+')"),
+    kpress("XF86MonBrightnessDown", "notioncore.exec_on(_, 'exec brightnessctl set 5%-')"),
+    kpress("XF86MonBrightnessUp", "notioncore.exec_on(_, 'exec brightnessctl set 5%+')"),
     
     kpress(WIN.."T", "WRegion.set_tagged(_sub, 'toggle')", "_sub:non-nil"),
     kpress(WIN.."Q", "notioncore.exec_on(_, 'exec alacritty')"),
-    kpress(WIN.."V", "notioncore.exec_on(_, 'exec /home/chris/code/llm-magic/llm-magic')"),
+    kpress(WIN.."V", "notioncore.exec_on(_, 'exec /home/chris/bin/llm-magic')"),
 
     bdoc("Clear all tags.", "-tags"),
     kpress(CWIN.."T", "ioncore.clear_tags()"),
@@ -140,7 +146,8 @@ defbindings("WMPlex.toplevel", {
     bdoc("Query for a client window to go to.", "go"),
 
     bdoc("Display context menu.", "ctx"),
-    kpress(WIN.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
+    kpress(WIN.."M", "mod_menu.grabmenu(_, _sub, 'focuslist', {sizepolicy='center'})"),
+    --kpress(WIN.."M", "mod_menu.menu(_, _sub, 'ctxmenu')"),
     bdoc("Query for context menu.", "qctx"),
     kpress(CWIN.."M", "mod_query.query_menu(_, _sub, 'ctxmenu', 'Context menu:')"),
 
@@ -229,7 +236,17 @@ defbindings("WFrame.floating", {
     --mclick(CALT.."Button3", "WRegion.rqorder(_, 'back')"),
 
     mdrag("Button1@tab", "WFrame.p_move(_)"),
-})
+    
+     -- MRU cycling for floating frames (alt+tab equivalent)
+     bdoc("MRU cycle to next window"),
+     kpress(WIN.."Right", "mru_cycle_next(_)"),
+     bdoc("MRU cycle to previous window"),
+     kpress(WIN.."Left", "mru_cycle_prev(_)"),
+     bdoc("MRU cycle to next window (alternative)"),
+     kpress(WIN.."Down", "mru_cycle_next(_)"),
+     bdoc("MRU cycle to previous window (alternative)"),
+     kpress(WIN.."Up", "mru_cycle_prev(_)"),
+ })
 
 
 -- WMoveresMode context bindings

@@ -30,10 +30,10 @@ META="Control+Mod1+"
 WIN="Mod4+"
 SWIN="Shift+Mod4+"
 MPV="Control+Mod4+"
-include_file_if_exists("cfg_overrides")
+-- include_file_if_exists("cfg_overrides")
 
 -- Terminal emulator.
-XTERM="uxterm"
+XTERM="alacritty"
 -- Edit file command, mod_query.query_editfile
 --EDIT_COMMAND="run-mailcap --action=edit"
 -- View file command, mod_query.query_viewfile
@@ -93,7 +93,7 @@ ioncore.set{
     -- Time (in ms) that a window has to be focussed in order to be added to the
     -- focus list. Set this to <=0 (or comment it out) to disable the logic, and
     -- update the focus list immediately.
-    focuslist_insert_delay=1,
+    focuslist_insert_delay=100,
 
     switchto=true,
     -- If enabled, activity notifiers are displayed on ALL the screens, not just
@@ -121,6 +121,7 @@ dopath("bookmarks")
 
 dopath("look")
 dopath("mod_mpv")
+dopath("mod_mru")
 
 -- include this last to give it precedence.
 dopath("cfg_bindings")
