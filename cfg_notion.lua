@@ -100,6 +100,7 @@ ioncore.set{
     -- the screen that contains the window producing the notification. This is
     -- only relevant on multi-head setups. By default this is disabled.
     --activity_notification_on_all_screens=false,
+    screen_notify=false,
 
     -- If enabled, a workspace indicator comes up at the bottom-left of the
     -- screen when a new workspace is selected. This indicator stays active for

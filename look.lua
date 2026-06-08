@@ -89,10 +89,10 @@ de.defstyle("frame-transient", {
     padding_pixels = 1,
 })
 
-de.defstyle("actnotify", {
-    background_colour = "#901010",
-    foreground_colour = "#eeeeee",
-})
+-- de.defstyle("actnotify", {
+--     background_colour = "#901010",
+--     foreground_colour = "#eeeeee",
+-- })
 
 
 de.defstyle("tab", {
