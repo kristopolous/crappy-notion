@@ -1,5 +1,7 @@
 ### My [notion configuration](https://github.com/raboof/notion)
 
+This actually works on a [fork of mine](https://github.com/kristopolous/notion.git)
+
 ## Documentation addendum
 
  * "bar" can be 
