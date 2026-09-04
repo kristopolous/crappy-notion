@@ -85,6 +85,15 @@ ioncore.set{
     -- mouse, and to "disabled" otherwise.
     mousefocus="sloppy",
 
+    -- [pointer-focus mode] (custom, non-upstream)
+    -- When enabled, if the currently-focused window is removed/unmapped, focus
+    -- goes to the window currently under the pointer instead of falling back to
+    -- the stacking/focus-history order. Requires a notion build that includes
+    -- the pointer_focus mode (C infra kept for mergeability; auto-behaviour
+    -- reverted because it caused window reordering on new-window creation).
+    -- Use CWIN+Button1 to focus-under-cursor and CWIN+F12 as the hotkey.
+    pointer_focus=false,
+
     -- Controls Notion's reaction to stacking requests sent by clients. Set to
     -- "ignore" to ignore these requests, and to "activate" to set the activity
     -- flag on a window that requests to be stacked "Above".

@@ -11,6 +11,8 @@ function clipcycle(dir)
 end
 
 defbindings("WScreen", {
+    bdoc("Focus the window currently under the mouse pointer.", "foc-ptr"),
+    kpress(CWIN.."F12", "ioncore.focus_under_pointer()"),
     kpress("Print",  "notioncore.exec_on(_, 'exec flameshot gui')"),
     kpress(WIN.."B", "mod_menu.menu(_, _sub, 'focuslist')"),
     bdoc("Switch to previous object (workspace, full screen client window) "..
@@ -169,6 +171,8 @@ defbindings("WMPlex.toplevel", {
 -- frame bindings are found in some modules' configuration files.
 
 defbindings("WFrame", {
+    bdoc("Ctrl+Win+click: focus the window under the pointer.", "foc-click"),
+    mpress(CWIN.."Button1", "WRegion.goto_focus(_sub)"),
     bdoc("Maximize the frame horizontally.", "hmax"),
     kpress(CALT.."H", "WFrame.maximize_horiz(_)"),
     bdoc("Maximize the frame vertically.", "vmax"),
@@ -183,6 +187,9 @@ defbindings("WFrame", {
 
     bdoc("Begin move/resize mode.", "resize"),
     kpress(WIN.."R", "WFrame.begin_kbresize(_)"),
+
+    bdoc("Begin move-only mode for a floating window.", "move"),
+    kpress(WIN.."I", "WFrame.begin_kbmove(_)"),
 
     bdoc("Switch the frame to display the object indicated by the tab."),
     mclick("Button1@tab", "WFrame.p_switch_tab(_)"),
@@ -287,6 +294,12 @@ defbindings("WMoveresMode", {
     kpress(CALT.."B",     "WMoveresMode.move(_, 1, 0)"),
     kpress(CALT.."P",     "WMoveresMode.move(_, 0,-1)"),
     kpress(CALT.."N",     "WMoveresMode.move(_, 0, 1)"),
+
+    bdoc("Nudge move by 50px (j/k/l/i = left/down/right/up)."),
+    kpress("J", "WMoveresMode.nudge(_, -50, 0)"),
+    kpress("K", "WMoveresMode.nudge(_, 0, 50)"),
+    kpress("L", "WMoveresMode.nudge(_, 50, 0)"),
+    kpress("I", "WMoveresMode.nudge(_, 0, -50)"),
 })
 
 -- Main menu
