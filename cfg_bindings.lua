@@ -10,6 +10,60 @@ function clipcycle(dir)
   ioncore.exec('copyq popup clipboard "$(copyq clipboard)" 1000')
 end
 
+-- Spatial focus in direction dir, purely by screen location (top-left).
+-- Binding context for a WScreen keybinding:
+--   _chld = _sub = the workspace (WGroupWS), whose geom is (0,0).
+-- The currently focused frame is sub:current() (a WFrame managed by the
+-- workspace). Its siblings are sub:managed_i.
+-- For each direction we consider only frames strictly on that side of the
+-- focused frame's top-left (e.g. "right" means g.x > cg.x), then among them
+-- take the one with the smallest distance (closest). Exact same-position
+-- frames are ignored (no location difference), so there is no loop and no
+-- other bookkeeping. Navigating between separated frames is reversible: the
+-- closest frame one way is the closest frame back.
+function spatial_goto(_chld, _sub, dir)
+  local log = io.open("/tmp/spatial.log", "a")
+  log:write("spatial_goto called dir="..tostring(dir).."\n")
+
+  local ws = _sub
+  local ref = ws:current()        -- focused frame managed by the workspace
+  local cg = ref:geom()           -- focused frame's top-left
+
+  local best, bestd
+  local count = 0
+
+  ws:managed_i(function(f)
+    local g = f:geom()
+    if f ~= ref and not (g.x == cg.x and g.y == cg.y) then
+      count = count + 1
+      local d
+      if     dir=="right" and g.x >  cg.x then d = g.x - cg.x
+      elseif dir=="left"  and g.x <  cg.x then d = cg.x - g.x
+      elseif dir=="down"  and g.y >  cg.y then d = g.y - cg.y
+      elseif dir=="up"    and g.y <  cg.y then d = cg.y - g.y
+      end
+      if d then
+        -- tie-break among equal distances: prefer the smaller perpendicular
+        local perp = (dir=="right" or dir=="left") and g.y or g.x
+        if best == nil or d < bestd or (d == bestd and perp < bestperp) then
+          best, bestd, bestperp = f, d, perp
+        end
+      end
+    end
+    return true
+  end)
+
+  if best then
+    local bg = best:geom()
+    log:write("  -> focus "..tostring(best).." at "..bg.x..","..bg.y..
+              "  (candidates="..count..", cur="..cg.x..","..cg.y..")\n")
+    best:goto_focus()
+  else
+    log:write("  -> NO TARGET (candidates="..count..")\n")
+  end
+  log:close()
+end
+
 defbindings("WScreen", {
     bdoc("Focus the window currently under the mouse pointer.", "foc-ptr"),
     kpress(CWIN.."F12", "ioncore.focus_under_pointer()"),
@@ -42,10 +96,10 @@ defbindings("WScreen", {
     bdoc("Query for a binding", "go"),
     kpress(WIN.."h", "mod_query.query_binding(_, _sub)"),
 
-    kpress(WIN.."Left", "ioncore.goto_next(_chld, 'left')", "_chld:non-nil"),
-    kpress(WIN.."Right", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
-    kpress(WIN.."Up", "ioncore.goto_next(_chld, 'up')", "_chld:non-nil"),
-    kpress(WIN.."Down", "ioncore.goto_next(_chld, 'down')", "_chld:non-nil"),
+    kpress(WIN.."Left", "spatial_goto(_chld, _sub, 'left')", "_chld:non-nil"),
+    kpress(WIN.."Right", "spatial_goto(_chld, _sub, 'right')", "_chld:non-nil"),
+    kpress(WIN.."Up", "spatial_goto(_chld, _sub, 'up')", "_chld:non-nil"),
+    kpress(WIN.."Down", "spatial_goto(_chld, _sub, 'down')", "_chld:non-nil"),
 
     bdoc("Create a new workspace of chosen default type."),
     kpress(WIN.."equal", "ioncore.create_ws(_)"),
