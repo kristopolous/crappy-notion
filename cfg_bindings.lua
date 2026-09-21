@@ -22,46 +22,183 @@ end
 -- other bookkeeping. Navigating between separated frames is reversible: the
 -- closest frame one way is the closest frame back.
 function spatial_goto(_chld, _sub, dir)
-  local log = io.open("/tmp/spatial.log", "a")
-  log:write("spatial_goto called dir="..tostring(dir).."\n")
-
   local ws = _sub
-  local ref = ws:current()        -- focused frame managed by the workspace
-  local cg = ref:geom()           -- focused frame's top-left
+  local ref = ws:current()    -- WFrame (floating) or WTiling (tiled ws)
+  local mgr, frame
+  if ref ~= nil and obj_typename(ref) == "WTiling" then
+    -- tiled: iterate the leaf frames managed by the tiling container
+    mgr = ref
+    frame = ref:current() or ref
+  else
+    -- floating: frames are managed directly by the workspace
+    mgr = ws
+    frame = ref
+  end
+  if frame == nil then return nil end
 
-  local best, bestd
-  local count = 0
+  -- the tiling also manages its status display; only actual frames navigate
+  local function isframe(m)
+    return (mgr == ws) or (obj_typename(m) == "WFrame")
+  end
 
-  ws:managed_i(function(f)
+  local cg = frame:geom()     -- focused frame's top-left
+
+  local log = io.open("/tmp/spatial2.log", "a")
+  if log then
+    log:write(string.format("dir=%s frame=%s geom=%d,%d mgr=%s\n",
+      dir, tostring(frame), cg.x, cg.y, tostring(mgr)))
+  end
+
+  -- stack pass: frames sharing the focused frame's exact top-left form a
+  -- stack. Co-located frames have no spatial order, so any arrow cycles the
+  -- stack instead (right/down = next, left/up = previous) -- reach every
+  -- window even when they all sit at e.g. (0,0).
+  local stack = {}
+  mgr:managed_i(function(f)
+    if not isframe(f) then return true end
     local g = f:geom()
-    if f ~= ref and not (g.x == cg.x and g.y == cg.y) then
-      count = count + 1
-      local d
-      if     dir=="right" and g.x >  cg.x then d = g.x - cg.x
-      elseif dir=="left"  and g.x <  cg.x then d = cg.x - g.x
-      elseif dir=="down"  and g.y >  cg.y then d = g.y - cg.y
-      elseif dir=="up"    and g.y <  cg.y then d = cg.y - g.y
-      end
-      if d then
-        -- tie-break among equal distances: prefer the smaller perpendicular
-        local perp = (dir=="right" or dir=="left") and g.y or g.x
-        if best == nil or d < bestd or (d == bestd and perp < bestperp) then
-          best, bestd, bestperp = f, d, perp
-        end
-      end
-    end
+    if g.x == cg.x and g.y == cg.y then stack[#stack + 1] = f end
     return true
   end)
 
-  if best then
-    local bg = best:geom()
-    log:write("  -> focus "..tostring(best).." at "..bg.x..","..bg.y..
-              "  (candidates="..count..", cur="..cg.x..","..cg.y..")\n")
-    best:goto_focus()
+  local best
+  local stacked = false
+  if #stack > 1 then
+    stacked = true
+    local step = (dir == "right" or dir == "down") and 1 or -1
+    for i, f in ipairs(stack) do
+      if f == frame then
+        local j = ((i - 1 + step) % #stack) + 1
+        best = stack[j]
+        if log then
+          log:write(string.format("  STACK#%d -> %s\n",
+            #stack, tostring(best)))
+        end
+        break
+      end
+    end
   else
-    log:write("  -> NO TARGET (candidates="..count..")\n")
+    local bestd, bestperp
+    local function pick(f, g, d, perp)
+      if best == nil or d < bestd or (d == bestd and perp < bestperp) then
+        best, bestd, bestperp = f, d, perp
+        if log then
+          log:write(string.format("  cand=%s geom=%d,%d d=%d\n",
+            tostring(f), g.x, g.y, d))
+        end
+      end
+    end
+
+    -- natural pass: frames strictly ahead in the direction of travel
+    mgr:managed_i(function(f)
+      if not isframe(f) then return true end
+      local g = f:geom()
+      if f ~= frame and not (g.x == cg.x and g.y == cg.y) then
+        local d, perp
+        if     dir=="right" and g.x >  cg.x then d, perp = g.x - cg.x, math.abs(g.y - cg.y)
+        elseif dir=="left"  and g.x <  cg.x then d, perp = cg.x - g.x, math.abs(g.y - cg.y)
+        elseif dir=="down"  and g.y >  cg.y then d, perp = g.y - cg.y, math.abs(g.x - cg.x)
+        elseif dir=="up"    and g.y <  cg.y then d, perp = cg.y - g.y, math.abs(g.x - cg.x)
+        end
+        if d then pick(f, g, d, perp) end
+      end
+      return true
+    end)
+
+    -- wrap pass: nothing ahead, so cross the axis seam -- cycle around to the
+    -- far edge (top<->bottom, left<->right). Treat the plane like a torus:
+    -- the wrapped target is the frame furthest opposite along the axis
+    -- (smallest x for right, largest x for left, smallest y for down, largest
+    -- y for up), then tie-break by perpendicular distance from the focus.
+    if best == nil then
+      mgr:managed_i(function(f)
+        if not isframe(f) then return true end
+        local g = f:geom()
+        if f ~= frame and not (g.x == cg.x and g.y == cg.y) then
+          local w, perp
+          if     dir=="right" and g.x <  cg.x then w, perp =    g.x, math.abs(g.y - cg.y)
+          elseif dir=="left"  and g.x >  cg.x then w, perp =   -g.x, math.abs(g.y - cg.y)
+          elseif dir=="down"  and g.y <  cg.y then w, perp =    g.y, math.abs(g.x - cg.x)
+          elseif dir=="up"    and g.y >  cg.y then w, perp =   -g.y, math.abs(g.x - cg.x)
+          end
+          if w then pick(f, g, w, perp) end
+        end
+        return true
+      end)
+    end
   end
-  log:close()
+
+  if log then
+    log:write(string.format("  best=%s\n", best and tostring(best) or "NONE"))
+    log:close()
+  end
+
+  if best then
+    if spatial_goto_notify then
+      local tgt = best:current():current()
+      spatial_goto_notify(dir, frame, tgt, best)
+    end
+    best:goto_focus()
+    if stacked then best:rqorder("front") end
+  end
+end
+
+-- Jump `count` steps through the focus history (inactive client windows).
+-- direction > 0 walks forward, < 0 walks backward. Pure-Lua replacement for
+-- the fork's ioncore.goto_hop.
+function goto_hop(count, direction)
+  local hist = {}
+  ioncore.focushistory_i(function(reg)
+    if not reg:is_active() then hist[#hist + 1] = reg end
+    return true
+  end)
+  if direction < 0 then
+    local rev = {}
+    for i = #hist, 1, -1 do rev[#rev + 1] = hist[i] end
+    hist = rev
+  end
+  if #hist == 0 then return nil end
+  local target = hist[count] or hist[#hist]
+  if target then target:goto_focus() end
+  return target
+end
+
+-- Move the focused frame by an exact number of pixels (dx, dy). Works on the
+-- focused floating frame via rqgeom. Pure-Lua replacement for
+-- WMoveresMode.nudge (which only existed inside the C modal move mode).
+function nudge_frame(dx, dy)
+  local c = notioncore.current()
+  if not c then return end
+  local f = c
+  while f and not tostring(f):find("WFrame") do f = f:parent() end
+  if not f then return end
+  local g = f:geom()
+  f:rqgeom({x = g.x + dx, y = g.y + dy})
+end
+
+-- Pure-Lua move-only mode, replacing WFrame.begin_kbmove. WIN+I toggles the
+-- mode; while it is on, the arrow keys move the focused floating frame by
+-- 50px each press. Escape or WIN+I turns it off. The arrow bindings are added
+-- to / removed from the WFrame bindmap dynamically so keys are only grabbed
+-- while the mode is active (terminals keep their arrows otherwise).
+local fr_move_active = false
+function begin_frame_move_mode()
+  fr_move_active = not fr_move_active
+  if fr_move_active then
+    defbindings("WFrame", {
+        kpress("Left",   "nudge_frame(-50, 0)"),
+        kpress("Right",  "nudge_frame(50, 0)"),
+        kpress("Up",     "nudge_frame(0, -50)"),
+        kpress("Down",   "nudge_frame(0, 50)"),
+        kpress("Escape", "begin_frame_move_mode()"),
+    })
+    ioncore.warn("MOVE MODE ON (arrows move frame; WIN+I/Escape off)")
+  else
+    for _, k in ipairs({"Left", "Right", "Up", "Down", "Escape"}) do
+      defbindings("WFrame", { kpress(k, nil) })
+    end
+    ioncore.warn("MOVE MODE OFF")
+  end
 end
 
 defbindings("WScreen", {
@@ -131,7 +268,7 @@ defbindings("WScreen", {
     bdoc("Backward-circulate focus.", "<-frame"),
     kpress(CWIN.."Tab", "ioncore.goto_next(_chld, 'left')",
            "_chld:non-nil"),
-    kpress(WIN.."Tab", "ioncore.goto_hop(1, 1)"), --ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
+    kpress(WIN.."Tab", "goto_hop(1, 1)"), --ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
     kpress(CALT.."Tab", "ioncore.goto_next(_chld, 'right')", "_chld:non-nil"),
 
     bdoc("Backward-circulate focus.", "<-frame"),
@@ -243,7 +380,7 @@ defbindings("WFrame", {
     kpress(WIN.."R", "WFrame.begin_kbresize(_)"),
 
     bdoc("Begin move-only mode for a floating window.", "move"),
-    kpress(WIN.."I", "WFrame.begin_kbmove(_)"),
+    kpress(WIN.."I", "begin_frame_move_mode()"),
 
     bdoc("Switch the frame to display the object indicated by the tab."),
     mclick("Button1@tab", "WFrame.p_switch_tab(_)"),
@@ -350,10 +487,10 @@ defbindings("WMoveresMode", {
     kpress(CALT.."N",     "WMoveresMode.move(_, 0, 1)"),
 
     bdoc("Nudge move by 50px (j/k/l/i = left/down/right/up)."),
-    kpress("J", "WMoveresMode.nudge(_, -50, 0)"),
-    kpress("K", "WMoveresMode.nudge(_, 0, 50)"),
-    kpress("L", "WMoveresMode.nudge(_, 50, 0)"),
-    kpress("I", "WMoveresMode.nudge(_, 0, -50)"),
+    kpress("J", "nudge_frame(-50, 0)"),
+    kpress("K", "nudge_frame(0, 50)"),
+    kpress("L", "nudge_frame(50, 0)"),
+    kpress("I", "nudge_frame(0, -50)"),
 })
 
 -- Main menu
