@@ -1,21 +1,5 @@
 ### My [notion configuration](https://github.com/raboof/notion)
 
-Pure Lua on top of stock notion, no C fork.
-
-## Features
-
- * **WIN+arrows**: spatial focus. Goes to the nearest window in that direction by top-left position.
-   * Floating: windows stacked at the same spot are walked one by one, and it wraps at the screen edge. Left/right undo each other.
-   * Tiled: moves to the neighbouring frame and stops at the edge.
- * **WIN+P**: floating move mode. Arrows snap the top-left to a 6x6 screen grid (0/6 ... 5/6).
- * **WIN+R**: resize mode.
-   * Floating: arrows snap the right/bottom edge to the same 6x6 grid (right/down grow, left/up shrink).
-   * Tiled: arrows move the divider 50px.
- * **WIN+I**: floating move mode, 50px per arrow press.
- * **WIN+1**: maximize the frame to the screen.
-
-In the modes: Return, Escape or the same WIN+key exits. The mode stays on the window it started on, and sloppy mouse focus is paused so windows passing under the pointer don't steal it.
-
 ## Documentation addendum
 
  * "bar" can be 

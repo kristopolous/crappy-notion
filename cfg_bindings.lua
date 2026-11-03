@@ -141,6 +141,76 @@ local MODE_KEYS = {"Left", "Right", "Up", "Down", "Return", "Escape"}
 -- AnyModifier: the keys work whether or not WIN is still held down
 local function mode_key(k) return "AnyModifier+" .. k end
 
+-- Monitor layout. Notion here runs as one big screen spanning every monitor
+-- (mod_xrandr isn't loaded), so the 6x6 grid is computed per monitor from
+-- `xrandr --listmonitors`. Refreshed each time a mode starts.
+local monitor_cache = nil
+
+local function read_monitors()
+  local mons = {}
+  local p = io.popen("xrandr --listmonitors 2>/dev/null")
+  if p then
+    local out = p:read("*a") or ""
+    p:close()
+    for w, h, x, y in out:gmatch("(%d+)/%d+x(%d+)/%d+%+(%-?%d+)%+(%-?%d+)") do
+      mons[#mons + 1] = {x = tonumber(x), y = tonumber(y),
+                         w = tonumber(w), h = tonumber(h)}
+    end
+  end
+  return mons
+end
+
+local function monitors(f)
+  if not monitor_cache or #monitor_cache == 0 then
+    monitor_cache = read_monitors()
+  end
+  if #monitor_cache > 0 then return monitor_cache end
+  local sg = f:screen_of():geom()
+  return {{x = sg.x, y = sg.y, w = sg.w, h = sg.h}}
+end
+
+-- the monitor whose horizontal span holds point px (else the nearest one)
+local function monitor_at(mons, px, py)
+  local best, bd
+  for _, m in ipairs(mons) do
+    local dx = math.max(m.x - px, 0, px - (m.x + m.w))
+    local dy = math.max(m.y - py, 0, py - (m.y + m.h))
+    local d = dx + dy
+    if best == nil or d < bd then best, bd = m, d end
+  end
+  return best
+end
+
+-- grid lines k/6 (k from k0 to k1) along one axis. Horizontal lines come from
+-- every monitor, so moving right walks across monitors; vertical lines come
+-- from the monitor the window is on.
+local function grid_lines(f, horiz, k0, k1)
+  local mons = monitors(f)
+  local g = f:geom()
+  local sg = f:screen_of():geom()
+  local lines, seen = {}, {}
+  local function add(v) if not seen[v] then seen[v] = true; lines[#lines + 1] = v end end
+  if horiz then
+    for _, m in ipairs(mons) do
+      for k = k0, k1 do add(m.x - sg.x + math.floor(k * m.w / 6 + 0.5)) end
+    end
+  else
+    local m = monitor_at(mons, sg.x + g.x + g.w / 2, sg.y + g.y + g.h / 2)
+    for k = k0, k1 do add(m.y - sg.y + math.floor(k * m.h / 6 + 0.5)) end
+  end
+  table.sort(lines)
+  return lines
+end
+
+-- next grid line after pos in the direction of travel (nil if none)
+local function next_line(lines, pos, forward)
+  if forward then
+    for i = 1, #lines do if lines[i] > pos then return lines[i] end end
+  else
+    for i = #lines, 1, -1 do if lines[i] < pos then return lines[i] end end
+  end
+end
+
 local frame_mode_actions = {
   move50 = function(f, dir)
     local g = f:geom()
@@ -148,21 +218,14 @@ local frame_mode_actions = {
     local dy = (dir == "up" and -MOVE_STEP) or (dir == "down" and MOVE_STEP) or 0
     f:rqgeom({x = g.x + dx, y = g.y + dy})
   end,
-  -- snap the top-left to the next grid line 0/6, 1/6 ... 5/6 of the screen
-  -- in that direction (a grid for floating windows, not a relative step)
+  -- snap the top-left to the next grid line (0/6 ... 5/6 of a monitor)
+  -- in that direction: a grid for floating windows, not a relative step
   move6 = function(f, dir)
-    local g, sg = f:geom(), f:screen_of():geom()
+    local g = f:geom()
     local horiz = (dir == "left" or dir == "right")
-    local size = horiz and sg.w or sg.h
-    local pos = horiz and g.x or g.y
-    local k = pos * 6 / size
-    if dir == "right" or dir == "down" then
-      k = math.floor(k + 1e-6) + 1
-    else
-      k = math.ceil(k - 1e-6) - 1
-    end
-    k = math.max(0, math.min(5, k))
-    local v = math.floor(k * size / 6 + 0.5)
+    local fwd = (dir == "right" or dir == "down")
+    local v = next_line(grid_lines(f, horiz, 0, 5), horiz and g.x or g.y, fwd)
+    if v == nil then return end
     if horiz then f:rqgeom({x = v}) else f:rqgeom({y = v}) end
   end,
   shrink = function(f, dir)
@@ -193,23 +256,15 @@ local frame_mode_actions = {
       return
     end
     -- floating: the arrow moves the right/bottom edge to the next line of
-    -- the same 6x6 screen grid WIN+P uses (1/6 ... 6/6). Right/Down grow,
-    -- Left/Up shrink; the top-left stays put (that's WIN+P's job). The edge
-    -- never goes past the window's own left/top edge.
-    local sg = f:screen_of():geom()
+    -- the same per-monitor 6x6 grid WIN+P uses (1/6 ... 6/6). Right/Down
+    -- grow, Left/Up shrink; the top-left stays put (that's WIN+P's job).
+    -- The edge never goes past the window's own left/top edge.
     local horiz = (dir == "left" or dir == "right")
-    local size = horiz and sg.w or sg.h
+    local fwd = (dir == "right" or dir == "down")
     local lo = horiz and g.x or g.y
     local edge = lo + (horiz and g.w or g.h)
-    local k = edge * 6 / size
-    if dir == "right" or dir == "down" then
-      k = math.floor(k + 1e-6) + 1
-    else
-      k = math.ceil(k - 1e-6) - 1
-    end
-    k = math.min(6, k)
-    local v = math.floor(k * size / 6 + 0.5)
-    if v <= lo then return end           -- would collapse the window
+    local v = next_line(grid_lines(f, horiz, 1, 6), edge, fwd)
+    if v == nil or v <= lo then return end
     if horiz then
       f:rqgeom({x = g.x, y = g.y, w = v - g.x, h = g.h})
     else
@@ -234,6 +289,7 @@ function frame_mode_set(name, f)
       frame_mode_target = f
     end
     if not was then
+      monitor_cache = nil   -- re-read the monitor layout
       -- pause sloppy mouse focus while the mode is on
       frame_mode_saved_mf = ioncore.get().mousefocus
       ioncore.set({mousefocus = "disabled"})
