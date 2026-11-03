@@ -148,12 +148,22 @@ local frame_mode_actions = {
     local dy = (dir == "up" and -MOVE_STEP) or (dir == "down" and MOVE_STEP) or 0
     f:rqgeom({x = g.x + dx, y = g.y + dy})
   end,
+  -- snap the top-left to the next grid line 0/6, 1/6 ... 5/6 of the screen
+  -- in that direction (a grid for floating windows, not a relative step)
   move6 = function(f, dir)
     local g, sg = f:geom(), f:screen_of():geom()
-    local sx, sy = math.floor(sg.w / 6), math.floor(sg.h / 6)
-    local dx = (dir == "left" and -sx) or (dir == "right" and sx) or 0
-    local dy = (dir == "up" and -sy) or (dir == "down" and sy) or 0
-    f:rqgeom({x = g.x + dx, y = g.y + dy})
+    local horiz = (dir == "left" or dir == "right")
+    local size = horiz and sg.w or sg.h
+    local pos = horiz and g.x or g.y
+    local k = pos * 6 / size
+    if dir == "right" or dir == "down" then
+      k = math.floor(k + 1e-6) + 1
+    else
+      k = math.ceil(k - 1e-6) - 1
+    end
+    k = math.max(0, math.min(5, k))
+    local v = math.floor(k * size / 6 + 0.5)
+    if horiz then f:rqgeom({x = v}) else f:rqgeom({y = v}) end
   end,
   shrink = function(f, dir)
     local g = f:geom()
