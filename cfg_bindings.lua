@@ -32,10 +32,15 @@ function spatial_goto(_chld, _sub, dir)
   local ref = ws:current()
   if ref == nil then return nil end
 
-  local tiled = obj_typename(ref) == "WTiling"
-  local mgr = tiled and ref or ws
-  local frame = tiled and (ref:current() or ref) or ref
+  -- Start from the frame that really has focus. WTiling:current() and
+  -- ws:current() can be stale (they lag behind the actual focus), which made
+  -- navigation only work in one direction.
+  local frame = ioncore.current()
+  while frame and obj_typename(frame) ~= "WFrame" do frame = frame:manager() end
   if frame == nil then return nil end
+  local mgr = frame:manager()
+  local tiled = mgr ~= nil and obj_typename(mgr) == "WTiling"
+  if mgr == nil then return nil end
 
   local horiz = (dir == "left" or dir == "right")
   local s = (dir == "right" or dir == "down") and 1 or -1
@@ -55,7 +60,7 @@ function spatial_goto(_chld, _sub, dir)
   local function scan(wrap)
     mgr:managed_i(function(f)
       if f == frame then return true end
-      if tiled and obj_typename(f) ~= "WFrame" then return true end
+      if obj_typename(f) ~= "WFrame" then return true end
       local g = f:geom()
       local a, b = horiz and g.x or g.y, horiz and g.y or g.x
       local d = s * (a - ca)
@@ -73,7 +78,8 @@ function spatial_goto(_chld, _sub, dir)
   end
 
   scan(false)
-  if best == nil then scan(true) end
+  -- floating wraps around the screen edge; tiled just stops at the edge
+  if best == nil and not tiled then scan(true) end
 
   local log = io.open("/tmp/spatial2.log", "a")
   if log then
@@ -120,24 +126,26 @@ function nudge_frame(dx, dy)
   f:rqgeom({x = g.x + dx, y = g.y + dy})
 end
 
--- Keyboard modes for floating frames. While a mode is on, the arrows and
--- j/k/l/i (left/down/right/up) call that mode's action on the frame;
+-- Keyboard modes for floating frames. While a mode is on, the arrow keys
+-- call that mode's action on the frame;
 -- Return or Escape (or the same WIN+key again) leaves the mode. The keys are
 -- only bound while a mode is on, so terminals keep them otherwise.
---   move50 (WIN+I): move 50px per press
+--   move50 (WIN+I): move MOVE_STEP px per press
 --   move6  (WIN+P): move 1/6 of the screen per press
 --   shrink (WIN+R): shrink to 2/3 in that direction, holding that edge
 local SHRINK = 2/3
-local MODE_DIRS = {Left="left", J="left", Right="right", L="right",
-                   Up="up", I="up", Down="down", K="down"}
-local MODE_KEYS = {"Left", "Right", "Up", "Down", "J", "K", "L", "I",
-                   "Return", "Escape"}
+local MOVE_STEP = 50
+local TILED_STEP = 50    -- tiled WIN+R: divider moves this many px per press
+local MODE_DIRS = {Left="left", Right="right", Up="up", Down="down"}
+local MODE_KEYS = {"Left", "Right", "Up", "Down", "Return", "Escape"}
+-- AnyModifier: the keys work whether or not WIN is still held down
+local function mode_key(k) return "AnyModifier+" .. k end
 
 local frame_mode_actions = {
   move50 = function(f, dir)
     local g = f:geom()
-    local dx = (dir == "left" and -50) or (dir == "right" and 50) or 0
-    local dy = (dir == "up" and -50) or (dir == "down" and 50) or 0
+    local dx = (dir == "left" and -MOVE_STEP) or (dir == "right" and MOVE_STEP) or 0
+    local dy = (dir == "up" and -MOVE_STEP) or (dir == "down" and MOVE_STEP) or 0
     f:rqgeom({x = g.x + dx, y = g.y + dy})
   end,
   move6 = function(f, dir)
@@ -149,31 +157,84 @@ local frame_mode_actions = {
   end,
   shrink = function(f, dir)
     local g = f:geom()
-    if dir == "left" or dir == "right" then
-      local w = math.floor(g.w * SHRINK)
-      local x = (dir == "right") and (g.x + g.w - w) or g.x
-      f:rqgeom({x = x, y = g.y, w = w, h = g.h})
-    else
-      local h = math.floor(g.h * SHRINK)
-      local y = (dir == "down") and (g.y + g.h - h) or g.y
-      f:rqgeom({x = g.x, y = y, w = g.w, h = h})
+    if f:mode() ~= "floating" then
+      -- tiled: the arrow moves the divider between this frame and its
+      -- neighbour in that direction, by a fixed step, so Left then Right
+      -- puts it back. Uses the right/bottom divider when there is one,
+      -- otherwise the left/top one (frames against the screen edge).
+      local tg = f:manager():geom()
+      local horiz = (dir == "left" or dir == "right")
+      local sign = (dir == "right" or dir == "down") and 1 or -1
+      if horiz then
+        local d = sign * TILED_STEP
+        if g.x + g.w < tg.x + tg.w then
+          f:rqgeom({x = g.x, y = g.y, w = g.w + d, h = g.h})
+        elseif g.x > tg.x then
+          f:rqgeom({x = g.x + d, y = g.y, w = g.w - d, h = g.h})
+        end
+      else
+        local d = sign * TILED_STEP
+        if g.y + g.h < tg.y + tg.h then
+          f:rqgeom({x = g.x, y = g.y, w = g.w, h = g.h + d})
+        elseif g.y > tg.y then
+          f:rqgeom({x = g.x, y = g.y + d, w = g.w, h = g.h - d})
+        end
+      end
+      return
     end
+    local horiz = (dir == "left" or dir == "right")
+    local far = (dir == "right" or dir == "down")   -- hold the far edge
+    local function req(hold_far)
+      if horiz then
+        local w = math.floor(g.w * SHRINK)
+        f:rqgeom({x = hold_far and (g.x + g.w - w) or g.x, y = g.y, w = w, h = g.h})
+      else
+        local h = math.floor(g.h * SHRINK)
+        f:rqgeom({x = g.x, y = hold_far and (g.y + g.h - h) or g.y, w = g.w, h = h})
+      end
+    end
+    req(far)
+    -- tiled frames can't pull away from the screen edge; if nothing changed,
+    -- shrink from the other side instead
+    local n = f:geom()
+    if n.w == g.w and n.h == g.h then req(not far) end
   end,
 }
 
 local frame_mode = nil
+local frame_mode_target = nil      -- the frame the mode was started on
+local frame_mode_saved_mf = nil    -- mousefocus setting to restore on exit
 
-function frame_mode_set(name)
+function frame_mode_set(name, f)
   if name == frame_mode then name = nil end   -- same hotkey toggles off
   local was = frame_mode
   frame_mode = name
-  if name and not was then
-    for _, k in ipairs(MODE_KEYS) do
-      defbindings("WFrame", { kpress(k, "frame_mode_key(_, '"..k.."')") })
+  if name then
+    -- lock onto the frame the mode started on, so moving/resizing it under
+    -- the pointer can't hand the keys to another window
+    if f then
+      while f and obj_typename(f) ~= "WFrame" do f = f:manager() end
+      frame_mode_target = f
     end
-  elseif not name and was then
+    if not was then
+      -- pause sloppy mouse focus while the mode is on
+      frame_mode_saved_mf = ioncore.get().mousefocus
+      ioncore.set({mousefocus = "disabled"})
+      for _, k in ipairs(MODE_KEYS) do
+        defbindings("WFrame", { kpress(mode_key(k), "frame_mode_key(_, '"..k.."')") })
+      end
+    end
+  else
+    frame_mode_target = nil
+    if frame_mode_saved_mf then
+      ioncore.set({mousefocus = frame_mode_saved_mf})
+      frame_mode_saved_mf = nil
+    end
+    -- always unbind on exit, even if our state got out of sync (e.g. after
+    -- a config reload), so the keys can never stay stuck
     for _, k in ipairs(MODE_KEYS) do
-      defbindings("WFrame", { kpress(k, nil) })
+      pcall(defbindings, "WFrame", { kpress(mode_key(k), nil) })
+      pcall(defbindings, "WFrame", { kpress(k, nil) })
     end
   end
   print("frame mode: " .. tostring(name))
@@ -183,19 +244,17 @@ function frame_mode_key(f, key)
   if key == "Return" or key == "Escape" then return frame_mode_set(nil) end
   local act = frame_mode and frame_mode_actions[frame_mode]
   local dir = MODE_DIRS[key]
-  if act and dir and f:mode() == "floating" then act(f, dir) end
+  if not (act and dir) then return end
+  f = frame_mode_target or f
+  if frame_mode == "shrink" or f:mode() == "floating" then act(f, dir) end
 end
 
 -- WIN+I compatibility name
-function begin_frame_move_mode() frame_mode_set("move50") end
+function begin_frame_move_mode(f) frame_mode_set("move50", f) end
 
--- WIN+R: floating frames get the shrink mode, tiled ones the normal resize.
+-- WIN+R: shrink mode, for floating and tiled frames.
 function frame_resize_key(f)
-  if f:mode() == "floating" then
-    frame_mode_set("shrink")
-  else
-    WFrame.begin_kbresize(f)
-  end
+  frame_mode_set("shrink", f)
 end
 
 defbindings("WScreen", {
@@ -377,7 +436,7 @@ defbindings("WFrame", {
     kpress(WIN.."R", "frame_resize_key(_)"),
 
     bdoc("Begin move-only mode for a floating window.", "move"),
-    kpress(WIN.."I", "begin_frame_move_mode()"),
+    kpress(WIN.."I", "begin_frame_move_mode(_)"),
 
     bdoc("Switch the frame to display the object indicated by the tab."),
     mclick("Button1@tab", "WFrame.p_switch_tab(_)"),
@@ -443,7 +502,7 @@ defbindings("WFrame.floating", {
     mdrag("Button1@tab", "WFrame.p_move(_)"),
 
     bdoc("Begin 1/6-screen move mode.", "move6"),
-    kpress(WIN.."P", "frame_mode_set('move6')"),
+    kpress(WIN.."P", "frame_mode_set('move6', _)"),
 
  })
 
@@ -485,12 +544,6 @@ defbindings("WMoveresMode", {
     kpress(CALT.."B",     "WMoveresMode.move(_, 1, 0)"),
     kpress(CALT.."P",     "WMoveresMode.move(_, 0,-1)"),
     kpress(CALT.."N",     "WMoveresMode.move(_, 0, 1)"),
-
-    bdoc("Nudge move by 50px (j/k/l/i = left/down/right/up)."),
-    kpress("J", "nudge_frame(-50, 0)"),
-    kpress("K", "nudge_frame(0, 50)"),
-    kpress("L", "nudge_frame(50, 0)"),
-    kpress("I", "nudge_frame(0, -50)"),
 })
 
 -- Main menu
