@@ -10,136 +10,84 @@ function clipcycle(dir)
   ioncore.exec('copyq popup clipboard "$(copyq clipboard)" 1000')
 end
 
--- Spatial focus in direction dir, purely by screen location (top-left).
--- Binding context for a WScreen keybinding:
---   _chld = _sub = the workspace (WGroupWS), whose geom is (0,0).
--- The currently focused frame is sub:current() (a WFrame managed by the
--- workspace). Its siblings are sub:managed_i.
--- For each direction we consider only frames strictly on that side of the
--- focused frame's top-left (e.g. "right" means g.x > cg.x), then among them
--- take the one with the smallest distance (closest). Exact same-position
--- frames are ignored (no location difference), so there is no loop and no
--- other bookkeeping. Navigating between separated frames is reversible: the
--- closest frame one way is the closest frame back.
+-- Stable sort key per frame: the object's address, fixed for its lifetime.
+-- Used only to order frames that are otherwise tied (e.g. all at 0,0).
+local function frame_key(f)
+  return tonumber(tostring(f):match("0x(%x+)") or "0", 16) or 0
+end
+
+-- Spatial focus in direction dir ("left"/"right"/"up"/"down").
+-- Bound on WScreen: _sub is the workspace. On a floating workspace the
+-- frames are its managed children; on a tiled one, ws:current() is a WTiling.
+--
+-- Rule (floating): along the axis of travel, d = how far ahead a frame is.
+--   * candidates: frames with d > 0, or frames at the exact same spot whose
+--     key is "ahead" (bigger for right/down, smaller for left/up)
+--   * pick the smallest (d, perpendicular distance, key)
+--   * nothing ahead -> wrap to the far side, same ordering
+-- So a pile of frames at the same position is walked one by one and then
+-- left, and every step can be undone by the opposite arrow.
 function spatial_goto(_chld, _sub, dir)
   local ws = _sub
-  local ref = ws:current()    -- WFrame (floating) or WTiling (tiled ws)
-  local mgr, frame
-  if ref ~= nil and obj_typename(ref) == "WTiling" then
-    -- tiled: iterate the leaf frames managed by the tiling container
-    mgr = ref
-    frame = ref:current() or ref
-  else
-    -- floating: frames are managed directly by the workspace
-    mgr = ws
-    frame = ref
-  end
+  local ref = ws:current()
+  if ref == nil then return nil end
+
+  local tiled = obj_typename(ref) == "WTiling"
+  local mgr = tiled and ref or ws
+  local frame = tiled and (ref:current() or ref) or ref
   if frame == nil then return nil end
 
-  -- the tiling also manages its status display; only actual frames navigate
-  local function isframe(m)
-    return (mgr == ws) or (obj_typename(m) == "WFrame")
+  local horiz = (dir == "left" or dir == "right")
+  local s = (dir == "right" or dir == "down") and 1 or -1
+  local cg = frame:geom()
+  local ca, cb = horiz and cg.x or cg.y, horiz and cg.y or cg.x
+  local ck = s * frame_key(frame)
+
+  local best, br
+  local function better(r)
+    if br == nil then return true end
+    for i = 1, 3 do
+      if r[i] ~= br[i] then return r[i] < br[i] end
+    end
+    return false
   end
 
-  local cg = frame:geom()     -- focused frame's top-left
+  local function scan(wrap)
+    mgr:managed_i(function(f)
+      if f == frame then return true end
+      if tiled and obj_typename(f) ~= "WFrame" then return true end
+      local g = f:geom()
+      local a, b = horiz and g.x or g.y, horiz and g.y or g.x
+      local d = s * (a - ca)
+      local perp = math.abs(b - cb)
+      local k = s * frame_key(f)
+      local r
+      if wrap then
+        r = {s * a, perp, k}
+      elseif d > 0 or (not tiled and d == 0 and perp == 0 and k > ck) then
+        r = {d, perp, k}
+      end
+      if r and better(r) then best, br = f, r end
+      return true
+    end)
+  end
+
+  scan(false)
+  if best == nil then scan(true) end
 
   local log = io.open("/tmp/spatial2.log", "a")
   if log then
-    log:write(string.format("dir=%s frame=%s geom=%d,%d mgr=%s\n",
-      dir, tostring(frame), cg.x, cg.y, tostring(mgr)))
-  end
-
-  -- stack pass: frames sharing the focused frame's exact top-left form a
-  -- stack. Co-located frames have no spatial order, so any arrow cycles the
-  -- stack instead (right/down = next, left/up = previous) -- reach every
-  -- window even when they all sit at e.g. (0,0).
-  local stack = {}
-  mgr:managed_i(function(f)
-    if not isframe(f) then return true end
-    local g = f:geom()
-    if g.x == cg.x and g.y == cg.y then stack[#stack + 1] = f end
-    return true
-  end)
-
-  local best
-  local stacked = false
-  if #stack > 1 then
-    stacked = true
-    local step = (dir == "right" or dir == "down") and 1 or -1
-    for i, f in ipairs(stack) do
-      if f == frame then
-        local j = ((i - 1 + step) % #stack) + 1
-        best = stack[j]
-        if log then
-          log:write(string.format("  STACK#%d -> %s\n",
-            #stack, tostring(best)))
-        end
-        break
-      end
-    end
-  else
-    local bestd, bestperp
-    local function pick(f, g, d, perp)
-      if best == nil or d < bestd or (d == bestd and perp < bestperp) then
-        best, bestd, bestperp = f, d, perp
-        if log then
-          log:write(string.format("  cand=%s geom=%d,%d d=%d\n",
-            tostring(f), g.x, g.y, d))
-        end
-      end
-    end
-
-    -- natural pass: frames strictly ahead in the direction of travel
-    mgr:managed_i(function(f)
-      if not isframe(f) then return true end
-      local g = f:geom()
-      if f ~= frame and not (g.x == cg.x and g.y == cg.y) then
-        local d, perp
-        if     dir=="right" and g.x >  cg.x then d, perp = g.x - cg.x, math.abs(g.y - cg.y)
-        elseif dir=="left"  and g.x <  cg.x then d, perp = cg.x - g.x, math.abs(g.y - cg.y)
-        elseif dir=="down"  and g.y >  cg.y then d, perp = g.y - cg.y, math.abs(g.x - cg.x)
-        elseif dir=="up"    and g.y <  cg.y then d, perp = cg.y - g.y, math.abs(g.x - cg.x)
-        end
-        if d then pick(f, g, d, perp) end
-      end
-      return true
-    end)
-
-    -- wrap pass: nothing ahead, so cross the axis seam -- cycle around to the
-    -- far edge (top<->bottom, left<->right). Treat the plane like a torus:
-    -- the wrapped target is the frame furthest opposite along the axis
-    -- (smallest x for right, largest x for left, smallest y for down, largest
-    -- y for up), then tie-break by perpendicular distance from the focus.
-    if best == nil then
-      mgr:managed_i(function(f)
-        if not isframe(f) then return true end
-        local g = f:geom()
-        if f ~= frame and not (g.x == cg.x and g.y == cg.y) then
-          local w, perp
-          if     dir=="right" and g.x <  cg.x then w, perp =    g.x, math.abs(g.y - cg.y)
-          elseif dir=="left"  and g.x >  cg.x then w, perp =   -g.x, math.abs(g.y - cg.y)
-          elseif dir=="down"  and g.y <  cg.y then w, perp =    g.y, math.abs(g.x - cg.x)
-          elseif dir=="up"    and g.y >  cg.y then w, perp =   -g.y, math.abs(g.x - cg.x)
-          end
-          if w then pick(f, g, w, perp) end
-        end
-        return true
-      end)
-    end
-  end
-
-  if log then
-    log:write(string.format("  best=%s\n", best and tostring(best) or "NONE"))
+    log:write(string.format("dir=%s from=%s @%d,%d -> %s\n", dir,
+      tostring(frame), cg.x, cg.y, best and tostring(best) or "NONE"))
     log:close()
   end
 
   if best then
     if spatial_goto_notify then
-      local tgt = best:current():current()
-      spatial_goto_notify(dir, frame, tgt, best)
+      spatial_goto_notify(dir, frame, best:current() and best:current():current(), best)
     end
     best:goto_focus()
-    if stacked then best:rqorder("front") end
+    if not tiled then best:rqorder("front") end
   end
 end
 
@@ -163,41 +111,90 @@ function goto_hop(count, direction)
   return target
 end
 
--- Move the focused frame by an exact number of pixels (dx, dy). Works on the
--- focused floating frame via rqgeom. Pure-Lua replacement for
--- WMoveresMode.nudge (which only existed inside the C modal move mode).
+-- Move the focused frame by an exact number of pixels (dx, dy).
 function nudge_frame(dx, dy)
-  local c = notioncore.current()
-  if not c then return end
-  local f = c
-  while f and not tostring(f):find("WFrame") do f = f:parent() end
+  local f = notioncore.current()
+  while f and obj_typename(f) ~= "WFrame" do f = f:parent() end
   if not f then return end
   local g = f:geom()
   f:rqgeom({x = g.x + dx, y = g.y + dy})
 end
 
--- Pure-Lua move-only mode, replacing WFrame.begin_kbmove. WIN+I toggles the
--- mode; while it is on, the arrow keys move the focused floating frame by
--- 50px each press. Escape or WIN+I turns it off. The arrow bindings are added
--- to / removed from the WFrame bindmap dynamically so keys are only grabbed
--- while the mode is active (terminals keep their arrows otherwise).
-local fr_move_active = false
-function begin_frame_move_mode()
-  fr_move_active = not fr_move_active
-  if fr_move_active then
-    defbindings("WFrame", {
-        kpress("Left",   "nudge_frame(-50, 0)"),
-        kpress("Right",  "nudge_frame(50, 0)"),
-        kpress("Up",     "nudge_frame(0, -50)"),
-        kpress("Down",   "nudge_frame(0, 50)"),
-        kpress("Escape", "begin_frame_move_mode()"),
-    })
-    ioncore.warn("MOVE MODE ON (arrows move frame; WIN+I/Escape off)")
-  else
-    for _, k in ipairs({"Left", "Right", "Up", "Down", "Escape"}) do
+-- Keyboard modes for floating frames. While a mode is on, the arrows and
+-- j/k/l/i (left/down/right/up) call that mode's action on the frame;
+-- Return or Escape (or the same WIN+key again) leaves the mode. The keys are
+-- only bound while a mode is on, so terminals keep them otherwise.
+--   move50 (WIN+I): move 50px per press
+--   move6  (WIN+P): move 1/6 of the screen per press
+--   shrink (WIN+R): shrink to 2/3 in that direction, holding that edge
+local SHRINK = 2/3
+local MODE_DIRS = {Left="left", J="left", Right="right", L="right",
+                   Up="up", I="up", Down="down", K="down"}
+local MODE_KEYS = {"Left", "Right", "Up", "Down", "J", "K", "L", "I",
+                   "Return", "Escape"}
+
+local frame_mode_actions = {
+  move50 = function(f, dir)
+    local g = f:geom()
+    local dx = (dir == "left" and -50) or (dir == "right" and 50) or 0
+    local dy = (dir == "up" and -50) or (dir == "down" and 50) or 0
+    f:rqgeom({x = g.x + dx, y = g.y + dy})
+  end,
+  move6 = function(f, dir)
+    local g, sg = f:geom(), f:screen_of():geom()
+    local sx, sy = math.floor(sg.w / 6), math.floor(sg.h / 6)
+    local dx = (dir == "left" and -sx) or (dir == "right" and sx) or 0
+    local dy = (dir == "up" and -sy) or (dir == "down" and sy) or 0
+    f:rqgeom({x = g.x + dx, y = g.y + dy})
+  end,
+  shrink = function(f, dir)
+    local g = f:geom()
+    if dir == "left" or dir == "right" then
+      local w = math.floor(g.w * SHRINK)
+      local x = (dir == "right") and (g.x + g.w - w) or g.x
+      f:rqgeom({x = x, y = g.y, w = w, h = g.h})
+    else
+      local h = math.floor(g.h * SHRINK)
+      local y = (dir == "down") and (g.y + g.h - h) or g.y
+      f:rqgeom({x = g.x, y = y, w = g.w, h = h})
+    end
+  end,
+}
+
+local frame_mode = nil
+
+function frame_mode_set(name)
+  if name == frame_mode then name = nil end   -- same hotkey toggles off
+  local was = frame_mode
+  frame_mode = name
+  if name and not was then
+    for _, k in ipairs(MODE_KEYS) do
+      defbindings("WFrame", { kpress(k, "frame_mode_key(_, '"..k.."')") })
+    end
+  elseif not name and was then
+    for _, k in ipairs(MODE_KEYS) do
       defbindings("WFrame", { kpress(k, nil) })
     end
-    ioncore.warn("MOVE MODE OFF")
+  end
+  print("frame mode: " .. tostring(name))
+end
+
+function frame_mode_key(f, key)
+  if key == "Return" or key == "Escape" then return frame_mode_set(nil) end
+  local act = frame_mode and frame_mode_actions[frame_mode]
+  local dir = MODE_DIRS[key]
+  if act and dir and f:mode() == "floating" then act(f, dir) end
+end
+
+-- WIN+I compatibility name
+function begin_frame_move_mode() frame_mode_set("move50") end
+
+-- WIN+R: floating frames get the shrink mode, tiled ones the normal resize.
+function frame_resize_key(f)
+  if f:mode() == "floating" then
+    frame_mode_set("shrink")
+  else
+    WFrame.begin_kbresize(f)
   end
 end
 
@@ -377,7 +374,7 @@ defbindings("WFrame", {
     kpress(WIN.."N",   "rename_frame(_)"),
 
     bdoc("Begin move/resize mode.", "resize"),
-    kpress(WIN.."R", "WFrame.begin_kbresize(_)"),
+    kpress(WIN.."R", "frame_resize_key(_)"),
 
     bdoc("Begin move-only mode for a floating window.", "move"),
     kpress(WIN.."I", "begin_frame_move_mode()"),
@@ -444,7 +441,10 @@ defbindings("WFrame.floating", {
     --mclick(CALT.."Button3", "WRegion.rqorder(_, 'back')"),
 
     mdrag("Button1@tab", "WFrame.p_move(_)"),
-    
+
+    bdoc("Begin 1/6-screen move mode.", "move6"),
+    kpress(WIN.."P", "frame_mode_set('move6')"),
+
  })
 
 
