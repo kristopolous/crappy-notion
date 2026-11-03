@@ -132,8 +132,8 @@ end
 -- only bound while a mode is on, so terminals keep them otherwise.
 --   move50 (WIN+I): move MOVE_STEP px per press
 --   move6  (WIN+P): move 1/6 of the screen per press
---   shrink (WIN+R): shrink to 2/3 in that direction, holding that edge
-local SHRINK = 2/3
+--   shrink (WIN+R): floating: right/bottom edge snaps to the 6x6 grid;
+--                   tiled: moves the divider TILED_STEP px
 local MOVE_STEP = 50
 local TILED_STEP = 50    -- tiled WIN+R: divider moves this many px per press
 local MODE_DIRS = {Left="left", Right="right", Up="up", Down="down"}
@@ -192,22 +192,29 @@ local frame_mode_actions = {
       end
       return
     end
+    -- floating: the arrow moves the right/bottom edge to the next line of
+    -- the same 6x6 screen grid WIN+P uses (1/6 ... 6/6). Right/Down grow,
+    -- Left/Up shrink; the top-left stays put (that's WIN+P's job). The edge
+    -- never goes past the window's own left/top edge.
+    local sg = f:screen_of():geom()
     local horiz = (dir == "left" or dir == "right")
-    local far = (dir == "right" or dir == "down")   -- hold the far edge
-    local function req(hold_far)
-      if horiz then
-        local w = math.floor(g.w * SHRINK)
-        f:rqgeom({x = hold_far and (g.x + g.w - w) or g.x, y = g.y, w = w, h = g.h})
-      else
-        local h = math.floor(g.h * SHRINK)
-        f:rqgeom({x = g.x, y = hold_far and (g.y + g.h - h) or g.y, w = g.w, h = h})
-      end
+    local size = horiz and sg.w or sg.h
+    local lo = horiz and g.x or g.y
+    local edge = lo + (horiz and g.w or g.h)
+    local k = edge * 6 / size
+    if dir == "right" or dir == "down" then
+      k = math.floor(k + 1e-6) + 1
+    else
+      k = math.ceil(k - 1e-6) - 1
     end
-    req(far)
-    -- tiled frames can't pull away from the screen edge; if nothing changed,
-    -- shrink from the other side instead
-    local n = f:geom()
-    if n.w == g.w and n.h == g.h then req(not far) end
+    k = math.min(6, k)
+    local v = math.floor(k * size / 6 + 0.5)
+    if v <= lo then return end           -- would collapse the window
+    if horiz then
+      f:rqgeom({x = g.x, y = g.y, w = v - g.x, h = g.h})
+    else
+      f:rqgeom({x = g.x, y = g.y, w = g.w, h = v - g.y})
+    end
   end,
 }
 
